@@ -5,9 +5,9 @@ public class Nft {
     private String title;
     private String img;
     private String token;
-    private String contract_add;
-    private String token_std;
+    private String contractAdd;
+    private String tokenStd;
     private String blockchain;
-    private long collectionId;
-    private long userId;
+    private Long collectionId;
+    private Long userId;
 }
