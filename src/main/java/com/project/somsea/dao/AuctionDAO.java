@@ -5,11 +5,11 @@ import java.util.List;
 import com.project.somsea.domain.Auction;
 
 public interface AuctionDAO {
-	int addAuction(Auction auction);
-	int updateAuction(int auctionId);
-	int deleteAuction(int auctionId);
-	int selectByCategory(int categoryId);
-	int selectByType(int type);
-	int getAuction(int auctionId);
-	List<Auction> getAuctionList(int ownerId);
+	long addAuction(Auction auction);
+	long updateAuction(long auctionId);
+	long deleteAuction(long auctionId);
+	long selectByCategory(long categoryId);
+	long selectByType(long type);
+	long getAuction(long auctionId);
+	List<Auction> getAuctionList(long ownerId);
 }

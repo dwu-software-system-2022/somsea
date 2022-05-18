@@ -3,12 +3,12 @@ package com.project.somsea.dao;
 import com.project.somsea.domain.Bidding;
 
 public interface BiddingDAO {
-	int insert(Bidding bidding);
-	int update(int biddingId);
-	int delete(int biddingId);
-	int select(int biddingId);
-	int selectByAuctionId(int auctionId);
-	int selectIdByAuctionId(int auctionId);
-	int getBidding(int biddingId);
-	int getBiddingList(int biddingId);
+	long insert(Bidding bidding);
+	long update(long biddingId);
+	long delete(long biddingId);
+	long select(long biddingId);
+	long selectByAuctionId(long auctionId);
+	long selectIdByAuctionId(long auctionId);
+	long getBidding(long biddingId);
+	long getBiddingList(long biddingId);
 }
