@@ -29,7 +29,7 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public User findUserByid(Long id) {
+	public User findUserById(Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -11,7 +11,7 @@ public class WalletDAOImpl implements WalletDAO {
 	}
 
 	@Override
-	public Wallet getWallet(Long id) {
+	public Wallet findWallet(Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

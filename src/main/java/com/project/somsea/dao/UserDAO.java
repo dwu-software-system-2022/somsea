@@ -7,6 +7,6 @@ public interface UserDAO {
 	long add(User user);
 	long update(User user);
 	long delete(User user);
-	User findUserByid(Long id);
+	User findUserById(Long id);
 	User findUserByName(String name);
 }
