@@ -1,26 +1,26 @@
 package com.project.somsea.dao;
 
 import com.project.somsea.domain.Nft;
-import com.project.somsea.domain.Property;
+import com.project.somsea.domain.Part;
 
-public class PropertyDAOImpl implements PropertyDAO{
+public class PartDAOImpl implements PartDAO {
     @Override
     public boolean existing(long propertyId) {
         return false;
     }
 
     @Override
-    public long add(Property property) {
+    public long add(Part part) {
         return 0;
     }
 
     @Override
-    public long update(Property property) {
+    public long update(Part part) {
         return 0;
     }
 
     @Override
-    public long delete(Property property) {
+    public long delete(Part part) {
         return 0;
     }
 
