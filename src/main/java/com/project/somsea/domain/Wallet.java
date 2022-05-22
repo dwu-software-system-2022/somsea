@@ -1,19 +1,21 @@
 package com.project.somsea.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
+
+@Entity
+@Getter
+@Setter
+@Table(name = "wallet")
 public class Wallet {
+
+	@Id @GeneratedValue
+	@Column(name = "wallet_id")
 	private Long id;
+
+	@Column(name = "balance")
 	private Long balance;
-	
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public Long getBalance() {
-		return balance;
-	}
-	public void setBalance(Long balance) {
-		this.balance = balance;
-	}
+
 }
