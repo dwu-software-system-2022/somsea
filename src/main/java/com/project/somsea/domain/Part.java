@@ -1,6 +1,7 @@
 package com.project.somsea.domain;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,5 +15,5 @@ public class Part {
     private String name;
 
     @OneToMany(mappedBy = "part", fetch = FetchType.LAZY)
-    private List<NftInfo> nftInfos;
+    private List<NftInfo> nftInfos = new ArrayList<>();
 }

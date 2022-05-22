@@ -8,7 +8,7 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.Oracle10gDialect
     hibernate:
-      ddl-auto: create-drop # 테이블 확정되면 update 로 변경
+      ddl-auto: create # 테이블 확정되면 update 로 변경
     properties:
       hibernate:
         format_sql: true
