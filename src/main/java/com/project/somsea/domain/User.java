@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,7 +26,10 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     @JoinColumn(name = "wallet_id")
     private Wallet wallet;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<TradeHistory> tradeHistories = new ArrayList<>();
 }

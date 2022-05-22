@@ -18,4 +18,8 @@ public class Wallet {
 	@Column(name = "balance")
 	private Long balance;
 
+	@JoinColumn(name = "user_id")
+	@OneToOne(fetch = FetchType.LAZY)
+	private User user;
+
 }
