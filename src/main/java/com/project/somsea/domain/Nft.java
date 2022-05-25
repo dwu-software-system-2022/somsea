@@ -24,11 +24,11 @@ public class Nft {
     @Column(name = "token")
     private String token;
 
-    @Column(name = "contract_add")
-    private String contractAdd;
+    @Column(name = "contract_address")
+    private String contractAddress;
 
-    @Column(name = "token_std")
-    private String tokenStd;
+    @Column(name = "token_standard")
+    private String tokenStandard;
 
     @Column(name = "block_chain")
     private String blockChain;
