@@ -1,14 +1,16 @@
 package com.project.somsea.domain;
 
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Setter
 @Entity
 @Table(name = "nft")
+@NoArgsConstructor
 public class Nft {
 
     @Id @GeneratedValue
@@ -43,4 +45,10 @@ public class Nft {
 
     @OneToMany(mappedBy = "nft", fetch = FetchType.LAZY)
     private List<NftInfo> nftInfos = new ArrayList<>();
+
+    @Builder
+    public Nft(String imageUrl, Collection collection) {
+        this.imageUrl = imageUrl;
+        this.collection = collection;
+    }
 }

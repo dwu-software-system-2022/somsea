@@ -1,7 +1,12 @@
 package com.project.somsea.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "nft_info")
 public class NftInfo {
