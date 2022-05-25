@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Setter
 @Entity
 @Table(name = "nft")
 @NoArgsConstructor
@@ -47,8 +46,9 @@ public class Nft {
     private List<NftInfo> nftInfos = new ArrayList<>();
 
     @Builder
-    public Nft(String imageUrl, Collection collection) {
+    public Nft(String imageUrl, Collection collection, User user) {
         this.imageUrl = imageUrl;
         this.collection = collection;
+        this.user = user;
     }
 }
