@@ -27,13 +27,3 @@ class NftRepositoryTest {
         Assertions.assertThat(savedNft.isPresent()).isTrue();
     }
 }
-
-/**
- * 1. 컬렉션에 들어가면 나오는 nft들 띄우기 (특정 컬렉션에 속해있는 nft list 반환)
- * 2. parts (여러개 가능) 로 필터링된 nft list 반환
- * 3. nft 등록
- * 4. nft detail 조회(bidding log랑 입찰 연결)
- * 5. nft 삭제
- * 6. nft 수정(경매 기간 수정/Auction, parts 수정)
- *
- */
