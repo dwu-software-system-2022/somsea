@@ -1,6 +1,6 @@
 package com.project.somsea.domain;
 
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -9,6 +9,7 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name = "nft")
+@NoArgsConstructor
 public class Nft {
 
     @Id @GeneratedValue
@@ -24,11 +25,11 @@ public class Nft {
     @Column(name = "token")
     private String token;
 
-    @Column(name = "contract_add")
-    private String contractAdd;
+    @Column(name = "contract_address")
+    private String contractAddress;
 
-    @Column(name = "token_std")
-    private String tokenStd;
+    @Column(name = "token_standard")
+    private String tokenStandard;
 
     @Column(name = "block_chain")
     private String blockChain;
@@ -43,4 +44,11 @@ public class Nft {
 
     @OneToMany(mappedBy = "nft", fetch = FetchType.LAZY)
     private List<NftInfo> nftInfos = new ArrayList<>();
+
+    @Builder
+    public Nft(String imageUrl, Collection collection, User user) {
+        this.imageUrl = imageUrl;
+        this.collection = collection;
+        this.user = user;
+    }
 }

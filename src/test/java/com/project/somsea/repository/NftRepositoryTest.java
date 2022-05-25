@@ -14,6 +14,7 @@ import java.util.Optional;
 @Transactional
 @SpringBootTest
 class NftRepositoryTest {
+
     @Autowired
     private NftRepository nftRepository;
 

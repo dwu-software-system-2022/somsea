@@ -1,9 +1,15 @@
 package com.project.somsea.domain;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
+@Getter
 @Entity
 @Table(name = "nft_info")
+@NoArgsConstructor
 public class NftInfo {
 
     @Id @GeneratedValue
@@ -17,4 +23,12 @@ public class NftInfo {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "part_id")
     private Part part;
+
+    @Builder
+    public NftInfo(Nft nft, Part part) {
+        this.nft = nft;
+        this.part = part;
+        nft.getNftInfos().add(this);
+        part.getNftInfos().add(this);
+    }
 }
