@@ -52,7 +52,7 @@ class NftServiceTest {
         partRepository.saveAndFlush(part1);
         partRepository.saveAndFlush(part2);
 
-        NftDto nftDto = NftDto.builder()
+        NftDto.Request nftDto = NftDto.Request.builder()
                               .collectionId(collection.getId())
                               .imageUrl("myImageUrl")
                               .partIds(List.of(part1.getId(), part2.getId()))
@@ -107,21 +107,38 @@ class NftServiceTest {
     }
 
     @Test
-    @DisplayName("Nft 수정")
-    void testUpdateNft() {
-        //given
+    @DisplayName("특정 컬렉션에 속해있는 Nft List (UserId, NftId, ImageUrl, NftTitle) 반환")
+    void testReadNftByCollection() {
+        //given : Nft 2개 이상, Collection, User 2개  이상
+        Collection collection = new Collection();
+        collectionRepository.saveAndFlush(collection);
 
+        User user1 = new User();
+        userRepository.saveAndFlush(user1);
+        User user2 = new User();
+        userRepository.saveAndFlush(user2);
+
+        Nft nft1 = Nft.builder().imageUrl("myImageUrl1").collection(collection).user(user1).build();
+        nftRepository.saveAndFlush(nft1);
+        Nft nft2 = Nft.builder().imageUrl("myImageUrl2").collection(collection).user(user2).build();
+        nftRepository.saveAndFlush(nft2);
 
         //when
-
-
-
+        List<NftDto.ResponseByCollection> nftDtos = nftService.readNftByCollection(collection.getId());
 
         //then
+        NftDto.ResponseByCollection nftDto1 = nftDtos.get(0);
+        assertThat(nftDto1.getUserId()).isEqualTo(user1.getId());
+        assertThat(nftDto1.getNfTId()).isEqualTo(nft1.getId());
+        assertThat(nftDto1.getImageUrl()).isEqualTo(nft1.getImageUrl());
+        assertThat(nftDto1.getNftTitle()).isEqualTo(nft1.getTitle());
 
-
+        NftDto.ResponseByCollection nftDto2 = nftDtos.get(1);
+        assertThat(nftDto2.getUserId()).isEqualTo(user2.getId());
+        assertThat(nftDto2.getNfTId()).isEqualTo(nft2.getId());
+        assertThat(nftDto2.getImageUrl()).isEqualTo(nft2.getImageUrl());
+        assertThat(nftDto2.getNftTitle()).isEqualTo(nft2.getTitle());
     }
-
     @Test
     @DisplayName("Nft 디테일 조회")
     void testReadDetailNft() {
@@ -129,8 +146,6 @@ class NftServiceTest {
 
 
         //when
-
-
 
 
         //then
@@ -144,21 +159,6 @@ class NftServiceTest {
         //given
 
 
-        //when
-
-
-
-
-        //then
-
-
-    }
-
-    @Test
-    @DisplayName("특정 컬렉션에 속해있는 nft list 반환")
-    void testReadNftByCollection() {
-        //given
-
 
         //when
 
@@ -166,7 +166,6 @@ class NftServiceTest {
 
 
         //then
-
 
 
     }
