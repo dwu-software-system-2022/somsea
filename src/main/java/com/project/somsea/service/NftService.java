@@ -6,8 +6,10 @@ import com.project.somsea.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.BadPaddingException;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,15 +32,14 @@ public class NftService {
 
         // NFT_INFO 저장
         List<NftInfo> nftInfos = nftDto.getPartIds().stream()
-                                       .map(this::findPart)
-                                       .map(part -> NftInfo.builder().nft(nft).part(part).build())
-                                       .collect(Collectors.toList());
+                .map(this::findPart)
+                .map(part -> NftInfo.builder().nft(nft).part(part).build())
+                .collect(Collectors.toList());
         nftInfoRepository.saveAll(nftInfos);
 
         return nft.getId();
     }
 
-    
 
     private Part findPart(Long partId) {
         return partRepository.findById(partId)
@@ -53,5 +54,27 @@ public class NftService {
     private Collection findCollection(NftDto nftDto) {
         return collectionRepository.findById(nftDto.getCollectionId())
                 .orElseThrow(() -> new IllegalArgumentException("Collection Id 값이 없습니다. CollectionId: " + nftDto.getCollectionId()));
+    }
+
+    public void delete(Long userId, Long nftId) {
+        // DB 에 존재하는 NFT 조회
+        Nft nft = findNft(nftId);
+
+        // NFT Validate: UserId 가 맞는지
+        User user = nft.getUser();
+
+        if (user.getId() != userId) {
+            throw new IllegalArgumentException("userId 값이 다릅니다.");
+        }
+
+        // NFT 삭제
+        List<NftInfo> nftInfos = nft.getNftInfos(); // List<ProxyNftInfo> : Id 값만 갖고있는 프록시 객체들의 리스트
+        nftInfoRepository.deleteAll(nftInfos);  // 삭제할 때는 id 값만 필요함
+        nftRepository.delete(nft);
+    }
+
+    private Nft findNft(Long nftId) {
+        return nftRepository.findById(nftId)
+                .orElseThrow(() -> new IllegalArgumentException("Nft Id 값이 없습니다. CollectionId: " + nftId));
     }
 }

@@ -2,10 +2,7 @@ package com.project.somsea.service;
 
 import com.project.somsea.domain.*;
 import com.project.somsea.dto.NftDto;
-import com.project.somsea.repository.CollectionRepository;
-import com.project.somsea.repository.NftRepository;
-import com.project.somsea.repository.PartRepository;
-import com.project.somsea.repository.UserRepository;
+import com.project.somsea.repository.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +33,9 @@ class NftServiceTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private NftInfoRepository nftInfoRepository;
 
     @Test
     @DisplayName("NFT 추가")
@@ -75,6 +75,100 @@ class NftServiceTest {
                                               .map(Part::getId)
                                               .collect(Collectors.toList());
         assertThat(partIds).isEqualTo(nftDto.getPartIds());
+    }
+
+    @Test
+    @DisplayName("Nft 삭제")
+    void testDeleteNft() {
+        //given : Nft, Use, NftInfo 가 있어야함
+        User user = new User();
+        userRepository.saveAndFlush(user);
+
+        Nft nft = Nft.builder().user(user).build();
+        nftRepository.saveAndFlush(nft);
+
+        Part part = new Part();
+        partRepository.saveAndFlush(part);
+
+        NftInfo nftInfo = NftInfo.builder().nft(nft).part(part).build();
+        nftInfoRepository.saveAndFlush(nftInfo);
+
+        //when
+        nftService.delete(user.getId(), nft.getId());
+
+        //then
+        nftRepository.flush();
+        Optional<Nft> optionalNft = nftRepository.findById(nft.getId());
+        assertThat(optionalNft).isEmpty();
+
+        nftInfoRepository.flush();
+        Optional<NftInfo> optionalNftInfo = nftInfoRepository.findById(nft.getId());
+        assertThat(optionalNftInfo).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Nft 수정")
+    void testUpdateNft() {
+        //given
+
+
+        //when
+
+
+
+
+        //then
+
+
+    }
+
+    @Test
+    @DisplayName("Nft 디테일 조회")
+    void testReadDetailNft() {
+        //given
+
+
+        //when
+
+
+
+
+        //then
+
+
+    }
+
+    @Test
+    @DisplayName("파츠로 Nft 조회")
+    void testReadNftByParts() {
+        //given
+
+
+        //when
+
+
+
+
+        //then
+
+
+    }
+
+    @Test
+    @DisplayName("특정 컬렉션에 속해있는 nft list 반환")
+    void testReadNftByCollection() {
+        //given
+
+
+        //when
+
+
+
+
+        //then
+
+
+
     }
 }
 
