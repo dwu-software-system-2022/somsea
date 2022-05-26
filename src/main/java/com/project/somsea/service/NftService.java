@@ -6,10 +6,8 @@ import com.project.somsea.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.BadPaddingException;
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,10 +21,10 @@ public class NftService {
     private final PartRepository partRepository;
     private final NftInfoRepository nftInfoRepository;
 
-    public Long add(Long userId, NftDto nftDto) {
+    public Long add(Long userId, NftDto.Request nftDto) {
         // NFT 저장
         User user = findUser(userId);
-        Collection collection = findCollection(nftDto);
+        Collection collection = findCollection(nftDto.getCollectionId());
         Nft nft = nftDto.toEntity(user, collection);
         nftRepository.save(nft);
 
@@ -51,11 +49,6 @@ public class NftService {
                 .orElseThrow(() -> new IllegalArgumentException("User Id 값이 없습니다. UserId: " + userId));
     }
 
-    private Collection findCollection(NftDto nftDto) {
-        return collectionRepository.findById(nftDto.getCollectionId())
-                .orElseThrow(() -> new IllegalArgumentException("Collection Id 값이 없습니다. CollectionId: " + nftDto.getCollectionId()));
-    }
-
     public void delete(Long userId, Long nftId) {
         // DB 에 존재하는 NFT 조회
         Nft nft = findNft(nftId);
@@ -75,6 +68,22 @@ public class NftService {
 
     private Nft findNft(Long nftId) {
         return nftRepository.findById(nftId)
-                .orElseThrow(() -> new IllegalArgumentException("Nft Id 값이 없습니다. CollectionId: " + nftId));
+                .orElseThrow(() -> new IllegalArgumentException("Nft Id 값이 없습니다. NftId: " + nftId));
+    }
+
+    /**
+     * SELECT * FROM nft WHERE nft.collection_id = ?
+     */
+    public List<NftDto.ResponseByCollection> readNftByCollection(Long collectionId) {
+        Collection collection = findCollection(collectionId);
+
+        return nftRepository.findAllByCollection(collection).stream()
+                .map(NftDto.ResponseByCollection::of)
+                .collect(Collectors.toList());
+    }
+
+    private Collection findCollection(Long collectionId) {
+        return collectionRepository.findById(collectionId)
+                .orElseThrow(() -> new IllegalArgumentException("Collection Id 값이 없습니다. collectionId: " + collectionId));
     }
 }
