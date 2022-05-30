@@ -10,6 +10,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -74,16 +75,29 @@ public class NftService {
     /**
      * SELECT * FROM nft WHERE nft.collection_id = ?
      */
-    public List<NftDto.ResponseByCollection> readNftByCollection(Long collectionId) {
+    public List<NftDto.Response> readNftByCollection(Long collectionId) {
         Collection collection = findCollection(collectionId);
 
         return nftRepository.findAllByCollection(collection).stream()
-                .map(NftDto.ResponseByCollection::of)
+                .map(NftDto.Response::of)
                 .collect(Collectors.toList());
     }
 
     private Collection findCollection(Long collectionId) {
         return collectionRepository.findById(collectionId)
                 .orElseThrow(() -> new IllegalArgumentException("Collection Id 값이 없습니다. collectionId: " + collectionId));
+    }
+
+    public NftDto.ResponseDetail readDetailNft(Long nftId) {
+        Nft nft = findNft(nftId);
+        return NftDto.ResponseDetail.of(nft);
+    }
+
+    public List<NftDto.Response> readNftByParts(List<Long> partIds) {
+        List<Part> parts = partRepository.findAllById(partIds);
+
+        return nftRepository.findAllByJoinWithParts(parts).stream()
+                .map(NftDto.Response::of)
+                .collect(Collectors.toList());
     }
 }

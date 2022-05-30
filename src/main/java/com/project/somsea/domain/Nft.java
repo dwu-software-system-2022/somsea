@@ -51,4 +51,5 @@ public class Nft {
         this.collection = collection;
         this.user = user;
     }
+
 }
