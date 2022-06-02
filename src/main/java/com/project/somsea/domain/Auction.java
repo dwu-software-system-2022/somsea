@@ -33,7 +33,7 @@ public class Auction {
 	@OneToOne(fetch = FetchType.LAZY)
 	private Nft nft;
 
-	enum Status {
+	public enum Status {
 		READY, IN_PROGRESS, COMPLETED
 	}
 }
