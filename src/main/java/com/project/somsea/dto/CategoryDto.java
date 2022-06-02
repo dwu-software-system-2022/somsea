@@ -12,13 +12,13 @@ public class CategoryDto {
     @Getter
     @Builder
     public static class Request {
-        private Long category_Id;
-        private String category_name;
+        private Long id;
+        private String name;
 
         public Category toEntity(Tag tag) {
             return Category.builder()
-                    .category_Id(category_Id)
-                    .category_name(category_name)
+                    .id(category_id)
+                    .name(category_name)
                     .build();
         }
 	}

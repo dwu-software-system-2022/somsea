@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 	List<Category> getCategoryList();
 	
-	Category getCategory(Long category_Id);
+	Category getCategory(Long id);
 }
