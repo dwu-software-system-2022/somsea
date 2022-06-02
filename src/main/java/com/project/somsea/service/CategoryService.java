@@ -18,7 +18,7 @@ public class CategoryService {
 
 	//카테고리저장 
 	public Long add(Category category) {
-		Category category = findCollection(categoryDto.getCategory_id());
+		Category category = findCollection(categoryDto.getCategoryId());
         CategoryRepository.save(category);
     }
 }
