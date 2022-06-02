@@ -6,7 +6,6 @@ import com.project.somsea.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.coyote.Response;
 
 import java.util.List;
 
@@ -31,19 +30,45 @@ public class NftDto {
 
     @Getter
     @Builder
-    public static class ResponseByCollection {
+    public static class Response {
         // UserId, NftId, ImageUrl, NftTitle
         private Long userId;
-        private Long nfTId;
+        private Long nftId;
         private String imageUrl;
         private String nftTitle;
 
-        public static ResponseByCollection of(Nft nft) {
-            return ResponseByCollection.builder()
+        public static Response of(Nft nft) {
+            return Response.builder()
                     .userId(nft.getUser().getId())
-                    .nfTId(nft.getId())
+                    .nftId(nft.getId())
                     .imageUrl(nft.getImageUrl())
                     .nftTitle(nft.getTitle())
+                    .build();
+        }
+    }
+
+    @Builder
+    @Getter
+    public static class ResponseDetail {
+        private Long nftId;
+        private String title;
+        private String imageUrl;
+        private String token;
+        private String contractAddress;
+        private String tokenStandard;
+        private String blockChain;
+        private Long userId;
+
+        public static ResponseDetail of(Nft nft) {
+            return ResponseDetail.builder()
+                    .nftId(nft.getId())
+                    .title(nft.getTitle())
+                    .imageUrl(nft.getImageUrl())
+                    .token(nft.getToken())
+                    .contractAddress(nft.getContractAddress())
+                    .tokenStandard(nft.getTokenStandard())
+                    .blockChain(nft.getBlockChain())
+                    .userId(nft.getUser().getId())
                     .build();
         }
     }
