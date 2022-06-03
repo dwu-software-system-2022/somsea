@@ -10,19 +10,19 @@
         <label for="imageUrl">이미지 Url</label>
         <input type="text" id="imageUrl" th:field="*{imageUrl}">
     </div>
-    <div>
-        <label for="collectionId">컬렉션</label>
-        <input type="text" id="collectionId" th:field="*{collectionId}">
-    </div>
-
+    
     <div>
         <div>파츠</div>
         <div th:each="part : ${parts}">
-            <input type="checkbox" th:field="*{parts}" name="parts" th:value="${part.key}" />
-            <label th:for="${#ids.prev('parts')}" th:text="${part.value}">파츠들</label>
+            <input type="checkbox" th:field="*{partIds}" th:value="${part.partId}" />
+            <label th:for="${#ids.prev('partIds')}" th:text="${part.name}">파츠들</label>
         </div>
     </div>
-    <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+
+    <p>
+        <input type="submit" value="Submit" />
+        <input type="reset" value="Reset" />
+    </p>
 </form>
 </body>
 </html>

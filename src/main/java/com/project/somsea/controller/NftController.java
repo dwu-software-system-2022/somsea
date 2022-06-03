@@ -33,36 +33,19 @@ public class NftController {
         NftDto.Request nftDto = NftDto.Request.newInstance();
         List<PartDto.Response> parts = nftService.getPartsByCollectionId(collectionId);
 
-        Map<Long, String> partsMap = new LinkedHashMap<>();
-        parts.forEach(part -> {
-            partsMap.put(part.getPartId(), part.getName());
-        });
-
         model.addAttribute("nft", nftDto);
-        model.addAttribute("parts", partsMap);
+        model.addAttribute("parts", parts);
+
         return "nfts/form";
     }
 
     @PostMapping("/collections/{collectionId}/nfts/form")
-    public String addNft(@ModelAttribute("requestDto") NftDto.Request requestDto, @PathVariable Long collectionId) {
+    public String addNft(@ModelAttribute("requestDto") NftDto.Request requestDto) {
         Long userId = 1L;
         Long nftId = nftService.add(userId, requestDto);
-
-        log.info("requestDto: {}", requestDto);
-        log.info("collectionId: {}", collectionId);
-
-        // NFT 추가 완료 후에 이동할 페이지 (nft 리스트 보여주는 페이지)
+        // TODO: NFT 추가 완료 후에 이동할 페이지 변경 필요
         return "redirect:/nfts/" + nftId;
     }
-
-//    @ModelAttribute("partIds")
-//    private Map<Long, String> partIds() {
-//        Map<Long, String> map = new LinkedHashMap<>();
-//        map.put(21L, "파트1");
-//        map.put(51L, "파트2");
-//        map.put(55L, "파트3");
-//        return map;
-//    }
 
     @DeleteMapping("/nfts")
     public ModelAndView deleteNft() {
