@@ -1,9 +1,11 @@
 package com.project.somsea.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -32,8 +34,20 @@ public class Auction {
 	@JoinColumn(name = "nft_id")
 	@OneToOne(fetch = FetchType.LAZY)
 	private Nft nft;
+	
+	private Long topBid;
 
 	public enum Status {
 		READY, IN_PROGRESS, COMPLETED
 	}
+	
+	@Builder
+    public Auction(Nft nft, Long startPrice, LocalDateTime registerDate, LocalDateTime dueDate ,
+    		Status status) {
+        this.nft = nft;
+        this.startPrice = startPrice;
+        this.registerDate = registerDate;
+        this.dueDate = dueDate;
+        this.status = status;
+    }
 }
