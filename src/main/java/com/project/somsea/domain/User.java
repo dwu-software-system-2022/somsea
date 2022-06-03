@@ -1,5 +1,6 @@
 package com.project.somsea.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,4 +33,12 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<TradeHistory> tradeHistories = new ArrayList<>();
+    
+    @Builder
+    public User(String name, String email, String password,  Wallet wallet) {
+    	this.name = name;
+    	this.email = email;
+    	this.password = password;
+    	this.wallet = wallet;
+    }
 }
