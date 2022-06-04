@@ -12,6 +12,7 @@ public class UserDto {
 	@Getter
 	@Builder
 	public static class Request {
+		
 		private Long userId;
 		private String email;
 		private String password;
