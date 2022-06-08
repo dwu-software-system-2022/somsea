@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class CategoryController {
     @autowired
     private final CategoryService categoryService;
+    
     @autowired
     private final CategoryRepository categoryRepository;
 
