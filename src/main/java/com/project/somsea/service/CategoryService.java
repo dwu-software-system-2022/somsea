@@ -1,5 +1,8 @@
 package main.java.com.project.somsea.service;
 
+
+package main.java.com.project.somsea.service;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,13 +15,19 @@ import lombok.RequiredArgsConstructor;
 @Service
 @Transactional
 @RequiredArgsConstructor
-
 public class CategoryService {
 	private final CategoryRepository categoryRepository;
 
-	//카테고리저장 
-	public Long add(Category category) {
-		Category category = findCollection(categoryDto.getCategory_id());
-        CategoryRepository.save(category);
-    }
+	private Category findCategoryById(Long id) {
+		return categoryRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Id value don't exist."));
+	}
+	private Category findCategoryByName(String name) {
+		return categoryRepository.findByName(name)
+				.orElseThrow(() -> new IllegalArgumentException("Name value don't exist."));
+	}
+	private Category findAllCategory() {
+		return categoryRepository.findAll();
+	}
 }
+
