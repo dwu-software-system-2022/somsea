@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequiredArgsConstructor
 public class CategoryController {
     @autowired
     private final CategoryService categoryService;
@@ -16,7 +15,7 @@ public class CategoryController {
     private final CategoryRepository categoryRepository;
 
     @GetMapping("/category")
-    public List<User> retrieveAllCategory() {
+    public List<Category> retrieveAllCategory() {
         return categoryRepository.findAll();
     }
 }

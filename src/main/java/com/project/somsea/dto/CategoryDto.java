@@ -15,11 +15,11 @@ public class CategoryDto {
         private Long id;
         private String name;
 
-        public Category toEntity(Tag tag) {
-            return Category.builder()
-                    .id(category_id)
-                    .name(category_name)
-                    .build();
+    public Category toEntity(Tag tag) {
+        return Category.builder()
+           .id(category_id)
+           .name(category_name)
+           .build();
         }
 	}
 }

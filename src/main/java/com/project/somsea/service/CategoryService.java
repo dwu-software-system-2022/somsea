@@ -18,11 +18,11 @@ public class CategoryService {
 
 	private Category findCategoryById(Long id) {
 		return categoryRepository.findById(Id)
-				.orElseThrow(() -> new IllegalArgumentException("Id value don't exist.");
+				.orElseThrow(() -> new IllegalArgumentException("Id value don't exist."));
 	}
 	private Category findCategoryByName(String name) {
 		return categoryRepository.findByName(Name)
-				.orElseThrow(() -> new IllegalArgumentException("Name value don't exist.");
+				.orElseThrow(() -> new IllegalArgumentException("Name value don't exist."));
 	}
 	private Category findAllCategory() {
 		return categoryRepository.findAll();
