@@ -1,8 +1,5 @@
 package main.java.com.project.somsea.service;
 
-
-package main.java.com.project.somsea.service;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,8 +8,9 @@ import org.springframework.stereotype.Service;
 import com.project.somsea.domain.Category;
 import com.project.somsea.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
+import main.java.com.project.somsea.controller.Controller;
 
-@Service
+@Controller
 @Transactional
 @RequiredArgsConstructor
 public class CategoryService {

@@ -9,7 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class CategoryController {
-    @autowired
+	@autowired
     private final CategoryService categoryService;
 
     @autowired
