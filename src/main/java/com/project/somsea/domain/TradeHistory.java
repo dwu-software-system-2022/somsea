@@ -2,7 +2,10 @@ package com.project.somsea.domain;
 
 import javax.persistence.*;
 
+import lombok.Getter;
+
 @Entity
+@Getter
 @Table(name = "trade_history")
 public class TradeHistory {
 
