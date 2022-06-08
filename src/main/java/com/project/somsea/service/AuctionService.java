@@ -30,12 +30,12 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 @RequiredArgsConstructor
 public class AuctionService {
-	private AuctionRepository auctionRepository;
-	private UserRepository userRepository;
-	private NftRepository nftRepository;
-	private BiddingRepository biddingRepository;
-	private CollectionRepository collectionRepository;
-	private TradeHistoryRepository tradeHistoryRepository;
+	private final AuctionRepository auctionRepository;
+	private final UserRepository userRepository;
+	private final  NftRepository nftRepository;
+	private final BiddingRepository biddingRepository;
+	private final CollectionRepository collectionRepository;
+	private final TradeHistoryRepository tradeHistoryRepository;
 	
 	public void addAuction(AuctionDto.Request auctionDto) {
 //		if (isExistingUser(userId)) { // nft 쪽에서 user 존재하는지 확인하는 코드 있으면 없어도 됨.(nft가 존재하는지만 확인필요)
