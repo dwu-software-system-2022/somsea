@@ -16,9 +16,15 @@ import lombok.RequiredArgsConstructor;
 public class CategoryService {
 	private final CategoryRepository categoryRepository;
 
-	//카테고리저장 
-	public Long add(Category category) {
-		Category category = findCollection(categoryDto.getId());
-        CategoryRepository.save(category);
-    }
+	private Category findCategoryById(Long id) {
+		return categoryRepository.findById(Id)
+				.orElseThrow(() -> new IllegalArgumentException("Id value don't exist.");
+	}
+	private Category findCategoryByName(String name) {
+		return categoryRepository.findByName(Name)
+				.orElseThrow(() -> new IllegalArgumentException("Name value don't exist.");
+	}
+	private Category findAllCategory() {
+		return categoryRepository.findAll();
+	}
 }
