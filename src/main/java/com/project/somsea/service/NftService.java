@@ -2,6 +2,7 @@ package com.project.somsea.service;
 
 import com.project.somsea.domain.*;
 import com.project.somsea.dto.NftDto;
+import com.project.somsea.dto.PartDto;
 import com.project.somsea.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -98,6 +99,17 @@ public class NftService {
 
         return nftRepository.findAllByJoinWithParts(parts).stream()
                 .map(NftDto.Response::of)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 임시로 만드는 Parts 조회 메서드
+     * TODO: CollectionService 또는 PartService 로 나중에 옮겨야함
+     */
+    public List<PartDto.Response> getPartsByCollectionId(Long collectionId) {
+        return findCollection(collectionId)
+                .getParts().stream()
+                .map(PartDto.Response::of)
                 .collect(Collectors.toList());
     }
 }

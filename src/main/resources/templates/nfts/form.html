@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nft 추가 form</title>
+</head>
+<body>
+<form th:action th:object="${nft}" method="post">
+    <div>
+        <label for="imageUrl">이미지 Url</label>
+        <input type="text" id="imageUrl" th:field="*{imageUrl}">
+    </div>
+    
+    <div>
+        <div>파츠</div>
+        <div th:each="part : ${parts}">
+            <input type="checkbox" th:field="*{partIds}" th:value="${part.partId}" />
+            <label th:for="${#ids.prev('partIds')}" th:text="${part.name}">파츠들</label>
+        </div>
+    </div>
+
+    <p>
+        <input type="submit" value="Submit" />
+        <input type="reset" value="Reset" />
+    </p>
+</form>
+</body>
+</html>
