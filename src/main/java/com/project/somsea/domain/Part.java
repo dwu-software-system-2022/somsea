@@ -19,4 +19,8 @@ public class Part {
 
     @OneToMany(mappedBy = "part", fetch = FetchType.LAZY)
     private List<NftInfo> nftInfos = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "collection_id")
+    private Collection collection;
 }

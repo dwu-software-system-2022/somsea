@@ -31,4 +31,8 @@ public class Collection {
 
     @OneToMany(mappedBy = "collection", fetch = FetchType.LAZY)
     private List<Tag> tags = new ArrayList<>();
+
+    @OneToMany(mappedBy = "collection", fetch = FetchType.LAZY)
+    private List<Part> parts = new ArrayList<>();
 }
+

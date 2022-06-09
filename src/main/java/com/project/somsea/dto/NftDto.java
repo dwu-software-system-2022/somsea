@@ -6,6 +6,7 @@ import com.project.somsea.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class NftDto {
     @Setter
     @Getter
     @Builder
+    @ToString
     public static class Request {
         private Long collectionId;
         private String imageUrl;
@@ -25,6 +27,10 @@ public class NftDto {
                     .collection(collection)
                     .user(user)
                     .build();
+        }
+
+        public static Request newInstance() {
+            return Request.builder().build();
         }
     }
 
