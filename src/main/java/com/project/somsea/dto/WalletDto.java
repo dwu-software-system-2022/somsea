@@ -16,7 +16,7 @@ public class WalletDto {
 		private Long balance;
 		private User user;
 		
-		public Wallet toEntity(User user) {
+		public Wallet toEntity(User user, Long balance) {
 			return Wallet.builder()
 					.balance(balance)
 					.user(user)
