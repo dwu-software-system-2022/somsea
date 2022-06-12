@@ -20,8 +20,8 @@ public class User {
 
     @Column(name = "name")
     private String name;
-
-    @Column(name = "email")
+    
+    @Column(name = "email", unique = true)
     private String email;
 
     @Column(name = "password")
