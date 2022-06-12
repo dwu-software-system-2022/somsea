@@ -111,12 +111,12 @@ public class AuctionService {
 	}
 	
 	/* bidding */
-	public void addBidding(Long auctionId, Long userId, BiddingDto.Request biddingDto) {
-		Auction auction = findAuction(auctionId);
-		User user = findUser(userId);
+	public void addBidding(BiddingDto.Request biddingDto) {
+		Auction auction = findAuction(biddingDto.getAuctionId());
+		User user = findUser(biddingDto.getUserId());
 		Bidding bidding = biddingDto.toEntity(user, auction);
 		biddingRepository.save(bidding);
-		bidding.setFloorBid(findFloorBid(auctionId));
+		bidding.setFloorBid(findFloorBid(biddingDto.getAuctionId()));
 		double floorDif = FloorDifference(bidding.getId());
 		if (floorDif < 100) {
 			bidding.setFloorDifference(floorDif + "below");
@@ -177,5 +177,10 @@ public class AuctionService {
 	public TradeHistory findTradeHistory(Long tradeId) {
 		return tradeHistoryRepository.findById(tradeId)
 				.orElseThrow(() -> new IllegalArgumentException("TradeId 값이 없습니다. tradeId : " + tradeId));
+	}
+	
+	public List<TradeHistory> findByAuction(Long auctionId) {
+		Auction auction = findAuction(auctionId);
+		return tradeHistoryRepository.findByAuction(auction);
 	}
 }
