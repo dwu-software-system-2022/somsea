@@ -1,5 +1,6 @@
 package com.project.somsea.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,9 +18,9 @@ public class Wallet {
 
 	@Column(name = "balance")
 	private Long balance;
-
-	@JoinColumn(name = "user_id")
-	@OneToOne(fetch = FetchType.LAZY)
-	private User user;
-
+	
+	@Builder
+	public Wallet(Long balance) {
+		this.balance = balance;
+	}
 }
