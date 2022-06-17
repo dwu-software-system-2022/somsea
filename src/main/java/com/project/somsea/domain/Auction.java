@@ -2,6 +2,7 @@ package com.project.somsea.domain;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @Table(name = "auction")
 public class Auction {
 
@@ -29,10 +31,10 @@ public class Auction {
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status")
-	private Status status;	// 진행 전 , 진행 중, 진행 후
+	private Status status;	// 진행 전 , 진행 중, 진행 후 
 
 	@JoinColumn(name = "nft_id")
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY) 
 	private Nft nft;
 	
 	@Transient
