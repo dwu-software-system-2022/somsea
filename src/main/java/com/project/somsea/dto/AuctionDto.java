@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.project.somsea.domain.Auction;
 import com.project.somsea.domain.Auction.Status;
+import com.project.somsea.dto.BiddingDto.Request;
 import com.project.somsea.domain.Nft;
 
 import lombok.Builder;
@@ -33,6 +34,11 @@ public class AuctionDto {
 	    			.status(status)
 	    			.build();
 	    }
+
+
+		public static Request newInstance() {
+			return Request.builder().build();
+		}
 		
 	}
 //	private Long auctionId;

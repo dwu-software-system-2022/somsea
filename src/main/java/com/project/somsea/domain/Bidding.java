@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+
+import org.springframework.lang.Nullable;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -30,11 +33,10 @@ public class Bidding implements Comparable<Bidding>{
 	@JoinColumn(name = "auction_id")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Auction auction;
-	
 	@Transient
 	private String floorDifference; 
 	@Transient
-	private int expiration;
+	private int expiration = 1;
 	@Transient
 	private Long FloorBid;
 	
