@@ -16,15 +16,15 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 public class UserController {
-	private final UserService userService;
+//	private final UserService userService;
 	
-	@GetMapping("/users/add")
+	@GetMapping("/user/add")
 	public String addUserForm(Model model) {
 		model.addAttribute("user", UserDto.Request.newInstance());
 		return "users/form";
 	}
 	
-	@PostMapping("/users/add")
+	@PostMapping("/user/add")
 	@ResponseBody
 	public String addUser(@RequestBody String body) {
 //		Long userId = userService.add(userId, requestDto);

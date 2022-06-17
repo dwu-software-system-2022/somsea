@@ -14,16 +14,14 @@ public class UserService {
 	private final UserRepository userRepository;
 	
 	public Long add(User user) {
-		validateDuplicateUser(user);
+		validateDuplicateUser(user.getEmail());
 		userRepository.save(user);
 		return user.getId();
 	}
 	
-	private void validateDuplicateUser(User user) {
-		User findUser = userRepository.findByEmail(user.getEmail());
-		if (findUser != null) {
-			throw new IllegalStateException("이미 가입된 이메일입니다.");
-		}
+	private User validateDuplicateUser(String email) {
+		return userRepository.findByEmail(email)
+				.orElseThrow(() -> new IllegalArgumentException("이미 존재하는 이메일입니다. email : " + email));
 	}
 	
 	public User findUserById(Long userId) {
