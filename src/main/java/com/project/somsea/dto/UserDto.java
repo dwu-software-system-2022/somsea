@@ -2,6 +2,7 @@ package com.project.somsea.dto;
 
 import com.project.somsea.domain.User;
 import com.project.somsea.domain.Wallet;
+import com.project.somsea.dto.NftDto.Request;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -26,5 +27,9 @@ public class UserDto {
 					.wallet(wallet)
 					.build();
 		}
+		
+		public static Request newInstance() {
+            return Request.builder().build();
+        }
 	}
 }
