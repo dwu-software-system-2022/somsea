@@ -35,6 +35,7 @@ public class Auction {
 	@OneToOne(fetch = FetchType.LAZY)
 	private Nft nft;
 	
+	@Transient
 	private Long topBid;
 
 	public enum Status {
@@ -42,7 +43,7 @@ public class Auction {
 	}
 	
 	@Builder
-    public Auction(Nft nft, Long startPrice, LocalDateTime registerDate, LocalDateTime dueDate ,
+    public Auction(Nft nft, Long startPrice, LocalDateTime registerDate, LocalDateTime dueDate,
     		Status status) {
         this.nft = nft;
         this.startPrice = startPrice;

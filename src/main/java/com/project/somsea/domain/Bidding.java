@@ -31,8 +31,11 @@ public class Bidding implements Comparable<Bidding>{
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Auction auction;
 	
+	@Transient
 	private String floorDifference; 
+	@Transient
 	private int expiration;
+	@Transient
 	private Long FloorBid;
 	
 	@Builder

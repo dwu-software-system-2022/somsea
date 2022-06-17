@@ -15,7 +15,7 @@ public class BiddingDto {
 	@Getter
 	@Builder
 	public static class Request {
-		private Long biddingId;
+//		private Long biddingId;
 		private Long price;
 		private LocalDateTime time;
 		private Long userId;
@@ -28,6 +28,10 @@ public class BiddingDto {
 					.price(price)
 					.time(time)
 					.build();
+		}
+		
+		public static Request newInstance() {
+			return Request.builder().build();
 		}
 	}
 }
