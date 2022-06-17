@@ -34,6 +34,9 @@ public class AuctionDto {
 	    			.build();
 	    }
 		
+	    public static Request newInstance() {
+	    	return Request.builder().build();
+	    }
 	}
 //	private Long auctionId;
 //    private Long nftId;

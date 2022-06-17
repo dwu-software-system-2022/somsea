@@ -48,7 +48,12 @@ public class AuctionService {
 		Nft nft = findNft(auctionDto.getNftId());
 		Auction auction = auctionDto.toEntity(nft);
 		auctionRepository.save(auction);
-		auction.setTopBid(findTopBid(auction.getId()));
+		Long topBid = findTopBid(auction.getId());
+		if (topBid != null) {
+			auction.setTopBid(findTopBid(auction.getId()));
+		} else {
+			topBid = auction.getStartPrice();
+		}
 	}
 	
 //	public boolean isExistingUser(Long userId) {
