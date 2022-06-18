@@ -4,6 +4,16 @@ spring:
     username: sw0206
     password: sw0206
     driver-class-name: oracle.jdbc.OracleDriver
+  thymeleaf:
+    prefix: classpath:templates/
+    suffix: .html
+    check-template-location: true
+    cache: false
+  mvc:
+    static-path-pattern: /static/**
+  devtools:
+    livereload:
+      enabled: true
 
   jpa:
     database-platform: org.hibernate.dialect.Oracle10gDialect
@@ -15,5 +25,4 @@ spring:
         show_sql: true
         default_batch_fetch_size: 1000
     database: oracle
-
 

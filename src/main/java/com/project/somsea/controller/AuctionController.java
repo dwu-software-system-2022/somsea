@@ -49,7 +49,7 @@ public class AuctionController {
 		return "redirec:/user/mypage";
 	}
 	
-	@GetMapping("/auction/view}")
+	@GetMapping("/auction/view")
 	public String showAuction(@ModelAttribute AuctionDto.Request auctionDto, Model model) {
 		Nft nft = auctionService.findNft(auctionDto.getNftId());
 //		Collection collection = 
