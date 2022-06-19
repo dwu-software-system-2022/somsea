@@ -1,5 +1,6 @@
 package com.project.somsea.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,5 +35,19 @@ public class Collection {
 
     @OneToMany(mappedBy = "collection", fetch = FetchType.LAZY)
     private List<Part> parts = new ArrayList<>();
+    
+    @OneToOne(mappedBy = "collection", fetch = FetchType.LAZY)
+    @JoinColumn(name = "nft_id")
+	private Nft nft;
+
+    @Builder
+    public Collection(Long id, String name, String url, String logoImgUrl, String description, Nft nft) {
+    	this.id = id;
+    	this.name = name;
+    	this.url = url;
+    	this.logoImgUrl = logoImgUrl;
+    	this.description = description;
+    	this.nft = nft;
+    }
 }
 
