@@ -1,11 +1,9 @@
 package com.project.somsea.dto;
 
 import com.project.somsea.domain.Category;
-import com.project.somsea.domain.Tag;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.util.List;
 
 @Setter
 @Getter

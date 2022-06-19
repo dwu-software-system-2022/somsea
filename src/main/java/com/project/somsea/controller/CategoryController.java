@@ -15,9 +15,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CategoryController {
 	private final CategoryService categoryService;
+	
 	@PostMapping ("/categories")
 	@ResponseBody //데이터 전달
-	
 	//Category 저장 메소드
 	public Long saveCategory (CategoryDto categoryDto) {
         return categoryService.saveCategory(categoryDto);
