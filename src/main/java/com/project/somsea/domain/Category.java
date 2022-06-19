@@ -1,5 +1,6 @@
 package com.project.somsea.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,4 +23,10 @@ public class Category {
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<Tag> tags = new ArrayList<>();
+    
+    @Builder
+	public Category(Long id, String name) {
+		this.id = id;
+		this.name = name;
+	}
 }

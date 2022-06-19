@@ -1,25 +1,28 @@
-//package main.java.com.project.somsea.dto;
-//
-//import com.project.somsea.domain.Category;
-//import com.project.somsea.domain.Tag;
-//import lombok.Builder;
-//import lombok.Getter;
-//import lombok.Setter;
-//import java.util.List;
-//
-//public class CategoryDto {
-//	@Setter
-//    @Getter
-//    @Builder
-//    public static class Request {
-//        private Long category_id;
-//        private String category_name;
-//
-//        public Category toEntity(Tag tag) {
-//            return Category.builder()
-//                    .category_id(category_id)
-//                    .category_name(category_name)
-//                    .build();
-//        }
-//	}
-//}
+package com.project.somsea.dto;
+
+import com.project.somsea.domain.Category;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Setter
+@Getter
+@NoArgsConstructor //파라미터 없는 기본 생성자 생
+public class CategoryDto {
+        private Long id;
+        private String name;
+
+        public CategoryDto (Category entity) {
+            this.id = entity.getId();
+            this.name = entity.getName();
+        }
+        
+        public Category toEntity() {
+            return Category.builder()
+                    .id(id)
+                    .name(name)
+                    .build();
+        }
+       
+	
+}
