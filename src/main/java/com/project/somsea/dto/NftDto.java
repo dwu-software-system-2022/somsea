@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class NftDto {
     public static class Request {
         private Long collectionId;
         private String imageUrl;
+        private MultipartFile imageFile;
         private List<Long> partIds;
 
         public Nft toEntity(User user, Collection collection) {
