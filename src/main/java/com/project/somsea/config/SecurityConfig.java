@@ -36,14 +36,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// TODO Auto-generated method stub
 		http.csrf().disable()
 			.authorizeRequests()
-			.antMatchers("/", "/main", "/user/add").permitAll()
+			.antMatchers("/", "/login", "/main", "/user/add").permitAll()
 //			.antMatchers("/user/**").hasRole("USER")
+			.antMatchers("/static/**").permitAll()
 			.anyRequest()
-			.authenticated()
-			.and()
-			.formLogin()
-			.loginProcessingUrl("/loginProc")
-			.defaultSuccessUrl("/");
+			.authenticated();
+//			.and()
+//			.formLogin()
+//			.loginProcessingUrl("/loginProc")
+//			.defaultSuccessUrl("/");
 	}
 
 //	@Override
