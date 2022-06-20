@@ -1,5 +1,7 @@
 package com.project.somsea.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,4 +37,16 @@ public class UserController {
 		userService.add(userDto);
 		return "redirect:/";
 	}
+	
+	@GetMapping("/user/login")
+	public String login() {
+		return "users/loginForm";
+	}
+	
+//	@GetMapping("/login")
+//	public String loginFrom(HttpServletRequest req) {
+//		String referer = req.getHeader("Referer");
+//		req.getSession().setAttribute("prevPage", referer);
+//		return "login";
+//	}
 }

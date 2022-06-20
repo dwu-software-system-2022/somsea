@@ -2,7 +2,6 @@ package com.project.somsea.service;
 
 import javax.servlet.http.HttpSession;
 
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
@@ -30,5 +29,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 		session.setAttribute("user", new UserSessionDto(user));
 		return new CustomUserDetails(user);
 	}
-
+	
+	
 }
