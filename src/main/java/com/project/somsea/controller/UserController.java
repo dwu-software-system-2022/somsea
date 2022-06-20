@@ -43,7 +43,7 @@ public class UserController {
 	@GetMapping("/user/login")
 	public String login() {
 		return "users/loginForm";
-	
+	}
 //	@GetMapping("/login")
 //	public String loginFrom(HttpServletRequest req) {
 //		String referer = req.getHeader("Referer");
