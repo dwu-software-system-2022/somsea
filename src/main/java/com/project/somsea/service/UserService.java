@@ -19,9 +19,10 @@ public class UserService {
 		return user.getId();
 	}
 	
-	private User validateDuplicateUser(String email) {
-		return userRepository.findByEmail(email)
-				.orElseThrow(() -> new IllegalArgumentException("이미 존재하는 이메일입니다. email : " + email));
+	private void validateDuplicateUser(String email) {
+		if (userRepository.findByEmail(email).isPresent()) {
+			throw new IllegalStateException("이미 가입된 회원입니다.");
+		}
 	}
 	
 	public User findUserById(Long userId) {
