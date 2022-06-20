@@ -21,6 +21,7 @@ public class NftController {
     @GetMapping("/nfts/{nftId}")
     public String showNftDetail(Model model, @PathVariable Long nftId) {
         NftDto.ResponseDetail nftDto = nftService.readDetailNft(nftId);
+        model.addAttribute("nft", nftDto);
         return "nfts/detail";
     }
 
