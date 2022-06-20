@@ -1,5 +1,6 @@
 package com.project.somsea.domain;
 
+import com.project.somsea.util.TokenGenerator;
 import lombok.*;
 
 import javax.persistence.*;
@@ -16,23 +17,20 @@ public class Nft {
     @Column(name = "nft_id")
     private Long id;
 
-    @Column(name = "title")
-    private String title;
-
     @Column(name = "image_url")
     private String imageUrl;
 
     @Column(name = "token")
     private String token;
 
-    @Column(name = "contract_address")
-    private String contractAddress;
-
     @Column(name = "token_standard")
-    private String tokenStandard;
+    @Enumerated(EnumType.STRING)
+    private TokenStandard tokenStandard;
 
     @Column(name = "block_chain")
-    private String blockChain;
+    @Enumerated(EnumType.STRING)
+    private BlockChain blockChain;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "collection_id")
@@ -45,11 +43,26 @@ public class Nft {
     @OneToMany(mappedBy = "nft", fetch = FetchType.LAZY)
     private List<NftInfo> nftInfos = new ArrayList<>();
 
+    public enum BlockChain {
+       ETHEREUM, TRON, KLAYTN
+    }
+
+    public enum TokenStandard{
+        ERC_721, TRC_721, KIP_17
+    }
+
     @Builder
     public Nft(String imageUrl, Collection collection, User user) {
         this.imageUrl = imageUrl;
         this.collection = collection;
         this.user = user;
+        this.blockChain = BlockChain.ETHEREUM;
+        this.tokenStandard = TokenStandard.ERC_721;
+        this.token = TokenGenerator.randomCharacterWithPrefix("nft_token_");
+    }
+
+    public String getTitle(){
+        return collection.getName() + id;
     }
 
 }

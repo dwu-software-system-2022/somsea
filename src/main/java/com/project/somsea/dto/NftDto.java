@@ -60,9 +60,8 @@ public class NftDto {
         private String title;
         private String imageUrl;
         private String token;
-        private String contractAddress;
-        private String tokenStandard;
-        private String blockChain;
+        private Nft.TokenStandard tokenStandard;
+        private Nft.BlockChain blockChain;
         private Long userId;
 
         public static ResponseDetail of(Nft nft) {
@@ -71,7 +70,6 @@ public class NftDto {
                     .title(nft.getTitle())
                     .imageUrl(nft.getImageUrl())
                     .token(nft.getToken())
-                    .contractAddress(nft.getContractAddress())
                     .tokenStandard(nft.getTokenStandard())
                     .blockChain(nft.getBlockChain())
                     .userId(nft.getUser().getId())
