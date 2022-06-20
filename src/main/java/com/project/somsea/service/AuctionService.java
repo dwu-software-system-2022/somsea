@@ -1,11 +1,17 @@
 package com.project.somsea.service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 
 import com.project.somsea.domain.Auction;
@@ -17,6 +23,7 @@ import com.project.somsea.domain.TradeHistory;
 import com.project.somsea.domain.User;
 import com.project.somsea.dto.AuctionDto;
 import com.project.somsea.dto.BiddingDto;
+import com.project.somsea.dto.TradeHistoryDto;
 import com.project.somsea.repository.AuctionRepository;
 import com.project.somsea.repository.BiddingRepository;
 import com.project.somsea.repository.CollectionRepository;
@@ -36,8 +43,10 @@ public class AuctionService {
 	private final BiddingRepository biddingRepository;
 	private final CollectionRepository collectionRepository;
 	private final TradeHistoryRepository tradeHistoryRepository;
+	@Autowired		// SchedulerConfig에 설정된 TaskScheduler 빈을 주입 받음
+	private TaskScheduler scheduler;
 	
-	public void addAuction(AuctionDto.Request auctionDto) {
+	public Long addAuction(AuctionDto.Request auctionDto) {
 //		if (isExistingUser(userId)) { // nft 쪽에서 user 존재하는지 확인하는 코드 있으면 없어도 됨.(nft가 존재하는지만 확인필요)
 //			Nft nft = findNft(auctionDto.getNftId());
 //			Auction auction = auctionDto.toEntity(nft);
@@ -47,14 +56,35 @@ public class AuctionService {
 //		}
 		Nft nft = findNft(auctionDto.getNftId());
 		Auction auction = auctionDto.toEntity(nft);
+		
+		Runnable updateTableRunner = new Runnable() { // anonymous class 정의
+			@Override
+			public void run() {   // 스케쥴러에 의해 미래의 특정 시점에 실행될 작업을 정의
+				String str_curTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+//				LocalDateTime d = LocalDateTime.parse(str_curTime, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+				DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+				LocalDateTime curTime = LocalDateTime.parse(str_curTime, df);
+				String ct = curTime.toString().replace("T", " ");
+				curTime = LocalDateTime.parse(ct, df);
+//				LocalDateTime curTime = d.format(df);
+//				LocalDateTime curTime = LocalDateTime.now();
+				System.out.println("curTime: " + curTime);
+				// 실행 시점의 시각을 전달하여 그 시각 이전의 closing time 값을 갖는 event의 상태를 변경 
+				auctionRepository.closeEvent(curTime);	// Auction 테이블의 레코드 갱신	
+				System.out.println("updateTableRunner is executed at " + curTime);
+			}
+		};
+		System.out.println(auction.getRegisterDate());
 		auctionRepository.save(auction);
-		Long topBid = findTopBid(auction.getId());
-		if (topBid != null) {
-			auction.setTopBid(findTopBid(auction.getId()));
-		} else {
-			topBid = auction.getStartPrice();
-		}
+		
+		Date closingTime = java.sql.Timestamp.valueOf(auctionDto.getDueDate());
+		System.out.println(closingTime);
+		scheduler.schedule(updateTableRunner, closingTime);		
+		System.out.println("updateTableRunner has been scheduled to execute at " + closingTime);
+		
+		return auction.getId();
 	}
+
 	
 //	public boolean isExistingUser(Long userId) {
 //		return userRepository.existsById(userId);
@@ -92,7 +122,10 @@ public class AuctionService {
 	}
 	
 	public List<Bidding> findBiddingList(Auction auction) {
-		return biddingRepository.findByAuction(auction);
+		List<Bidding> bidding = biddingRepository.findByAuction(auction);
+//		if (bidding == null || bidding.isEmpty())
+//			return null;
+		return bidding;
 	}
 	// collection -> click status by radio button => 해당 경매 관련 nft 나옴.
 	// Q. nftid 만 모은 list로 구현할지??? 
@@ -102,6 +135,7 @@ public class AuctionService {
 		for (Nft n : nft) {
 			findNft(n.getId());
 		}
+
 		return auctionRepository.findByStatus(status);
 	}
 	
@@ -116,20 +150,49 @@ public class AuctionService {
 	}
 	
 	/* bidding */
-	public void addBidding(BiddingDto.Request biddingDto) {
+	public Long addBidding(BiddingDto.Request biddingDto) {
 		Auction auction = findAuction(biddingDto.getAuctionId());
 		User user = findUser(biddingDto.getUserId());
 		Bidding bidding = biddingDto.toEntity(user, auction);
-		biddingRepository.save(bidding);
-		bidding.setFloorBid(findFloorBid(biddingDto.getAuctionId()));
-		double floorDif = FloorDifference(bidding.getId());
-		if (floorDif < 100) {
-			bidding.setFloorDifference(floorDif + "below");
-		} else if (floorDif > 100) {
-			bidding.setFloorDifference(floorDif + "above");
+		Long floorBid = findFloorBid(biddingDto.getAuctionId());
+		bidding.setFloorBid(floorBid);
+		if (floorBid == null) {
+			bidding.setFloorDifference(null);
 		} else {
-			bidding.setFloorDifference(floorDif + "same");
+			if (floorBid > bidding.getPrice()) {
+				bidding.setFloorBid(floorBid);
+			}
+			double floorDif = floorDifference(bidding.getPrice(), bidding.getFloorBid());
+			if (floorDif < 100) {
+				bidding.setFloorDifference(floorDif + "% below");
+			} else if (floorDif > 100) {
+				bidding.setFloorDifference(floorDif + "% above");
+			} else {
+				bidding.setFloorDifference("same");
+			}
 		}
+		bidding.setExpiration(calExpiration(bidding.getTime(), auction.getDueDate()));
+//		bidding.setExpiration(calExpiration(auction.getDueDate(), bidding.getTime()));
+		biddingRepository.save(bidding);
+		
+		biddingRepository.updateBiddingByFloorBid(floorBid, bidding.getAuction().getId());
+		
+		List<Bidding> list = biddingRepository.findByAuction(auction);
+		for (int i = 0; i < list.size(); i++) {
+			double dif = floorDifference(list.get(i).getPrice(), list.get(i).getFloorBid());
+			if (dif < 100) {
+				list.get(i).setFloorDifference(dif + "% below");
+			} else if (dif > 100) {
+				list.get(i).setFloorDifference(dif + "% above");
+			} else {
+				list.get(i).setFloorDifference("same");
+			}
+			biddingRepository.updateBiddingByFloorDif(list.get(i).getFloorDifference(), list.get(i).getId());
+		}
+		
+		Long topBid = findTopBid(auction.getId());
+		auctionRepository.updateAuction(topBid, auction.getId());
+		return bidding.getId();
 	}
 	
 	public void deleteBidding(Long biddingId, Long auctionId) {
@@ -140,36 +203,75 @@ public class AuctionService {
 	
 	public Long findTopBid(Long auctionId) {
 		Auction auction = findAuction(auctionId);
-		List<Bidding> biddingList = findBiddingList(auction);
-		Collections.sort(biddingList, Collections.reverseOrder());
-		return biddingList.get(0).getPrice();
+//		List<Bidding> biddingList = findBiddingList(auction);
+////		if (biddingList.size() > 0) {
+//			Collections.sort(biddingList, Collections.reverseOrder());
+//			return biddingList.get(0).getPrice();
+////		}
+//		else {
+////			System.out.println("biddingList : null");
+//			return null;
+//		}
+//		Collections.sort(biddingList, Collections.reverseOrder());
+//		if (biddingList.size() > 0) return biddingList.get(0).getPrice();
+//		else return null;
+		Bidding bidding = biddingRepository.findFirstByAuctionOrderByPriceDesc(auction);
+		if (bidding != null) return bidding.getPrice();
+		else return null;
+	}
+	
+	public Long findBiddingIdByTopBid(Long auctionId) {
+		Auction auction = findAuction(auctionId);
+//		List<Bidding> biddingList = findBiddingList(auction);
+//		Collections.sort(biddingList, Collections.reverseOrder());
+//		return biddingList.get(0).getId();
+		Bidding bidding = biddingRepository.findFirstByAuctionOrderByPriceDesc(auction);
+		if (bidding != null) return bidding.getId();
+		else return null;
 	}
 	
 	public Long findFloorBid(Long auctionId) {
 		Auction auction = findAuction(auctionId);
-		List<Bidding> biddingList = findBiddingList(auction);
-		Collections.sort(biddingList);
-		return biddingList.get(0).getPrice();
+//		List<Bidding> biddingList = findBiddingList(auction);
+//		Collections.sort(biddingList);
+//		if (biddingList.size() > 0) 
+//			return biddingList.get(0).getPrice();
+//		else return null;
+		Bidding bidding = biddingRepository.findFirstByAuctionOrderByPriceAsc(auction);
+		if (bidding != null) return bidding.getPrice();
+		return null;
 	}
 	
-	public double FloorDifference(Long biddingId) { // 바닥가 대비 입찰가와의 차이
-		Bidding bidding = findBidding(biddingId);
-		Long floorBid = findFloorBid(bidding.getAuction().getId());
+	public double floorDifference(Long price, Long floorBid) { // 바닥가 대비 입찰가와의 차이
+//		Bidding bidding = findBidding(biddingId);
+//		Long floorBid = findFloorBid(bidding.getAuction().getId());
 		double differencePercent = 0;
-		differencePercent = Math.round(((((double)bidding.getPrice() / floorBid) * 100) * 100) / 100);
+		differencePercent = Math.round(((((double)price / floorBid) * 100) * 100) / 100);
 //		String.format("%.2f", ((double)bidding.getPrice() / floorBid) * 100);
 		return differencePercent;
  	}
 	
-//	public int calExpiration(Long biddingId) {
+	public int calExpiration(LocalDateTime time, LocalDateTime due) {
 //		Bidding bidding = findBidding(biddingId);
-//		LocalDateTime time = bidding.getTime();
-//		if ()
-//	}
+		long hours = ChronoUnit.HOURS.between(time, due);
+		if (hours <= 24) {
+//			return "about " + hours + " hours"; // return type String
+			return Long.valueOf(hours).intValue();
+		} else {
+			long days = ChronoUnit.DAYS.between(time, due);
+//			return "about " + days + " days";
+			return Long.valueOf(days).intValue();
+		}
+	}
 	
 	/* tradeHistory */
-	public void addTradeHistory() {
+	public Long addTradeHistory(TradeHistoryDto.Request tradeDto) {
+		User user = findUser(tradeDto.getUserId());
+		Auction auction = findAuction(tradeDto.getUserId());
+		TradeHistory tradeHistory = tradeDto.toEntity(user, auction);
+		tradeHistoryRepository.save(tradeHistory);
 		
+		return tradeHistory.getId();
 	}
 	
 	public void deleteTradeHistory(Long tradeId) {

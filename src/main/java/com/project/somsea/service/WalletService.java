@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WalletService {
 	private final WalletRepository walletRepository;
-	
+	private final UserRepository userRepository;
 	
 	private Wallet findWallet(Long walletId) {
 		return walletRepository.findById(walletId)
@@ -31,9 +31,26 @@ public class WalletService {
 //		return wallet.getId();
 	}
 	
-	public void delete(Long walletId) {
+	public void delete(Long walletId) { 
 		Wallet wallet = findWallet(walletId);
 		walletRepository.delete(wallet);
 	}
-
+	
+	public User findUser(Long userId) {
+		return userRepository.findById(userId)
+				.orElseThrow(() -> new IllegalArgumentException("User id가 없습니다. userId : " + userId));
+	}
+	
+	public void updateBalance(Long price, Long userId) {
+		User user = findUser(userId);
+		Wallet wallet = walletRepository.findByUser(user);
+		Long balance = wallet.getBalance();
+		Long dif = balance - price;
+		
+		if (dif < 0) {
+			throw new IllegalArgumentException("잔고가 부족합니다.");
+		} else {
+			walletRepository.updateBalanceByuserId(dif, userId);
+		}
+	}
 }

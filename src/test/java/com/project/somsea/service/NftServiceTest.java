@@ -160,7 +160,6 @@ class NftServiceTest {
         assertThat(nftDetail.getTitle()).isEqualTo(nft.getTitle());
         assertThat(nftDetail.getImageUrl()).isEqualTo(nft.getImageUrl());
         assertThat(nftDetail.getToken()).isEqualTo(nft.getToken());
-        assertThat(nftDetail.getContractAddress()).isEqualTo(nft.getContractAddress());
         assertThat(nftDetail.getTokenStandard()).isEqualTo(nft.getTokenStandard());
         assertThat(nftDetail.getBlockChain()).isEqualTo(nft.getBlockChain());
         assertThat(nftDetail.getUserId()).isEqualTo(nft.getUser().getId());
@@ -170,12 +169,15 @@ class NftServiceTest {
     @DisplayName("파츠로 Nft 조회")
     void testReadNftByParts() {
         //given : NFT - Part 랑 연결된 케이스, 연결 안된 케이스
+        Collection collection = new Collection();
+        collectionRepository.saveAndFlush(collection);
+
         User user = new User();
         userRepository.saveAndFlush(user);
 
-        Nft nft1 = Nft.builder().user(user).build();
-        Nft nft2 = Nft.builder().user(user).build();
-        Nft nft3 = Nft.builder().user(user).build();
+        Nft nft1 = Nft.builder().user(user).collection(collection).build();
+        Nft nft2 = Nft.builder().user(user).collection(collection).build();
+        Nft nft3 = Nft.builder().user(user).collection(collection).build();
         nftRepository.saveAllAndFlush(List.of(nft1, nft2, nft3));
 
         Part part1 = new Part();

@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -24,9 +26,11 @@ public class Auction {
 	private Long startPrice;
 
 	@Column(name = "due_date")
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
 	private LocalDateTime dueDate;
 
 	@Column(name = "register_date")//등록날짜
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
 	private LocalDateTime registerDate;
 
 	@Enumerated(EnumType.STRING)
@@ -37,7 +41,6 @@ public class Auction {
 	@OneToOne(fetch = FetchType.LAZY) 
 	private Nft nft;
 	
-	@Transient
 	private Long topBid;
 
 	public enum Status {
@@ -46,11 +49,12 @@ public class Auction {
 	
 	@Builder
     public Auction(Nft nft, Long startPrice, LocalDateTime registerDate, LocalDateTime dueDate,
-    		Status status) {
+    		Status status, Long topBid) {
         this.nft = nft;
         this.startPrice = startPrice;
         this.registerDate = registerDate;
         this.dueDate = dueDate;
         this.status = status;
+        this.topBid = topBid;
     }
 }
