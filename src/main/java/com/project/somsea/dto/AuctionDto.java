@@ -22,6 +22,7 @@ public class AuctionDto {
 	    private LocalDateTime registerDate;
 	    private LocalDateTime dueDate;
 	    private Status status;
+	    private Long topBid;
 	    
 	    
 	    public Auction toEntity(Nft nft) {
@@ -31,6 +32,7 @@ public class AuctionDto {
 	    			.registerDate(registerDate)
 	    			.dueDate(dueDate)
 	    			.status(status)
+	    			.topBid(topBid)
 	    			.build();
 	    }
 		
