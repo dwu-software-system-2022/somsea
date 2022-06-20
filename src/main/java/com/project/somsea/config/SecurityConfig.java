@@ -40,8 +40,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //			.antMatchers("/user/**").hasRole("USER")
 			.antMatchers("/static/**").permitAll()
 			.anyRequest()
-			.authenticated();
-//			.and()
+			.authenticated()
+			.and()
+			.logout()
+			.logoutSuccessUrl("/");
 //			.formLogin()
 //			.loginProcessingUrl("/loginProc")
 //			.defaultSuccessUrl("/");

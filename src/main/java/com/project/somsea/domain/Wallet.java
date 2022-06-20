@@ -25,7 +25,8 @@ public class Wallet {
 
 	
 	@Builder
-	public Wallet(Long balance) {
+	public Wallet(User user, Long balance) {
+		this.user = user;
 		this.balance = balance;
 	}
 }

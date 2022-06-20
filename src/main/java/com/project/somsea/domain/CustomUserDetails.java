@@ -21,44 +21,44 @@ public class CustomUserDetails implements UserDetails {
 		this.name = user.getName();
 		this.password = user.getPassword();
 		this.email = user.getEmail();
-		this.authority = "true";
+		this.authority = "ROLE_USER";
 	}
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
 		ArrayList<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
 		auth.add(new SimpleGrantedAuthority(authority));
 		return auth;
 	}
+	
 	@Override
 	public String getPassword() {
-		// TODO Auto-generated method stub
 		return password;
 	}
+	
+	/* 
+	 * 고유한 값 return
+	 */
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
-		return name;
+		return email;
 	}
+	
 	@Override
 	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
 		return true;
 	}
+	
 	@Override
 	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 	@Override
 	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 	

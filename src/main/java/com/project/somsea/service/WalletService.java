@@ -4,8 +4,8 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import com.project.somsea.domain.User;
 import com.project.somsea.domain.Wallet;
-import com.project.somsea.dto.WalletDto;
 import com.project.somsea.repository.WalletRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -22,14 +22,18 @@ public class WalletService {
 				.orElseThrow(() -> new IllegalArgumentException("Wallet Id 값이 없습니다. WalletId: " + walletId));
 	}
 	
-	public Long add(WalletDto.Request walletDto) {
-		Wallet wallet = walletDto.toEntity(Integer.toUnsignedLong(10));
+	public void add(User user) {
+		Wallet wallet = Wallet.builder()
+						.balance(Integer.toUnsignedLong(10))
+						.user(user)
+						.build();
 		walletRepository.save(wallet);
-		return wallet.getId();
+//		return wallet.getId();
 	}
 	
 	public void delete(Long walletId) {
 		Wallet wallet = findWallet(walletId);
 		walletRepository.delete(wallet);
 	}
+
 }

@@ -1,6 +1,6 @@
 package com.project.somsea.dto;
 
-import com.project.somsea.domain.Wallet;
+import com.project.somsea.domain.User;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -13,11 +13,10 @@ public class WalletDto {
 	public static class Request {
 		private Long walletId;
 		private Long balance;
+		private User user;
 		
-		public Wallet toEntity(Long balance) {
-			return Wallet.builder()
-					.balance(balance)
-					.build();
-		}
+		public static Request newInstance() {
+            return Request.builder().build();
+        }
 	}
 }
