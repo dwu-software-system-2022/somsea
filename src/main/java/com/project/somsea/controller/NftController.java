@@ -8,12 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionStatus;
 
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @Slf4j
 @Controller
@@ -23,11 +19,8 @@ public class NftController {
     private final NftService nftService;
 
     @GetMapping("/nfts/{nftId}")
-    public String showNftDetail(Model model, @PathVariable Long nftId, HttpServletRequest request) {
+    public String showNftDetail(Model model, @PathVariable Long nftId) {
         NftDto.ResponseDetail nftDto = nftService.readDetailNft(nftId);
-//        HttpSession session = request.getSession();
-//        session.setAttribute("nftId", nftId);
-        model.addAttribute("nft", nftDto);
         return "nfts/detail";
     }
 
@@ -43,7 +36,7 @@ public class NftController {
     }
 
     @PostMapping("/collections/{collectionId}/nfts/form")
-    public String addNft(@ModelAttribute("requestDto") NftDto.Request requestDto, HttpServletRequest request) {
+    public String addNft(@ModelAttribute("requestDto") NftDto.Request requestDto) {
         Long userId = 1L;
         Long nftId = nftService.add(userId, requestDto);
        
