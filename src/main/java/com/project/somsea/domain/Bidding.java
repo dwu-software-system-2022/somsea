@@ -6,6 +6,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.lang.Nullable;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -23,6 +27,7 @@ public class Bidding implements Comparable<Bidding>{
 	private Long price;
 
 	@Column(name = "time")
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
 	private LocalDateTime time;
 
 	@JoinColumn(name = "user_id")
@@ -33,11 +38,11 @@ public class Bidding implements Comparable<Bidding>{
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Auction auction;
 	
-	@Transient
+//	@Transient
 	private String floorDifference; 
-	@Transient
+	@Nullable
 	private int expiration;
-	@Transient
+//	@Transient
 	private Long FloorBid;
 	
 	@Builder

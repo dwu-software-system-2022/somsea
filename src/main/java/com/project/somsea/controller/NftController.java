@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 
 import java.util.List;
 
@@ -22,8 +23,10 @@ public class NftController {
     private final NftService nftService;
 
     @GetMapping("/nfts/{nftId}")
-    public String showNftDetail(Model model, @PathVariable Long nftId) {
+    public String showNftDetail(Model model, @PathVariable Long nftId, HttpServletRequest request) {
         NftDto.ResponseDetail nftDto = nftService.readDetailNft(nftId);
+//        HttpSession session = request.getSession();
+//        session.setAttribute("nftId", nftId);
         model.addAttribute("nft", nftDto);
         return "nfts/detail";
     }
@@ -43,8 +46,7 @@ public class NftController {
     public String addNft(@ModelAttribute("requestDto") NftDto.Request requestDto, HttpServletRequest request) {
         Long userId = 1L;
         Long nftId = nftService.add(userId, requestDto);
-        HttpSession session = request.getSession();
-        session.setAttribute("nftId", nftId);
+       
         // TODO: NFT 추가 완료 후에 이동할 페이지 변경 필요
         return "redirect:/nfts/" + nftId;
     }

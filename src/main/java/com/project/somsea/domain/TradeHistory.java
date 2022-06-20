@@ -1,7 +1,12 @@
 package com.project.somsea.domain;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.*;
 
+import com.project.somsea.domain.Auction.Status;
+
+import lombok.Builder;
 import lombok.Getter;
 
 @Entity
@@ -28,7 +33,15 @@ public class TradeHistory {
     @Column(name = "amount")
     private Long amount;
 
-    enum Status {
+    public enum Status {
         BID_SUCCESS, BID_FAIL
+    }
+    
+    @Builder
+    public TradeHistory(User user, Auction auction, Long amount, Status status) {
+        this.user = user;
+        this.auction = auction;
+        this.amount = amount;
+        this.status = status;
     }
 }

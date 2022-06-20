@@ -1,6 +1,7 @@
 package com.project.somsea.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@SessionAttributes("userDto")
 public class UserController {
 //	private final UserService userService;
 	
@@ -37,9 +37,11 @@ public class UserController {
 	
 	@PostMapping("/user/add")
 	@ResponseBody
-	public String addUser(@RequestBody String body, @ModelAttribute("userDto") UserDto.Request userDto) {
+	public String addUser(@RequestBody String body, HttpServletRequest request) {
 //		Long userId = userService.add(userId, requestDto);
 //		userDto.setUserId(userId); 
+		HttpSession session = request.getSession();
+//		session.setAttribute("userId", userId); // delete하면 session 종료해야 됨.
 		System.out.println(body);
 		return body;
 	}
