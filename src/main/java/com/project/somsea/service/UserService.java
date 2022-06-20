@@ -1,6 +1,9 @@
 package com.project.somsea.service;
 
 import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.project.somsea.domain.User;
 import com.project.somsea.dto.UserDto;
@@ -13,14 +16,19 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService {
 	
+	
 	private final UserRepository userRepository;
 	private final WalletService walletService;
+	@Autowired
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	public Long add(UserDto.Request userDto) {
 		// wallet 먼저 생성
+		String encodePwd = bCryptPasswordEncoder.encode(userDto.getPassword());
+		userDto.setPassword(encodePwd);
 		User user = userDto.toEntity();
-		
 		// email 중복 발생시 예외처리 하는 부분 필요
+		
 		validateDuplicateUser(user.getEmail());
 		userRepository.save(user);
 		walletService.add(user);
