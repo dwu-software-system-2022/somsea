@@ -2,6 +2,7 @@ package com.project.somsea.domain;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @Table(name = "wallet")
 public class Wallet {
 
@@ -22,10 +24,10 @@ public class Wallet {
 	@JoinColumn(name = "user_id")
  	@OneToOne(fetch = FetchType.LAZY)
  	private User user;
-
 	
 	@Builder
-	public Wallet(Long balance) {
+	public Wallet(User user, Long balance) {
+		this.user = user;
 		this.balance = balance;
 	}
 }

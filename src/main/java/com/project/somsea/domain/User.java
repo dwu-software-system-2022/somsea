@@ -35,7 +35,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<TradeHistory> tradeHistories = new ArrayList<>();
-    
+      
     @Builder
     public User(String name, String email, String password,  Wallet wallet) {
     	this.name = name;

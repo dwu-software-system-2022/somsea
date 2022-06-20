@@ -1,9 +1,14 @@
 package com.project.somsea.service;
 
 import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.project.somsea.domain.User;
+import com.project.somsea.dto.UserDto;
 import com.project.somsea.repository.UserRepository;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -11,17 +16,29 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService {
 	
-	private final UserRepository userRepository;
 	
-	public Long add(User user) {
+	private final UserRepository userRepository;
+	private final WalletService walletService;
+	@Autowired
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	public Long add(UserDto.Request userDto) {
+		// wallet 먼저 생성
+		String encodePwd = bCryptPasswordEncoder.encode(userDto.getPassword());
+		userDto.setPassword(encodePwd);
+		User user = userDto.toEntity();
+		// email 중복 발생시 예외처리 하는 부분 필요
+		
 		validateDuplicateUser(user.getEmail());
 		userRepository.save(user);
+		walletService.add(user);
 		return user.getId();
 	}
 	
-	private User validateDuplicateUser(String email) {
-		return userRepository.findByEmail(email)
-				.orElseThrow(() -> new IllegalArgumentException("이미 존재하는 이메일입니다. email : " + email));
+	private void validateDuplicateUser(String email) {
+		if (userRepository.findByEmail(email).isPresent()) {
+			throw new IllegalStateException("이미 존재하는 이메일입니다.");
+		}
 	}
 	
 	public User findUserById(Long userId) {
