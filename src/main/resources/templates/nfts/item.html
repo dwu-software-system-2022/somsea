@@ -15,14 +15,14 @@
     <link rel="stylesheet" th:href="@{/static/css/style.css}">
     <script type="text/Javascript">
     	function popup1() {
-    		document.domain = "127.0.0.1"; //document.domain 값이 팝업과 부모창 동일해야 합니다
-    		window.open("/templates/nfts/winBidding.html", "popup1", "width = 500px height = 200px left = 0px top = 0px");
+    		/* document.domain = "127.0.0.1";  *///document.domain 값이 팝업과 부모창 동일해야 합니다
+    		window.open("/nfts/popup2", "popup1", "width = 500px height = 200px left = 0px top = 0px");
     	}
     	
     	function popup2() {
-    		/* document.domain = "127.0.0.2";  *///document.domain 값이 팝업과 부모창 동일해야 합니다
-    		window.open("/templates/nfts/biddingForm.html", "popup2", "width = 500px height = 200px left = 0px top = 0px");
-    		
+    		/* document.domain = "127.0.0.2"; */  //document.domain 값이 팝업과 부모창 동일해야 합니다
+    		window.open("/nfts/popup2", "popup2", "width = 500px height = 200px left = 0px top = 0px");
+    		window.close();
     		 /* alert("왜 안돼!!"); */
     	}
     </script>
@@ -147,24 +147,28 @@
                                         <div class="d-flex justify-content-between mt-4 mb-4">
                                             <div class="text-start">
                                                 <h4 class="mb-2">Auction ends</h4>
-                                                <h5 class="text-muted" th:text="${auction.dueDate}">dudDate</h5>
+                                                <h5 class="text-muted" th:if="${auction}" th:text="${auction.dueDate}">dudDate</h5>
                                             </div>
                                             <div class="text-end">
-                                                <h4 class="mb-2">Top Bid : <strong class="text-primary" th:text="${auction.topBid}">topBid</strong></h4>
+                                                <h4 class="mb-2">Top Bid : <strong class="text-primary" th:if="${auction}" th:text="${auction.topBid}">topBid</strong></h4>
                                            
                                             </div>
                                         </div>
                                         <!-- <div class="d-flex"><a href="" class="btn btn-primary">Place a Bid</a></div> -->
-                                        <div th:if="${auction.status} == 'COMPLETED' and ${userId} == ${topBid.user.id}">
-	                                        <form action="#">
+                                        <div th:if="${auction.status.toString().equals('COMPLETED')} and ${userId} == ${topBid.user.id}">
+                           
+	                                        <!-- <form action="#"> -->
 		                                        <label>
 		                                        	<input type="button" value="buy now" onClick="popup1()">
 		                                        </label>	
-                                       		</form>
+                                       		<!-- </form>  -->
                                        	</div>
-                                       	<div th:unless="${auction.status} == 'COMPLETED' and ${session.userId} == ${topBid.user.id}">
+                                       	<div th:unless="${auction.status.toString().equals('COMPLETED')} and ${userId} == ${topBid.user.id}">
                                        		 <!-- <form action="#" th:action="@{/nfts/{nftId}(nftId=${nft.nftId})}"> -->
-		                                        <label>
+		                                        <label th:if="${auction.status.toString().equals('COMPLETED')} and ${userId} != ${topBid.user.id}">
+		                                        	<input type="button" value="Place a bid" disabled='disabled'>
+		                                        </label>
+		                                        <label th:unless="${auction.status.toString().equals('COMPLETED')} and ${userId} != ${topBid.user.id}">
 		                                        	<input type="button" value="Place a bid" onClick="popup2()">
 		                                        </label>	
                                        		<!-- </form> -->

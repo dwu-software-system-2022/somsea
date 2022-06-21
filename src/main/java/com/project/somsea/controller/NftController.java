@@ -46,6 +46,7 @@ public class NftController {
         NftDto.ResponseDetail nftDto = nftService.readDetailNft(nftId);
         Auction auction = auctionService.findByNft(nftId);
         List<Bidding> bidding = auctionService.findBiddingList(auction);
+    
         Long topBidddingId = auctionService.findBiddingIdByTopBid(auction.getId());
         Bidding topBidding = auctionService.findBidding(topBidddingId);
         List<TradeHistory> tradeHistory = auctionService.findByAuction(auction.getId());
@@ -64,7 +65,7 @@ public class NftController {
     public String addNftForm(Model model, @PathVariable Long collectionId) {
         NftDto.Request nftDto = NftDto.Request.newInstance();
         List<PartDto.Response> parts = nftService.getPartsByCollectionId(collectionId);
-   
+        
         model.addAttribute("nft", nftDto);
         model.addAttribute("parts", parts);
 
@@ -82,10 +83,13 @@ public class NftController {
 
     @PostMapping("/collections/{collectionId}/nfts/form")
     public String addNft(@ModelAttribute("requestDto") NftDto.Request requestDto
-    		, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    		, @AuthenticationPrincipal CustomUserDetails userDetails) throws IOException {
         Long userId = userDetails.getUserId();
-        Long nftId = nftService.add(userId, requestDto);
 
+		String imageUrl = imageUploader.upload(requestDto.getImageFile());
+		requestDto.setImageUrl(imageUrl);
+
+        Long nftId = nftService.add(userId, requestDto);
         // TODO: NFT 추가 완료 후에 이동할 페이지 변경 필요
         return "redirect:/nfts/" + nftId;
     }
@@ -100,12 +104,12 @@ public class NftController {
     
     @RequestMapping("/nfts/bidding/add")
 	public String addBidding(@ModelAttribute("biddingDto")BiddingDto.Request requestDto, 
-			@SessionAttribute("userId") Long userId) {
+			@AuthenticationPrincipal CustomUserDetails userDetails) {
     	String str_curTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 		DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		
 		requestDto.setTime(LocalDateTime.parse(str_curTime, df));
-    	requestDto.setUserId(userId);
+    	requestDto.setUserId(1L); //userDetails.getUserID()
 		requestDto.setTime(LocalDateTime.now());
 		Long biddingId = auctionService.addBidding(requestDto);
 		requestDto.setBiddingId(biddingId);
@@ -115,27 +119,27 @@ public class NftController {
 		Auction auction = auctionService.findByNft(nftId);
 		requestDto.setAuctionId(auction.getId());
 		
-		trade.setAuctionId(auction.getId());
-		trade.setUserId(userId);
+		trade.setAuctionId(auction.getId()); //userDetails.getUserID()
+		trade.setUserId(1L);
 //		trade.setStatus(TradeHistory.Status.BID_FAIL);
 		
 //		Long topBid = auctionService.findTopBid(auction.getId());
 		trade.setAmount(requestDto.getPrice());
 		
 		auctionService.addTradeHistory(trade);
-		return "nfts/dtatil";
+		return "redirect:/nfts/" + nftId;
 	}
     
     @RequestMapping("/nfts/bidding/win")
 	public String winBidding(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
-		User user = auctionService.findUser(userDetails.getUserId());
+		User user = auctionService.findUser(628L); //userDetails.getUserId()
 		Auction auction = auctionService.findByNft(nftId);
 		Long biddingid = auctionService.findBiddingIdByTopBid(auction.getId());
 		Bidding bidding = auctionService.findBidding(biddingid);
 		//update문 써야 됨. user_id 바꿔야 됨. nft의 
-		nftService.updateUserIdOfNft(userDetails.getUserId(), nftId);
+		nftService.updateUserIdOfNft(628L, nftId); //userDetails.getUserId(), nftId
 		// wallet balance도 바꿔야 됨. balance가 입찰가보다 낮으면 충전하세요!.
-		walletService.updateBalance(bidding.getPrice(), userDetails.getUserId());
+		walletService.updateBalance(bidding.getPrice(), 628L);
 		model.addAttribute("bidding", bidding);
 		model.addAttribute("user", user);
 		return "auction/result"; // or /users/mypage
@@ -147,12 +151,17 @@ public class NftController {
 		List<Bidding> bidding = auctionService.findBiddingList(auction);
 		Long biddingId = null;
 		for (int i = 0; i < bidding.size(); i++) {
-			if (userDetails.getUserId() == bidding.get(i).getUser().getId()) {
+			if (1L == bidding.get(i).getUser().getId()) { //userDetails.getUserId
 				biddingId = bidding.get(i).getId();
 				break;
 			}
 		}
 		auctionService.deleteBidding(biddingId, auction.getId());
-		return "redirect:/nfts/detail";
+		return "redirect:/nfts/" + nftId;
+	}
+	
+	@GetMapping("/nfts/popup2")
+	public String popup2() {
+		return "nfts/biddingForm";
 	}
 }
