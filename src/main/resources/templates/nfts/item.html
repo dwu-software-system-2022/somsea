@@ -109,7 +109,7 @@
                                         <div class="d-flex align-items-center mb-3"><img src="./images/avatar/1.jpg"
                                                 alt="" class="me-3 avatar-img">
                                             <div class="flex-grow-1">
-                                                <h5 class="mb-0">${nft.id}<span class="circle bg-success"></span>
+                                                <h5 class="mb-0">${nft.nftId}<span class="circle bg-success"></span>
                                                 </h5>
                                             </div>
                                         </div>
@@ -132,7 +132,7 @@
                                        		</form>
                                        	</div>
                                        	<div th:unless="${auction.status} == 'COMPLETED' and ${session.userId} == ${topBid.user.id}">
-                                       		 <form action="#" th:action="@{/nfts/{nftId}(nftId=${nft.id})}">
+                                       		 <form action="#" th:action="@{/nfts/{nftId}(nftId=${nft.nftId})}">
 		                                        <label>
 		                                        	<input type="button" value="Place a bid" onclick="popup2();">
 		                                        </label>	
