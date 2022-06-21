@@ -36,7 +36,9 @@ public class UserController {
 	}
 	
 	@GetMapping("/user/add")
-	public String addUserForm(Model model) {
+	public String addUserForm(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
+		if (userDetails != null)
+			return "redirect:/";
 		model.addAttribute("user", UserDto.Request.newInstance());
 		return "users/form";
 	}
@@ -56,21 +58,12 @@ public class UserController {
 	
 	@GetMapping("/user/profile")
 	public String profile(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
-		//nft 정보랑
-		//username 불러오기
-		User user = userService.findUserById(userDetails.getUserId());
-		List<Nft> nfts = nftService.readNftsByUserId(user.getId());
-		model.addAttribute("user", user);
+		List<Nft> nfts = nftService.readNftsByUserId(userDetails.getUserId());
+		model.addAttribute("user", userDetails);
 		model.addAttribute("nfts", nfts);
 		System.out.println("사용자 정보 : " + userDetails.getName());
         System.out.println("사용자 이메일 : " + userDetails.getEmail());
 		return "users/profile";
 	}
-	
-//	@GetMapping("/login")
-//	public String loginFrom(HttpServletRequest req) {
-//		String referer = req.getHeader("Referer");
-//		req.getSession().setAttribute("prevPage", referer);
-//		return "login";
-//	}
+
 }
