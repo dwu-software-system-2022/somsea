@@ -1,4 +1,4 @@
-package com.project.somsea.domain;
+package com.project.somsea.users;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,17 +7,21 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.project.somsea.domain.User;
+
 import lombok.Getter;
 
 @Getter
 @SuppressWarnings("serial")
 public class CustomUserDetails implements UserDetails {
+	private Long userId;
 	private String name;
 	private String password;
 	private String email;
 	private String authority;
 	
 	public CustomUserDetails(User user) {
+		this.userId = user.getId();
 		this.name = user.getName();
 		this.password = user.getPassword();
 		this.email = user.getEmail();

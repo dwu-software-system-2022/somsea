@@ -22,4 +22,7 @@ public interface NftRepository extends JpaRepository<Nft, Long> {
 	@Modifying
 	@Query("update Nft set user_id = ?1 where id = ?2")
 	public void updateUserIdOfNft(Long userId, Long id);
+    
+//    @Query("SELECT * FROM nft WHERE user_id = ?")
+    List<Nft> findAllByUserId(Long userId);    
 }
