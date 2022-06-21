@@ -89,7 +89,6 @@ public class NftController {
 		requestDto.setImageUrl(imageUrl);
 
         Long nftId = nftService.add(userId, requestDto);
-
         // TODO: NFT 추가 완료 후에 이동할 페이지 변경 필요
         return "redirect:/nfts/" + nftId;
     }
