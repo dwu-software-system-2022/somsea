@@ -26,4 +26,8 @@ public interface BiddingRepository extends JpaRepository<Bidding, Long> {
 	@Modifying
 	@Query("update Bidding set floor_difference = ?1 where id = ?2")
 	public void updateBiddingByFloorDif(String floorDif, Long id);
+	@Transactional
+	@Modifying
+	@Query("update Bidding set expiration = ?1 where id = ?2")
+	public void updateBiddingByExpiration(int expiration, Long id);
 }

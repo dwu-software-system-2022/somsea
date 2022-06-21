@@ -15,7 +15,7 @@ import com.project.somsea.domain.Auction.Status;
 import com.project.somsea.domain.Nft;
 
 public interface AuctionRepository extends JpaRepository<Auction, Long> {
-	public List<Auction> findByStatus(Status status);
+	public Auction findByStatusAndNftId(Status status, Long nftId);
 	public Auction findByNft(Nft nft);
 	@Transactional
 	@Modifying

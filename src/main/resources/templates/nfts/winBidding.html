@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>NFT 경매 낙찰</title>
+<script type = "text/javascript">
+
+	var f= document.forms.popupForm1;
+    document.domain = "127.0.0.1"; //document.domain 값이 팝업과 부모창 동일해야 합니다.
+    opener.name = "parentPag1"; //유니크한 이름이어야 합니다.
+    f.target = opener.name;
+    f.submit();
+    self.close();
+      /* function ppp() {
+        opener.document.fm.addr1.value = document.getElementById('price').value;
+        window.close();
+      } */
+    </script>
+</head>
+<body>
+	<h3>낙찰</h3>
+    <p>Top Bid</p>
+    <form th:action = "@{/nfts/bidding/win}" name = "popupForm1" method = "post">
+      <span th:text"${topBid}">BID</span>
+      <input style="WIDTH: 60px; HEIGHT: 60px" type = "button" value = "확인"/>
+    </form> 
+</body>
+</html>

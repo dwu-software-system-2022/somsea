@@ -2,6 +2,8 @@ package com.project.somsea.dto;
 
 import java.time.LocalDateTime;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.project.somsea.domain.Bidding;
 import com.project.somsea.domain.Auction;
 import com.project.somsea.domain.User;
@@ -17,6 +19,7 @@ public class BiddingDto {
 	public static class Request {
 		private Long biddingId;
 		private Long price;
+		@DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
 		private LocalDateTime time;
 		private Long userId;
 		private Long auctionId;
