@@ -1,6 +1,5 @@
 package com.project.somsea.service;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -10,13 +9,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.test.annotation.Rollback;
 
 import com.project.somsea.domain.*;
 import com.project.somsea.domain.Auction.Status;
 import com.project.somsea.dto.AuctionDto;
 import com.project.somsea.dto.BiddingDto;
+import com.project.somsea.dto.TradeHistoryDto;
 
 @Transactional
 @SpringBootTest
@@ -25,35 +24,28 @@ public class AuctionServiceTest {
 	@Autowired
 	private AuctionService auctionService;
 	
-	@Test
-	@Rollback(false)
-	@DisplayName("Auction 추가")
-	void testAddAuction() {
-		LocalDateTime time = LocalDateTime.now();
-		String str_curTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-		DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		
-		String d_date = "2022-06-20 12:07";
-		String[] localtime = d_date.split(" ");
-		String[] ymd = localtime[0].split("-");
-		String[] hm = localtime[1].split(":");
-		
-		LocalDateTime due = LocalDateTime.parse(d_date, df);
-		
-		AuctionDto.Request auctionDto = AuctionDto.Request.builder()
-				.registerDate(LocalDateTime.parse(str_curTime, df))
-//				.registerDate(time)
-//				.dueDate(LocalDateTime.of(Integer.parseInt(ymd[0]), Integer.parseInt(ymd[1]), Integer.parseInt(ymd[2]), Integer.parseInt(hm[0]), Integer.parseInt(hm[1])))
+//	@Test
+//	@Rollback(false)
+//	@DisplayName("Auction 추가")
+//	void testAddAuction() {
+//		LocalDateTime time = LocalDateTime.now();
+//		String str_curTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+//		DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+//		
+//		String d_date = "2022-06-20 12:07";
+//		
+//		AuctionDto.Request auctionDto = AuctionDto.Request.builder()
+////				.registerDate(LocalDateTime.parse(str_curTime, df))
 //				.dueDate(LocalDateTime.parse(d_date, df))
-				.dueDate(time)
-				.nftId(9L)
-				.startPrice(9000L)
-				.status(Status.IN_PROGRESS)
-				.build();
-		
-		auctionService.addAuction(auctionDto);
-	
-	}
+////				.dueDate(time)
+//				.nftId(9L)
+//				.startPrice(9000L)
+//				.status(Status.IN_PROGRESS)
+//				.build();
+//		
+//		auctionService.addAuction(auctionDto);
+//	
+//	}
 	
 //	@Test
 //	@Rollback(false)
@@ -68,16 +60,50 @@ public class AuctionServiceTest {
 //	@Rollback(false)
 //	@DisplayName("Bidding 추가")
 //	void testAddBidding() { 
+//		String str_curTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+//		DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 //		
 //		BiddingDto.Request biddingDto = BiddingDto.Request.builder()
-//				.price(300000000L)
-//				.time(LocalDateTime.now())
+//				.price(30000000L)
+//				.time(LocalDateTime.parse(str_curTime, df))
 //				.userId(1L)
-//				.auctionId(386L)
+//				.auctionId(633L)
 //				.build();
 //		
 //		auctionService.addBidding(biddingDto);;
 //		
 //	
 //	}
+	
+//	@Test
+//	@Rollback(false)
+//	@DisplayName("Bidding 삭제")
+//	void testDeleteBidding() { 
+//		auctionService.deleteBidding(646L, 633L);
+//	}
+	
+//	@Test
+//	@Rollback(false)
+//	@DisplayName("Bidding 조회")
+//	void tesBiddingList() { 
+//		Auction auction = auctionService.findAuction(633L);
+//		auctionService.findBiddingList(auction);
+//	}
+	
+	@Test
+	@Rollback(false)
+	@DisplayName("Trade 추가")
+	void testAddTrade() {
+		TradeHistoryDto.Request trade = TradeHistoryDto.Request.builder()
+				.auctionId(633L)
+				.userId(1L)
+				.amount(3000000L)
+				.build();
+		Long tradeId = auctionService.addTradeHistory(trade);
+		auctionService.findTradeHistory(tradeId);
+		auctionService.findByAuction(trade.getAuctionId());
+//		auctionService.getAuctionListByStatus(tradeId, null);
+//		auctionService.deleteTradeHistory(652L);
+	}
+	
 }

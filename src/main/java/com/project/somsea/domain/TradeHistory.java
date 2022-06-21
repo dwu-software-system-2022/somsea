@@ -8,9 +8,11 @@ import com.project.somsea.domain.Auction.Status;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor
 @Table(name = "trade_history")
 public class TradeHistory {
 

@@ -2,6 +2,8 @@ package com.project.somsea.dto;
 
 import java.time.LocalDateTime;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.project.somsea.domain.Auction;
 import com.project.somsea.domain.Auction.Status;
 import com.project.somsea.domain.Nft;
@@ -19,7 +21,9 @@ public class AuctionDto {
 		private Long auctionId;
 	    private Long nftId;
 	    private Long startPrice;
-	    private LocalDateTime registerDate;
+//	    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
+//	    private LocalDateTime registerDate;
+	    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
 	    private LocalDateTime dueDate;
 	    private Status status;
 	    private Long topBid;
@@ -29,7 +33,7 @@ public class AuctionDto {
 	    	return Auction.builder()
 	    			.nft(nft)
 	    			.startPrice(startPrice)
-	    			.registerDate(registerDate)
+//	    			.registerDate(registerDate)
 	    			.dueDate(dueDate)
 	    			.status(status)
 	    			.topBid(topBid)

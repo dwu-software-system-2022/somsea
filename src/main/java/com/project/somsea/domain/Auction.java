@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -31,6 +32,7 @@ public class Auction {
 
 	@Column(name = "register_date")//등록날짜
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
+	@CreationTimestamp
 	private LocalDateTime registerDate;
 
 	@Enumerated(EnumType.STRING)

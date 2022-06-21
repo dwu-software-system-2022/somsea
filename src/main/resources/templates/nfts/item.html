@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Neftify - NFT Marketplace Bootstrap 5 HTML Template</title>
+    <meta name="description"
+        content="Neftify is the complete UX & UI dashboard for NFT. Here included bids, collection, wallet, and all user setting pages including profile, application, activity, payment method, api, sign in & sign up etc.">
+
+
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{./images/favicon.png}">
+    <link rel="stylesheet" th:href="@{./css/style.css}">
+    <script>
+    	function pop1() {
+    		document.domain = "127.0.0.1"; //document.domain 값이 팝업과 부모창 동일해야 합니다
+    		window.open("winBidding.html", "popup", "width = 500px height = 200px left = 0px top = 0px");
+    	}
+    	
+    	function pop2() {
+    		document.domain = "127.0.0.2"; //document.domain 값이 팝업과 부모창 동일해야 합니다
+    		window.open("biddingForm.html", "popup", "width = 500px height = 200px left = 0px top = 0px");
+    	}
+    </script>
+</head>
+
+<body class="@@dashboard">
+
+    <div id="preloader"><i>.</i><i>.</i><i>.</i></div>
+
+    <div id="main-wrapper" class="front">
+
+        <div class="header landing">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="navigation">
+                            <nav class="navbar navbar-expand-lg navbar-light">
+                                <div class="brand-logo">
+                                    <a href="/static">
+                                        <img th:src="@{./images/logo.png}" alt="" class="logo-primary">
+                                        <img src="@{./images/logow.png}" alt="" class="logo-white">
+                                    </a>
+                                </div>
+                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                    aria-expanded="false" aria-label="Toggle navigation">
+                                    <span class="navbar-toggler-icon"></span>
+                                </button>
+                                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                    <ul class="navbar-nav me-auto">
+                                        <li class="nav-item dropdown"><a class="nav-link" href="/index.html">Home</a>
+                                        </li>
+                                        <li class="nav-item"><a class="nav-link" href="/explore.html">Explore</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="/item.html">Item</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="/collection.html">Collection</a>
+                                        </li>
+                                        <li class="nav-item"><a class="nav-link" href="/profile.html">Profile</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="/upload.html">Upload</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="/dashboard.html">Dashboard</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="signin-btn d-flex align-items-center">
+                                    <div class="dark-light-toggle theme-switch" onclick="themeToggle()">
+                                        <span class="dark"><i class="ri-moon-line"></i></span>
+                                        <span class="light"><i class="ri-sun-line"></i></span>
+                                    </div>
+
+                                    <a class="btn btn-primary" href="/connect.html">Connect</a>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-title">
+            <div class="container">
+                <div class="row align-items-center justify-content-between">
+                    <div class="col-6">
+                        <div class="page-title-content">
+                            <h3>Nft Detail</h3>
+                            <p class="mb-2">Somsea Nft detail page</p>
+                        </div>
+                    </div>
+                    <!-- <div class="col-auto">
+                        <div class="breadcrumbs"><a href="#">Home </a><span><i
+                                    class="ri-arrow-right-s-line"></i></span><a href="#">Payments</a></div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+
+
+        <div class="item-single section-padding">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xxl-12">
+                        <div class="top-bid">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6"><img th:src="@{./images/items/11.jpg}" class="img-fluid rounded"
+                                            alt="..."></div>
+                                    <div class="col-md-6">
+                                        <h3 class="mb-3">collection name</h3>
+                                        <div class="d-flex align-items-center mb-3"><img src="./images/avatar/1.jpg"
+                                                alt="" class="me-3 avatar-img">
+                                            <div class="flex-grow-1">
+                                                <h5 class="mb-0">${nft.id}<span class="circle bg-success"></span>
+                                                </h5>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mt-4 mb-4">
+                                            <div class="text-start">
+                                                <h4 class="mb-2">Auction ends</h4>
+                                                <h5 class="text-muted">${auction.dueDate}</h5>
+                                            </div>
+                                            <div class="text-end">
+                                                <h4 class="mb-2">Top Bid : <strong class="text-primary">${auction.topBid}</strong></h4>
+                                           
+                                            </div>
+                                        </div>
+                                        <!-- <div class="d-flex"><a href="" class="btn btn-primary">Place a Bid</a></div> -->
+                                        <div th:if="${auction.status} == 'COMPLETED' and ${session.userId} == ${topBid.user.id}">
+	                                        <form action="#">
+		                                        <label>
+		                                        	<input type="button" value="buy now" onclick="popup1();">
+		                                        </label>	
+                                       		</form>
+                                       	</div>
+                                       	<div th:if="${auction.status} != 'COMPLETED' or ${session.userId} != ${topBid.user.id}">
+                                       		 <form action="#" th:action="@{/nfts/{nftId}(nftId=${nft.id})}">
+		                                        <label>
+		                                        	<input type="button" value="Place a bid" onclick="popup2();">
+		                                        </label>	
+                                       		</form>
+                                       	</div>
+                                       
+                                        <!-- <p class="mb-3">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eos,
+                                            unde.
+                                            Unde, doloremque ipsam? Nesciunt dolorem nisi quae nostrum veniam quasi
+                                            illum,
+                                            iusto tempore nihil, natus perspiciatis? Sed</p> -->
+                                        <h4 class="card-title mb-3">Offers</h4>
+                                        <div id ="offers">
+									      <table id="offersTable" style="width: 850px">
+									      <tr>
+									         <th>Price</th>
+									         <th>Floor Difference</th>
+									         <th>Expiration</th>
+									         <th>From</th>
+									         <th></th>
+									      </tr>
+                                          <th:unless="${bidding}">
+                                            <tr>
+            									<td colspan="6">입찰 정보가 없습니다.</td>
+         									</tr>
+         								  </th:unless>
+         								  <th:if="${bidding}">
+         								  	<tr th:each="bid : ${bidding}">
+         							
+         								  		<td th:text="${bid.price}">bidPrice</td>
+         								  		<td th:text="${bid.floorDifference}">floorDifference</td>
+         								  		<td th:text="${bid.expiration}">expiration</td>
+         								  		<td th:text="&{bid.user.name}">
+	         								  		<a href="#" th:href="@{/user/{userId}/mypage(userId=${bid.user.id})}">
+	         								  		userName
+	         								  		</a>
+	         								  	</td>
+	         								  	<th:if="${session.userId} == ${bid.userID}">
+	         								  		<td><a href="#" th:href="@{nfts/bidding/delete}">X</a></td>
+	         								  	</th:if>
+         								  	</tr>
+         								  </th:if>
+         								  </table>
+         								  </div>
+         								  <h4 class="card-title mb-3">Trade History</h4>
+         								   <div id ="trade">
+									      <table id="tradeTable" style="width: 850px">
+									      <tr>
+									         <th>Time</th>
+									         <th>Price</th>
+									         <th>From</th>
+									         
+									      </tr>
+                                          <th:unless="${tradeHistory}">
+                                            <tr>
+            									<td colspan="6">입찰 기록이 없습니다.</td>
+         									</tr>
+         								  </th:unless>
+         								  <th:if="${tradeHistory}">
+         								  	<tr th:each="trade : ${tradeHistory}">
+         							
+         								  		<td th:text="${trade.time}">tradeTime</td>
+         								  		<td th:text="${trade.price}">tradePrice</td>
+         								  		<td th:text="${trade.user.name}">  
+	         								  		<a href="#" th:href="@{/user/{userId}/mypage(userId=${trade.user.id})}">
+	         								  		userName
+	         								  		</a>
+	         								  	</td>
+         								  	</tr>
+         								  </th:if>
+         								  </table>
+         								  </div>
+                                        <!-- <div class="bid mb-3 card">
+                                            <div class="activity-content card-body py-0">
+                                                <ul>
+                                                    <li class="d-flex justify-content-between align-items-center">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="activity-user-img me-3"><img
+                                                                    src="./images/avatar/1.jpg" alt="" width="50"></div>
+                                                            <div class="activity-info">
+                                                                <h5 class="mb-0">Papaya</h5>
+                                                                <p>0.05 ETH</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="text-end"><span class=" text-muted">12 min
+                                                                ago</span>
+                                                        </div>
+                                                    </li>
+                                                    <li class="d-flex justify-content-between align-items-center">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="activity-user-img me-3"><img
+                                                                    src="./images/avatar/2.jpg" alt="" width="50"></div>
+                                                            <div class="activity-info">
+                                                                <h5 class="mb-0">Alex Maris</h5>
+                                                                <p>0.06 ETH</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="text-end"><span class=" text-muted">12 min
+                                                                ago</span>
+                                                        </div>
+                                                    </li>
+                                                    <li class="d-flex justify-content-between align-items-center">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="activity-user-img me-3"><img
+                                                                    src="./images/avatar/3.jpg" alt="" width="50"></div>
+                                                            <div class="activity-info">
+                                                                <h5 class="mb-0">John Adams</h5>
+                                                                <p>0.06 ETH</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="text-end"><span class=" text-muted">12 min
+                                                                ago</span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div> -->
+                                     
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- <div class="bottom section-padding triangle-top-dark triangle-bottom-dark">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-4 col-lg-4 col-md-7 col-sm-8">
+                        <div class="bottom-logo"><img class="pb-3" src="./images/logoh.png" alt="">
+                            <p>Neftify is a unique and beautiful collection of UI elements that are all flexible and
+                                modular. A
+                                complete and customizable solution to building the website of your dreams.</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-2 col-lg-2 col-md-5 col-sm-4 col-6">
+                        <div class="bottom-widget">
+                            <h4 class="widget-title">About us</h4>
+                            <ul>
+                                <li><a href="./explore.html">Explore</a></li>
+                                <li><a href="./item.html">Item</a></li>
+                                <li><a href="./collection.html">Collection</a></li>
+                                <li><a href="./connect.html">Connect</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xl-2 col-lg-2 col-md-4 col-sm-4 col-6">
+                        <div class="bottom-widget">
+                            <h4 class="widget-title">Settings</h4>
+                            <ul>
+                                <li><a href="./settings.html">Settings</a></li>
+                                <li><a href="./application.html">Application</a></li>
+                                <li><a href="./security.html">Security</a></li>
+                                <li><a href="./activity.html">Activity</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-8 col-sm-8">
+                        <div class="bottom-widget">
+                            <h4 class="widget-title">Profile</h4>
+                            <div class="row">
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                                    <ul>
+                                        <li><a href="./profile.html">Profile</a></li>
+                                        <li><a href="./created.html">Created</a></li>
+                                        <li><a href="./collected.html">Collected</a></li>
+                                        <li><a href="./activity.html">Activity</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                                    <ul>
+                                        <li><a href="./onsale.html">On Sale</a></li>
+                                        <li><a href="./liked.html">Liked</a></li>
+                                        <li><a href="./following.html">Following</a></li>
+                                        <li><a href="./followers.html">Followers</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                        <div class="copyright">
+                            <p>© Copyright 2022 <a href="#">Neftify</a>All Rights Reserved</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                        <div class="footer-social">
+                            <ul>
+                                <li><a href="#"><i class="bi bi-facebook"></i></a></li>
+                                <li><a href="#"><i class="bi bi-twitter"></i></a></li>
+                                <li><a href="#"><i class="bi bi-linkedin"></i></a></li>
+                                <li><a href="#"><i class="bi bi-youtube"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <script src="./vendor/jquery/jquery.min.js"></script>
+    <script src="./vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script src="./js/scripts.js"></script> -->
+
+
+</body>
+
+</html>

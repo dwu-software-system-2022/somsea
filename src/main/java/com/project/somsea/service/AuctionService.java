@@ -11,6 +11,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +45,11 @@ public class AuctionService {
 	private final CollectionRepository collectionRepository;
 	private final TradeHistoryRepository tradeHistoryRepository;
 	@Autowired		// SchedulerConfig에 설정된 TaskScheduler 빈을 주입 받음
-	private TaskScheduler scheduler;
+	@Qualifier("task1")
+	private TaskScheduler scheduler1;
+	@Autowired
+	@Qualifier("task2")
+	private TaskScheduler scheduler2;
 	
 	public Long addAuction(AuctionDto.Request auctionDto) {
 //		if (isExistingUser(userId)) { // nft 쪽에서 user 존재하는지 확인하는 코드 있으면 없어도 됨.(nft가 존재하는지만 확인필요)
@@ -64,10 +69,6 @@ public class AuctionService {
 //				LocalDateTime d = LocalDateTime.parse(str_curTime, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
 				DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 				LocalDateTime curTime = LocalDateTime.parse(str_curTime, df);
-				String ct = curTime.toString().replace("T", " ");
-				curTime = LocalDateTime.parse(ct, df);
-//				LocalDateTime curTime = d.format(df);
-//				LocalDateTime curTime = LocalDateTime.now();
 				System.out.println("curTime: " + curTime);
 				// 실행 시점의 시각을 전달하여 그 시각 이전의 closing time 값을 갖는 event의 상태를 변경 
 				auctionRepository.closeEvent(curTime);	// Auction 테이블의 레코드 갱신	
@@ -79,7 +80,7 @@ public class AuctionService {
 		
 		Date closingTime = java.sql.Timestamp.valueOf(auctionDto.getDueDate());
 		System.out.println(closingTime);
-		scheduler.schedule(updateTableRunner, closingTime);		
+		scheduler1.schedule(updateTableRunner, closingTime);		
 		System.out.println("updateTableRunner has been scheduled to execute at " + closingTime);
 		
 		return auction.getId();
@@ -132,11 +133,15 @@ public class AuctionService {
 	public List<Auction> getAuctionListByStatus(Long collectionId, Status status) {
 		Collection collection = findCollection(collectionId);
 		List<Nft> nft = nftRepository.findAllByCollection(collection);
+		List<Auction> auctionList = null;
+		Auction auction = null;
 		for (Nft n : nft) {
 			findNft(n.getId());
+			auction = auctionRepository.findByStatusAndNftId(status, n.getId());
+			findAuction(auction.getId());
+			auctionList.add(auction);
 		}
-
-		return auctionRepository.findByStatus(status);
+		return auctionList;
 	}
 	
 	public Auction findByNft(Long nftId) {
@@ -155,12 +160,15 @@ public class AuctionService {
 		User user = findUser(biddingDto.getUserId());
 		Bidding bidding = biddingDto.toEntity(user, auction);
 		Long floorBid = findFloorBid(biddingDto.getAuctionId());
-		bidding.setFloorBid(floorBid);
 		if (floorBid == null) {
+			floorBid = bidding.getPrice();
+			bidding.setFloorBid(floorBid);
 			bidding.setFloorDifference(null);
 		} else {
 			if (floorBid > bidding.getPrice()) {
 				bidding.setFloorBid(floorBid);
+			} else {
+				bidding.setFloorBid(bidding.getPrice());			
 			}
 			double floorDif = floorDifference(bidding.getPrice(), bidding.getFloorBid());
 			if (floorDif < 100) {
@@ -171,8 +179,26 @@ public class AuctionService {
 				bidding.setFloorDifference("same");
 			}
 		}
-		bidding.setExpiration(calExpiration(bidding.getTime(), auction.getDueDate()));
-//		bidding.setExpiration(calExpiration(auction.getDueDate(), bidding.getTime()));
+//		bidding.setExpiration(calExpiration(bidding.getTime(), auction.getDueDate()));
+		bidding.setExpiration(calExpiration(auction.getDueDate(), bidding.getTime()));
+		
+		Runnable updateTableRunner = new Runnable() { // anonymous class 정의
+			@Override
+			public void run() {   // 스케쥴러에 의해 미래의 특정 시점에 실행될 작업을 정의
+				String str_curTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+				DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+				LocalDateTime curTime = LocalDateTime.parse(str_curTime, df);
+				System.out.println("curTime: " + curTime);
+				// 실행 시점의 시각을 전달하여 그 시각 이전의 closing time 값을 갖는 event의 상태를 변경 
+				List<Bidding> bid_list = biddingRepository.findByAuction(auction);
+				for (int i = 0; i < bid_list.size(); i++) {
+					int expiration = calExpiration(bid_list.get(i).getTime(), curTime);
+//					int expiration = calExpiration(bidding.getTime(), curTime);
+					biddingRepository.updateBiddingByExpiration(expiration, bid_list.get(i).getId());	// Bidding 테이블의 레코드 갱신
+				}
+				System.out.println("BiddingupdateTableRunner is executed at " + curTime);
+			}
+		};
 		biddingRepository.save(bidding);
 		
 		biddingRepository.updateBiddingByFloorBid(floorBid, bidding.getAuction().getId());
@@ -192,6 +218,12 @@ public class AuctionService {
 		
 		Long topBid = findTopBid(auction.getId());
 		auctionRepository.updateAuction(topBid, auction.getId());
+		
+		Date closingTime = java.sql.Timestamp.valueOf(auction.getDueDate());
+		System.out.println(closingTime);
+		scheduler2.schedule(updateTableRunner, closingTime);		
+		System.out.println("BiddingpdateTableRunner has been scheduled to execute at " + closingTime);
+		
 		return bidding.getId();
 	}
 	
@@ -243,18 +275,14 @@ public class AuctionService {
 	}
 	
 	public double floorDifference(Long price, Long floorBid) { // 바닥가 대비 입찰가와의 차이
-//		Bidding bidding = findBidding(biddingId);
-//		Long floorBid = findFloorBid(bidding.getAuction().getId());
 		double differencePercent = 0;
 		differencePercent = Math.round(((((double)price / floorBid) * 100) * 100) / 100);
-//		String.format("%.2f", ((double)bidding.getPrice() / floorBid) * 100);
 		return differencePercent;
  	}
 	
 	public int calExpiration(LocalDateTime time, LocalDateTime due) {
-//		Bidding bidding = findBidding(biddingId);
-		long hours = ChronoUnit.HOURS.between(time, due);
-		if (hours <= 24) {
+		long hours = ChronoUnit.MINUTES.between(time, due);
+		if (hours <= 60) {
 //			return "about " + hours + " hours"; // return type String
 			return Long.valueOf(hours).intValue();
 		} else {
@@ -267,7 +295,7 @@ public class AuctionService {
 	/* tradeHistory */
 	public Long addTradeHistory(TradeHistoryDto.Request tradeDto) {
 		User user = findUser(tradeDto.getUserId());
-		Auction auction = findAuction(tradeDto.getUserId());
+		Auction auction = findAuction(tradeDto.getAuctionId());
 		TradeHistory tradeHistory = tradeDto.toEntity(user, auction);
 		tradeHistoryRepository.save(tradeHistory);
 		
