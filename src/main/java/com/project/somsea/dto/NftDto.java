@@ -19,12 +19,16 @@ public class NftDto {
     @ToString
     public static class Request {
         private Long collectionId;
+        private String title;
+        private String desc;
         private String imageUrl;
         private MultipartFile imageFile;
         private List<Long> partIds;
 
         public Nft toEntity(User user, Collection collection) {
             return Nft.builder()
+                    .title(title)
+                    .desc(desc)
                     .imageUrl(imageUrl)
                     .collection(collection)
                     .user(user)
@@ -60,6 +64,7 @@ public class NftDto {
     public static class ResponseDetail {
         private Long nftId;
         private String title;
+        private String desc;
         private String imageUrl;
         private String token;
         private Nft.TokenStandard tokenStandard;
@@ -70,6 +75,7 @@ public class NftDto {
             return ResponseDetail.builder()
                     .nftId(nft.getId())
                     .title(nft.getTitle())
+                    .desc(nft.getDesc())
                     .imageUrl(nft.getImageUrl())
                     .token(nft.getToken())
                     .tokenStandard(nft.getTokenStandard())
