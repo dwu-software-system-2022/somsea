@@ -84,6 +84,10 @@ public class NftController {
     public String addNft(@ModelAttribute("requestDto") NftDto.Request requestDto
     		, @AuthenticationPrincipal CustomUserDetails userDetails) throws IOException {
         Long userId = userDetails.getUserId();
+
+		String imageUrl = imageUploader.upload(requestDto.getImageFile());
+		requestDto.setImageUrl(imageUrl);
+
         Long nftId = nftService.add(userId, requestDto);
 
 		String imageUrl = imageUploader.upload(requestDto.getImageFile());
