@@ -1,10 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>회원가입</title>
-</head>
-<body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<th:block th:replace="head :: headFragment"></th:block>
+<body class="@@dashboard">
+    <th:block th:replace="header :: headerFragment"></th:block>
+	<div class="page-title">
+		<div class="container">
+			<div class="row align-items-center justify-content-between">
+				<div class="col-6">
+					<div class="page-title-content">
+						<h3>회원가입</h3>
+						<p class="mb-2">회원가입 페이지</p>
+					</div>
+				</div>
+				<div class="col-auto">
+					<div class="breadcrumbs"><a href="#">Home </a><span><i
+								class="ri-arrow-right-s-line"></i></span><a href="#">Payments</a></div>
+				</div>
+			</div>
+		</div>
+	</div>
 <form th:action="@{/user/add}" th:object="${user}" method="post">
     <div>
         <label for="name">이름 : </label>
@@ -25,5 +40,6 @@
  		<input type="submit" value="가입"/>
  	</div>
 </form>
+<th:block th:replace="footer :: footerFragment"></th:block>
 </body>
 </html>
