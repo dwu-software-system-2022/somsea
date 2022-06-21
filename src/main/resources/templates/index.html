@@ -1,72 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Neftify - NFT Marketplace Bootstrap 5 HTML Template</title>
-    <meta name="description"
-        content="Neftify is the complete UX & UI dashboard for NFT. Here included bids, collection, wallet, and all user setting pages including profile, application, activity, payment method, api, sign in & sign up etc.">
-
-
-    <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" th:href="@{./images/favicon.png}">
-    <link rel="stylesheet" type="text/css" th:href="@{./static/css/style.css}">
-</head>
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<th:block th:replace="head :: headFragment"></th:block>
 <body class="@@dashboard">
 
-    <div id="preloader"><i>.</i><i>.</i><i>.</i></div>
-
-    <div id="main-wrapper" class="front">
-
-        <div class="header landing">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-12">
-                        <div class="navigation">
-                            <nav class="navbar navbar-expand-lg navbar-light">
-                                <div class="brand-logo">
-                                    <a href="/static">
-                                        <img th:src= "@{./static/images/logo.png}" alt="" class="logo-primary">
-                                        <img th:src="@{./static/images/logow.png}" alt="" class="logo-white">
-                                    </a>
-                                </div>
-                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                                    aria-expanded="false" aria-label="Toggle navigation">
-                                    <span class="navbar-toggler-icon"></span>
-                                </button>
-                                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                                    <ul class="navbar-nav me-auto">
-                                        <li class="nav-item dropdown"><a class="nav-link" href="/templates/index.html">Home</a>
-                                        </li>
-                                        <li class="nav-item"><a class="nav-link" href="/explore.html">Explore</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="/item.html">Item</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="/collection.html">Collection</a>
-                                        </li>
-                                        <li class="nav-item"><a class="nav-link" href="/profile.html">Profile</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="/upload.html">Upload</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="/dashboard.html">Dashboard</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="signin-btn d-flex align-items-center">
-                                    <div class="dark-light-toggle theme-switch" onclick="themeToggle()">
-                                        <span class="dark"><i class="ri-moon-line"></i></span>
-                                        <span class="light"><i class="ri-sun-line"></i></span>
-                                    </div>
-
-                                    <a class="btn btn-primary" href="/connect.html">Connect</a>
-                                </div>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+    <th:block th:replace="header :: headerFragment"></th:block>
 
         <div class="intro1 section-padding">
             <div class="container">
