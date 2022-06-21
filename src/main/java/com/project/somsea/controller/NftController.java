@@ -90,5 +90,15 @@ public class NftController {
         return "redirect:/";
     }
 
+    @GetMapping("/nfts/me")
+    public String showMyNfts(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
+        Long userId = userDetails.getUserId();
+        List<NftDto.Response> nfts = nftService.readNftsByUserId(userId);
+
+        model.addAttribute("nfts", nfts);
+
+        return "users/saved";
+    }
+
 
 }

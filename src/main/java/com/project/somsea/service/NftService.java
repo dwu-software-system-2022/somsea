@@ -118,13 +118,14 @@ public class NftService {
      *  경매에 낙찰된 경우 nft의 user_id를 낙찰자의 id로 변경해주어야 함.
      */
     public void updateUserIdOfNft(Long userId, Long nftId) {
-    	findUser(userId);
-    	findNft(nftId);
-    	nftRepository.updateUserIdOfNft(userId, nftId);
+    	User user =findUser(userId);
+    	Nft nft = findNft(nftId);
+        nft.changeUser(user);
     }
     
-    public List<Nft> readNftsByUserId(Long userId) {
-    	List<Nft> nfts = nftRepository.findAllByUserId(userId);
-    	return nfts;
+    public List<NftDto.Response> readNftsByUserId(Long userId) {
+        return nftRepository.findAllByUser(findUser(userId)).stream()
+                .map(NftDto.Response::of)
+                .collect(Collectors.toList());
     }
 }
