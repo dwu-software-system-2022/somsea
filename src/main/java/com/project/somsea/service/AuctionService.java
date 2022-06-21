@@ -179,8 +179,8 @@ public class AuctionService {
 				bidding.setFloorDifference("same");
 			}
 		}
-//		bidding.setExpiration(calExpiration(bidding.getTime(), auction.getDueDate()));
-		bidding.setExpiration(calExpiration(auction.getDueDate(), bidding.getTime()));
+		bidding.setExpiration(calExpiration(bidding.getTime(), auction.getDueDate()));
+//		bidding.setExpiration(calExpiration(auction.getDueDate(), bidding.getTime()));
 		
 		Runnable updateTableRunner = new Runnable() { // anonymous class 정의
 			@Override
@@ -192,7 +192,7 @@ public class AuctionService {
 				// 실행 시점의 시각을 전달하여 그 시각 이전의 closing time 값을 갖는 event의 상태를 변경 
 				List<Bidding> bid_list = biddingRepository.findByAuction(auction);
 				for (int i = 0; i < bid_list.size(); i++) {
-					int expiration = calExpiration(bid_list.get(i).getTime(), curTime);
+					int expiration = calExpiration(curTime, auction.getDueDate());
 //					int expiration = calExpiration(bidding.getTime(), curTime);
 					biddingRepository.updateBiddingByExpiration(expiration, bid_list.get(i).getId());	// Bidding 테이블의 레코드 갱신
 				}
@@ -222,16 +222,43 @@ public class AuctionService {
 		Date closingTime = java.sql.Timestamp.valueOf(auction.getDueDate());
 		System.out.println(closingTime);
 		scheduler2.schedule(updateTableRunner, closingTime);		
-		System.out.println("BiddingpdateTableRunner has been scheduled to execute at " + closingTime);
-		
+		System.out.println("Bidding update Table Runner has been scheduled to execute at " + closingTime);
+
+		TradeHistory tradeHistory = TradeHistory.builder()
+				.user(user)
+				.auction(auction)
+				.amount(biddingDto.getPrice())
+				.build();
+
+		tradeHistoryRepository.save(tradeHistory);
+
 		return bidding.getId();
 	}
 	
 	public void deleteBidding(Long biddingId, Long auctionId) {
-		findAuction(auctionId);
+		Auction auction = findAuction(auctionId);
 		biddingRepository.delete(
 				biddingRepository.findById(biddingId).orElseThrow(() -> new IllegalArgumentException("Bidding id 값이 없습니다. biddingId : " + biddingId)));
+		Long topBidPrice = findTopBid(auctionId);
+		auctionRepository.updateAuction(topBidPrice, auctionId);
+		Long floorBid = findFloorBid(auctionId);
+		biddingRepository.updateBiddingByFloorBid(floorBid, auctionId);
+		
+		List<Bidding> list = biddingRepository.findByAuction(auction);
+		for (int i = 0; i < list.size(); i++) {
+			double dif = floorDifference(list.get(i).getPrice(), list.get(i).getFloorBid());
+			if (dif < 100) {
+				list.get(i).setFloorDifference(dif + "% below");
+			} else if (dif > 100) {
+				list.get(i).setFloorDifference(dif + "% above");
+			} else {
+				list.get(i).setFloorDifference("same");
+			}
+			biddingRepository.updateBiddingByFloorDif(list.get(i).getFloorDifference(), list.get(i).getId());
+		}
 	}
+	
+	
 	
 	public Long findTopBid(Long auctionId) {
 		Auction auction = findAuction(auctionId);
@@ -276,13 +303,13 @@ public class AuctionService {
 	
 	public double floorDifference(Long price, Long floorBid) { // 바닥가 대비 입찰가와의 차이
 		double differencePercent = 0;
-		differencePercent = Math.round(((((double)price / floorBid) * 100) * 100) / 100);
+		differencePercent = Math.round(((((double)price / floorBid) * 1000) * 1000) / 100);
 		return differencePercent;
  	}
 	
 	public int calExpiration(LocalDateTime time, LocalDateTime due) {
-		long hours = ChronoUnit.MINUTES.between(time, due);
-		if (hours <= 60) {
+		long hours = ChronoUnit.HOURS.between(time, due);
+		if (hours <= 24) {
 //			return "about " + hours + " hours"; // return type String
 			return Long.valueOf(hours).intValue();
 		} else {
