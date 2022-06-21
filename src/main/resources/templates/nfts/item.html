@@ -102,8 +102,38 @@
                         <div class="top-bid">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-6"><img th:src="|${nft.imageUrl}|" class="img-fluid rounded"
-                                            alt="..."></div>
+                                    <div class="col-md-6">
+                                        <img th:src="|${nft.imageUrl}|" class="img-fluid rounded" alt="...">
+                                        <div class="card-body">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h4 class="text-sm mb-0"></i>Detail</h4>
+                                                </div>
+                                            </div>
+                                            <hr class="my-3">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h6 class="text-sm mb-0"></i>token</h6>
+                                                </div>
+                                                <div class="col-auto"><span class="text-sm" th:text="${nft.token}"></span></div>
+                                            </div>
+                                            <hr class="my-3">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h6 class="text-sm mb-0">tokenStandard</h6>
+                                                </div>
+                                                <div class="col-auto"><span class="text-sm" th:text="${nft.tokenStandard}"></span></div>
+                                            </div>
+                                            <hr class="my-3">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h6 class="text-sm mb-0">blockChain</h6>
+                                                </div>
+                                                <div class="col-auto"><span class="text-sm"th:text="${nft.blockChain}"></span></div>
+                                            </div>
+                                            <hr class="my-3">
+                                        </div>
+                                    </div>
                                     <div class="col-md-6">
                                         <h3 class="mb-3">collection name</h3>
                                         <div class="d-flex align-items-center mb-3"><img src="./images/avatar/1.jpg"
