@@ -28,22 +28,13 @@ public class TradeHistory {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private Status status;
-
     @Column(name = "amount")
     private Long amount;
 
-    public enum Status {
-        BID_SUCCESS, BID_FAIL
-    }
-    
     @Builder
-    public TradeHistory(User user, Auction auction, Long amount, Status status) {
+    public TradeHistory(User user, Auction auction, Long amount) {
         this.user = user;
         this.auction = auction;
         this.amount = amount;
-        this.status = status;
     }
 }

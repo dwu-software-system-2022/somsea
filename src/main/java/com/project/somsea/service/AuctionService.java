@@ -222,8 +222,16 @@ public class AuctionService {
 		Date closingTime = java.sql.Timestamp.valueOf(auction.getDueDate());
 		System.out.println(closingTime);
 		scheduler2.schedule(updateTableRunner, closingTime);		
-		System.out.println("BiddingpdateTableRunner has been scheduled to execute at " + closingTime);
-		
+		System.out.println("Bidding update Table Runner has been scheduled to execute at " + closingTime);
+
+		TradeHistory tradeHistory = TradeHistory.builder()
+				.user(user)
+				.auction(auction)
+				.amount(biddingDto.getPrice())
+				.build();
+
+		tradeHistoryRepository.save(tradeHistory);
+
 		return bidding.getId();
 	}
 	
