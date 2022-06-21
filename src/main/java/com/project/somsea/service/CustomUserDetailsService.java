@@ -6,10 +6,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import com.project.somsea.domain.CustomUserDetails;
 import com.project.somsea.domain.User;
 import com.project.somsea.dto.UserSessionDto;
 import com.project.somsea.repository.UserRepository;
+import com.project.somsea.users.CustomUserDetails;
 
 import lombok.RequiredArgsConstructor;
 

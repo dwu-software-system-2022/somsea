@@ -1,8 +1,11 @@
 package com.project.somsea.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,8 +13,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.project.somsea.domain.Nft;
+import com.project.somsea.domain.User;
 import com.project.somsea.dto.UserDto;
+import com.project.somsea.repository.UserRepository;
+import com.project.somsea.service.NftService;
 import com.project.somsea.service.UserService;
+import com.project.somsea.users.CustomUserDetails;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserController {
 	private final UserService userService;
+	private final NftService nftService;
 	
 	@ModelAttribute("userDto")
 	public UserDto.Request formBackingObject() {
@@ -44,6 +53,20 @@ public class UserController {
 	public String login() {
 		return "users/loginForm";
 	}
+	
+	@GetMapping("/user/profile")
+	public String profile(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
+		//nft 정보랑
+		//username 불러오기
+		User user = userService.findUserById(userDetails.getUserId());
+		List<Nft> nfts = nftService.readNftsByUserId(user.getId());
+		model.addAttribute("user", user);
+		model.addAttribute("nfts", nfts);
+		System.out.println("사용자 정보 : " + userDetails.getName());
+        System.out.println("사용자 이메일 : " + userDetails.getEmail());
+		return "users/profile";
+	}
+	
 //	@GetMapping("/login")
 //	public String loginFrom(HttpServletRequest req) {
 //		String referer = req.getHeader("Referer");

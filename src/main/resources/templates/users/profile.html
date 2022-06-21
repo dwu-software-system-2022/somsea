@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>프로필</title>
+</head>
+<body>
+ <div sec:authorize="isAuthenticated()">
+ 	  <p th:text="|${user.name}님 환영합니다.|"></p>
+      <h3>collected</h3>
+      <table>
+      	<tr th:each = "nft:${nfts}">
+      		<td th:text = "${nft.id}" />
+      	</tr>
+      </table>
+ </div>
+</body>
+</html>
