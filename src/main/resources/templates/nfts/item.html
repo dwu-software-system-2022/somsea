@@ -11,8 +11,8 @@
 
 
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" th:href="@{./images/favicon.png}">
-    <link rel="stylesheet" th:href="@{./css/style.css}">
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/images/favicon.png}">
+    <link rel="stylesheet" th:href="@{/static/css/style.css}">
     <script>
     	function pop1() {
     		document.domain = "127.0.0.1"; //document.domain 값이 팝업과 부모창 동일해야 합니다
@@ -40,8 +40,8 @@
                             <nav class="navbar navbar-expand-lg navbar-light">
                                 <div class="brand-logo">
                                     <a href="/static">
-                                        <img th:src="@{./images/logo.png}" alt="" class="logo-primary">
-                                        <img src="@{./images/logow.png}" alt="" class="logo-white">
+                                        <img th:src="@{/static/images/logo.png}" alt="" class="logo-primary">
+                                        <img th:src="@{/static/images/logow.png}" alt="" class="logo-white">
                                     </a>
                                 </div>
                                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -165,7 +165,7 @@
          								  		<td th:text="${bid.price}">bidPrice</td>
          								  		<td th:text="${bid.floorDifference}">floorDifference</td>
          								  		<td th:text="${bid.expiration}">expiration</td>
-         								  		<td th:text="&{bid.user.name}">
+         								  		<td th:text="${bid.user.name}">
 	         								  		<a href="#" th:href="@{/user/{userId}/mypage(userId=${bid.user.id})}">
 	         								  		userName
 	         								  		</a>
