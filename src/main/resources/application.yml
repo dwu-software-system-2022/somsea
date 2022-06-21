@@ -26,3 +26,6 @@ spring:
         default_batch_fetch_size: 1000
     database: oracle
 
+
+file:
+  dir: somsea\src\main\resources\static\images\items\

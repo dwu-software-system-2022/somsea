@@ -30,7 +30,7 @@
     <tr>
         <td th:text="${nft.nftId}"></td>
         <td th:text="${nft.title}"></td>
-        <td th:text="${nft.imageUrl}"></td>
+        <td><img th:src="|${nft.imageUrl}|"></td>
         <td th:text="${nft.token}"></td>
         <td th:text="${nft.tokenStandard}"></td>
         <td th:text="${nft.blockChain}"></td>

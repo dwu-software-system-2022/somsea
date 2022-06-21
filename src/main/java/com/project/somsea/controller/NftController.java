@@ -9,6 +9,7 @@ import com.project.somsea.dto.NftDto;
 import com.project.somsea.dto.PartDto;
 import com.project.somsea.dto.TradeHistoryDto;
 import com.project.somsea.service.AuctionService;
+import com.project.somsea.helper.ImageUploader;
 import com.project.somsea.service.NftService;
 import com.project.somsea.service.WalletService;
 
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -28,6 +30,8 @@ import java.util.List;
 public class NftController {
 
     private final NftService nftService;
+    private final ImageUploader imageUploader;
+
     private final AuctionService auctionService;
     private final WalletService walletService;
     
@@ -60,12 +64,15 @@ public class NftController {
 
         return "nfts/form";
     }
-
     @PostMapping("/collections/{collectionId}/nfts/form")
-    public String addNft(@ModelAttribute("requestDto") NftDto.Request requestDto) {
+    public String addNft(@ModelAttribute("requestDto") NftDto.Request requestDto) throws IOException {
         Long userId = 1L;
+
+        String imageUrl = imageUploader.upload(requestDto.getImageFile());
+        requestDto.setImageUrl(imageUrl);
+
         Long nftId = nftService.add(userId, requestDto);
-       
+
         // TODO: NFT 추가 완료 후에 이동할 페이지 변경 필요
         return "redirect:/nfts/" + nftId;
     }

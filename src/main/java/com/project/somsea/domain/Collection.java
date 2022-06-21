@@ -2,6 +2,7 @@ package com.project.somsea.domain;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @Table(name = "collection")
 public class Collection {
 
@@ -36,18 +38,16 @@ public class Collection {
     @OneToMany(mappedBy = "collection", fetch = FetchType.LAZY)
     private List<Part> parts = new ArrayList<>();
     
-    @OneToOne(mappedBy = "collection", fetch = FetchType.LAZY)
-    @JoinColumn(name = "nft_id")
-	private Nft nft;
+    @OneToMany(mappedBy = "collection", fetch = FetchType.LAZY)
+	private List<Nft> nfts;
 
     @Builder
-    public Collection(Long id, String name, String url, String logoImgUrl, String description, Nft nft) {
+    public Collection(Long id, String name, String url, String logoImgUrl, String description) {
     	this.id = id;
     	this.name = name;
     	this.url = url;
     	this.logoImgUrl = logoImgUrl;
     	this.description = description;
-    	this.nft = nft;
     }
 }
 

@@ -5,10 +5,10 @@
     <title>Nft 추가 form</title>
 </head>
 <body>
-<form th:action th:object="${nft}" method="post">
+<form th:action th:object="${nft}" method="post" enctype="multipart/form-data">
     <div>
-        <label for="imageUrl">이미지 Url</label>
-        <input type="text" id="imageUrl" th:field="*{imageUrl}">
+        <label for="imageFile">이미지 파일</label>
+        <input type="file" id="imageFile" th:field="*{imageFile}">
     </div>
     
     <div>
