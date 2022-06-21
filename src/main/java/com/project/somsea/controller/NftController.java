@@ -38,10 +38,11 @@ public class NftController {
     private final AuctionService auctionService;
     private final WalletService walletService;
     
-    Long nftId = null;
+    Long nftId = 1L;
     
     @GetMapping("/nfts/{nftId}")
-    public String showNftDetail(Model model, @PathVariable Long nftId) {
+    public String showNftDetail(Model model, @PathVariable Long nftId,
+    		@AuthenticationPrincipal CustomUserDetails userDetails) {
         NftDto.ResponseDetail nftDto = nftService.readDetailNft(nftId);
         Auction auction = auctionService.findByNft(nftId);
         List<Bidding> bidding = auctionService.findBiddingList(auction);
@@ -49,12 +50,14 @@ public class NftController {
         Bidding topBidding = auctionService.findBidding(topBidddingId);
         List<TradeHistory> tradeHistory = auctionService.findByAuction(auction.getId());
         model.addAttribute("nft", nftDto);
+        model.addAttribute("userId", 1L);
         model.addAttribute("auction", auction);
         model.addAttribute("bidding", bidding);
         model.addAttribute("topBid", topBidding);
         model.addAttribute("tradeHistory", tradeHistory);
+
         this.nftId = nftId;
-        return "nfts/detail";
+        return "nfts/item";
     }
 
     @GetMapping("/collections/{collectionId}/nfts/form")
@@ -123,31 +126,31 @@ public class NftController {
 		trade.setAmount(requestDto.getPrice());
 		
 		auctionService.addTradeHistory(trade);
-		return "/nfts/dtatil";
+		return "nfts/dtatil";
 	}
     
     @RequestMapping("/nfts/bidding/win")
-	public String winBidding(Model model, @SessionAttribute("userId") Long userId) {
-		User user = auctionService.findUser(userId);
+	public String winBidding(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
+		User user = auctionService.findUser(userDetails.getUserId());
 		Auction auction = auctionService.findByNft(nftId);
 		Long biddingid = auctionService.findBiddingIdByTopBid(auction.getId());
 		Bidding bidding = auctionService.findBidding(biddingid);
 		//update문 써야 됨. user_id 바꿔야 됨. nft의 
-		nftService.updateUserIdOfNft(userId, nftId);
+		nftService.updateUserIdOfNft(userDetails.getUserId(), nftId);
 		// wallet balance도 바꿔야 됨. balance가 입찰가보다 낮으면 충전하세요!.
-		walletService.updateBalance(bidding.getPrice(), userId);
+		walletService.updateBalance(bidding.getPrice(), userDetails.getUserId());
 		model.addAttribute("bidding", bidding);
 		model.addAttribute("user", user);
-		return "/auction/result"; // or /users/mypage
+		return "auction/result"; // or /users/mypage
 	}
 	
 	@RequestMapping("/nfts/bidding/delete") // biddingDto 받을 수 있는지 해보기.
-	public String deleteBidding(@SessionAttribute("userId") Long userId) {
+	public String deleteBidding(@AuthenticationPrincipal CustomUserDetails userDetails) {
 		Auction auction = auctionService.findByNft(nftId);
 		List<Bidding> bidding = auctionService.findBiddingList(auction);
 		Long biddingId = null;
 		for (int i = 0; i < bidding.size(); i++) {
-			if (userId == bidding.get(i).getUser().getId()) {
+			if (userDetails.getUserId() == bidding.get(i).getUser().getId()) {
 				biddingId = bidding.get(i).getId();
 				break;
 			}
