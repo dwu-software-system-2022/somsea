@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 			.antMatchers("/", "/user/login", "/main", "/user/add").permitAll()
 			.antMatchers("/nfts/*").permitAll()
-//			.antMatchers("/user/**").hasRole("USER")
+			.antMatchers("/user/**").hasRole("USER")
 			.antMatchers("/static/**").permitAll()
 			.anyRequest()
 			.authenticated()

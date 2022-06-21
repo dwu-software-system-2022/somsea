@@ -122,4 +122,9 @@ public class NftService {
     	findNft(nftId);
     	nftRepository.updateUserIdOfNft(userId, nftId);
     }
+    
+    public List<Nft> readNftsByUserId(Long userId) {
+    	List<Nft> nfts = nftRepository.findAllByUserId(userId);
+    	return nfts;
+    }
 }

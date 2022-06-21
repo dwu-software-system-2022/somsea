@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.project.somsea.domain.User;
 import com.project.somsea.domain.Wallet;
+import com.project.somsea.repository.UserRepository;
 import com.project.somsea.repository.WalletRepository;
 
 import lombok.RequiredArgsConstructor;
