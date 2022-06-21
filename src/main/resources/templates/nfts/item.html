@@ -1,84 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Neftify - NFT Marketplace Bootstrap 5 HTML Template</title>
-    <meta name="description"
-        content="Neftify is the complete UX & UI dashboard for NFT. Here included bids, collection, wallet, and all user setting pages including profile, application, activity, payment method, api, sign in & sign up etc.">
-
-
-    <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/static/images/favicon.png}">
-    <link rel="stylesheet" th:href="@{/static/css/style.css}">
-    <script type="text/Javascript">
-    	function popup1() {
-    		document.domain = "127.0.0.1"; //document.domain 값이 팝업과 부모창 동일해야 합니다
-    		window.open("/templates/nfts/winBidding.html", "popup1", "width = 500px height = 200px left = 0px top = 0px");
-    	}
-    	
-    	function popup2() {
-    		/* document.domain = "127.0.0.2";  *///document.domain 값이 팝업과 부모창 동일해야 합니다
-    		window.open("/templates/nfts/biddingForm.html", "popup2", "width = 500px height = 200px left = 0px top = 0px");
-    		
-    		 /* alert("왜 안돼!!"); */
-    	}
-    </script>
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<th:block th:replace="head :: headFragment"></th:block>
 
 <body class="@@dashboard">
-
-    <div id="preloader"><i>.</i><i>.</i><i>.</i></div>
-
-    <div id="main-wrapper" class="front">
-
-        <div class="header landing">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-12">
-                        <div class="navigation">
-                            <nav class="navbar navbar-expand-lg navbar-light">
-                                <div class="brand-logo">
-                                    <a href="/static">
-                                        <img th:src="@{/static/images/logo.png}" alt="" class="logo-primary">
-                                        <img th:src="@{/static/images/logow.png}" alt="" class="logo-white">
-                                    </a>
-                                </div>
-                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                                    aria-expanded="false" aria-label="Toggle navigation">
-                                    <span class="navbar-toggler-icon"></span>
-                                </button>
-                                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                                    <ul class="navbar-nav me-auto">
-                                        <li class="nav-item dropdown"><a class="nav-link" href="/index.html">Home</a>
-                                        </li>
-                                        <li class="nav-item"><a class="nav-link" href="/explore.html">Explore</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="/item.html">Item</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="/collection.html">Collection</a>
-                                        </li>
-                                        <li class="nav-item"><a class="nav-link" href="/profile.html">Profile</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="/upload.html">Upload</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="/dashboard.html">Dashboard</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="signin-btn d-flex align-items-center">
-                                    <div class="dark-light-toggle theme-switch" onclick="themeToggle()">
-                                        <span class="dark"><i class="ri-moon-line"></i></span>
-                                        <span class="light"><i class="ri-sun-line"></i></span>
-                                    </div>
-
-                                    <a class="btn btn-primary" href="/connect.html">Connect</a>
-                                </div>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <th:block th:replace="header :: headerFragment"></th:block>
         <div class="page-title">
             <div class="container">
                 <div class="row align-items-center justify-content-between">
@@ -95,8 +21,6 @@
                 </div>
             </div>
         </div>
-
-
         <div class="item-single section-padding">
             <div class="container">
                 <div class="row">
@@ -134,16 +58,22 @@
                                                 <div class="col-auto"><span class="text-sm"th:text="${nft.blockChain}"></span></div>
                                             </div>
                                             <hr class="my-3">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h6 class="text-sm mb-0">description</h6>
+                                                </div>
+                                                <div class="col-auto"><span class="text-sm"th:text="${nft.desc}"></span></div>
+                                            </div>
+                                            <hr class="my-3">
                                          </div>
                                     </div>
                                     <div class="col-md-6">
                                         <h3 class="mb-3" th:text="${nft.title}">nft Title</h3>
-                                        <div class="d-flex align-items-center mb-3"><img src="/static/images/avatar/1.jpg"
-                                                alt="" class="me-3 avatar-img">
+                                        <div class="d-flex align-items-center mb-3">
                                             <div class="flex-grow-1">
-                                       
                                             </div>
                                         </div>
+                                        <div th:if="${auction != null}">
                                         <div class="d-flex justify-content-between mt-4 mb-4">
                                             <div class="text-start">
                                                 <h4 class="mb-2">Auction ends</h4>
@@ -169,6 +99,7 @@
 		                                        </label>	
                                        		<!-- </form> -->
                                        	</div>
+                                        </div>
                                        
                                     
                                         <h4 class="card-title mb-3">Offers</h4>
@@ -201,6 +132,7 @@
          								  	
          								  </table>
          								  </div>
+                                        <br/><br/>
          								  <h4 class="card-title mb-3">Trade History</h4>
          								   <div id ="trade">
 									      <table id="tradeTable" style="width: 850px">
@@ -234,11 +166,20 @@
                 </div>
             </div>
         </div>
-    <script src="/static/vendor/jquery/jquery.min.js"></script>
-    <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="/static/js/scripts.js"></script> 
+        <script type="text/Javascript">
 
+            function popup1() {
+                document.domain = "127.0.0.1"; //document.domain 값이 팝업과 부모창 동일해야 합니다
+                window.open("/templates/nfts/winBidding.html", "popup1", "width = 500px height = 200px left = 0px top = 0px");
+            }
 
+            function popup2() {
+                const auctionId = [[${auction.id}]]
+                /* document.domain = "127.0.0.2";  *///document.domain 값이 팝업과 부모창 동일해야 합니다
+                window.open("/auctions/" + auctionId + "/bidding/form", "popup2", "width = 500px height = 200px left = 0px top = 0px");
+            }
+        </script>
+    <th:block th:replace="footer :: footerFragment"></th:block>
 </body>
 
 </html>

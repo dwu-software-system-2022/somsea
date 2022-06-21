@@ -41,7 +41,7 @@ public class UserServiceTest {
 									.password(passwordEncoder.encode("password"))
 									.build();
 		
-		Long userId = userService.add(userDto.toEntity(null));
+		Long userId = userService.add(userDto);
 		Optional<User> optionalUser = userRepository.findById(userId);
 		assertThat(optionalUser).isNotEmpty();
 	}
