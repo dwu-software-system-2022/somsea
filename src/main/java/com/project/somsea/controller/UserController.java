@@ -65,11 +65,5 @@ public class UserController {
         System.out.println("사용자 이메일 : " + userDetails.getEmail());
 		return "users/profile";
 	}
-	
-//	@GetMapping("/login")
-//	public String loginFrom(HttpServletRequest req) {
-//		String referer = req.getHeader("Referer");
-//		req.getSession().setAttribute("prevPage", referer);
-//		return "login";
-//	}
+
 }
