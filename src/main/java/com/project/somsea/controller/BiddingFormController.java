@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -57,30 +58,28 @@ public class BiddingFormController {
 		return "/auction/registerBiddingForm";
 	}*/
 	
-	@PostMapping("/nfts/bidding/add")
-	public String addBidding(@ModelAttribute("biddingDto")BiddingDto.Request requestDto, 
-			@SessionAttribute("userId") Long userId, @RequestParam("nftId") Long nftId,
-			SessionStatus status) {
-		requestDto.setTime(LocalDateTime.now());
-		Long biddingId = auctionService.addBidding(requestDto);
-		requestDto.setBiddingId(biddingId);
-		
-		TradeHistoryDto.Request trade = TradeHistoryDto.Request.newInstance();
-		
-		Auction auction = auctionService.findByNft(nftId);
-		requestDto.setAuctionId(auction.getId());
-//		HttpSession session = request.getSession();
-//		session.removeAttribute("nftId");
-		
-		trade.setAuctionId(auction.getId());
-		trade.setUserId(userId);
-//		trade.setStatus(TradeHistory.Status.BID_FAIL);
-		
-//		Long topBid = auctionService.findTopBid(auction.getId());
-		trade.setAmount(requestDto.getPrice());
-		
-		auctionService.addTradeHistory(trade);
-		status.setComplete();
-		return "/nfts/dtatil";
-	}
+//	@RequestMapping("/nfts/bidding/add")
+//	public String addBidding(@ModelAttribute("biddingDto")BiddingDto.Request requestDto, 
+//			@SessionAttribute("userId") Long userId, @RequestParam("nftId") Long nftId,
+//			SessionStatus status) {
+//		requestDto.setTime(LocalDateTime.now());
+//		Long biddingId = auctionService.addBidding(requestDto);
+//		requestDto.setBiddingId(biddingId);
+//		
+//		TradeHistoryDto.Request trade = TradeHistoryDto.Request.newInstance();
+//		
+//		Auction auction = auctionService.findByNft(nftId);
+//		requestDto.setAuctionId(auction.getId());
+//		
+//		trade.setAuctionId(auction.getId());
+//		trade.setUserId(userId);
+////		trade.setStatus(TradeHistory.Status.BID_FAIL);
+//		
+////		Long topBid = auctionService.findTopBid(auction.getId());
+//		trade.setAmount(requestDto.getPrice());
+//		
+//		auctionService.addTradeHistory(trade);
+//		status.setComplete();
+//		return "/nfts/dtatil";
+//	}
 }
