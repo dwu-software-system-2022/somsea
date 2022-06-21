@@ -131,7 +131,7 @@
 		                                        </label>	
                                        		</form>
                                        	</div>
-                                       	<div th:if="${auction.status} != 'COMPLETED' or ${session.userId} != ${topBid.user.id}">
+                                       	<div th:unless="${auction.status} == 'COMPLETED' and ${session.userId} == ${topBid.user.id}">
                                        		 <form action="#" th:action="@{/nfts/{nftId}(nftId=${nft.id})}">
 		                                        <label>
 		                                        	<input type="button" value="Place a bid" onclick="popup2();">
