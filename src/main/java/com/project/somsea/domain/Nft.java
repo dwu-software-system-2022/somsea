@@ -17,6 +17,12 @@ public class Nft {
     @Column(name = "nft_id")
     private Long id;
 
+    @Column(name = "nft_title")
+    private String title;
+
+    @Column(name = "description")
+    private String desc;
+
     @Column(name = "image_url")
     private String imageUrl;
 
@@ -52,7 +58,9 @@ public class Nft {
     }
 
     @Builder
-    public Nft(String imageUrl, Collection collection, User user) {
+    public Nft(String title, String desc, String imageUrl, Collection collection, User user) {
+        this.title = title;
+        this.desc = desc;
         this.imageUrl = imageUrl;
         this.collection = collection;
         this.user = user;
@@ -60,9 +68,4 @@ public class Nft {
         this.tokenStandard = TokenStandard.ERC_721;
         this.token = TokenGenerator.randomCharacterWithPrefix("nft_token_");
     }
-
-    public String getTitle(){
-        return collection.getName() + id;
-    }
-
 }
