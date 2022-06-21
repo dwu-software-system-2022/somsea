@@ -11,8 +11,8 @@
 
 
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" th:href="@{./images/favicon.png}">
-    <link rel="stylesheet" href="@{./css/style.css}">
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/static/images/favicon.png}">
+    <link rel="stylesheet" th:href="@{/static/css/style.css}">
 </head>
 
 <body class="@@dashboard">
@@ -29,8 +29,8 @@
                             <nav class="navbar navbar-expand-lg navbar-light">
                                 <div class="brand-logo">
                                     <a href="/static">
-                                        <img th:src="@{./images/logo.png}" alt="" class="logo-primary">
-                                        <img th:src="@{./images/logow.png}" alt="" class="logo-white">
+                                        <img th:src="@{/static/images/logo.png}" alt="" class="logo-primary">
+                                        <img th:src="@{/static/images/logow.png}" alt="" class="logo-white">
                                     </a>
                                 </div>
                                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -91,22 +91,12 @@
                         <h4 class="card-title mb-3">Upload Auction</h4>
                         <div class="card">
                             <div class="card-body">
-                                <form th:action="@{/user/mypage}">
+                                <form th:action="@{/auction/add}" method="post">
                                     <div class="row">
-                                        <!-- <div class="col-xxl-12">
-                                            <div class="d-flex align-items-center mb-3"><img
-                                                    class="me-3 rounded-circle me-0 me-sm-3" src="images/items/1.jpg"
-                                                    width="55" height="55" alt="">
-                                                <div class="media-body">
-                                                    <h5 class="mb-0">Max file size is 20mb</h5>
-                                                </div>
-                                            </div>
-                                        </div>
+                           
                                         <div class="col-12 mb-3">
-                                            <input name="photo" type="file" class="">
-                                        </div> -->
-                                        <div class="col-12 mb-3">
-                                            <span class="form-label" th:text="$auctionDto.nftId}">AuctionDto nftId</span>
+                                        	<h5>NftId</h5>
+                                            <span class="form-label" th:text="${auctionDto.nftId}">AuctionDto nftId</span>
                                         </div>
                                         <div class="col-12 mb-3">
                                             <label class="form-label">StartPrice</label><input name="startPrice"
@@ -114,7 +104,7 @@
                                         </div>
                                         <div class="col-12 mb-3">
                                             <label class="form-label">DueDate</label><input name="dueDate"
-                                                type="text" class="form-control">
+                                                type="text" placeholder="yyyy-MM-dd HH:mm 형식으로 작성하세요!" class="form-control">
                                         </div>
                                     </div>
                                     <div class="mt-3">
@@ -124,137 +114,14 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="col-xxl-4 col-xl-4 col-lg-6">
-                        <h4 class="card-title mb-3">Preview</h4>
-                        <div class="card items">
-                            <div class="card-body">
-                                <div class="items-img position-relative"><img src="./images/items/5.jpg"
-                                        class="img-fluid rounded mb-3" alt=""><img src="./images/avatar/5.jpg"
-                                        class="creator" width="50" alt=""></div>
-                                <h4 class="card-title">Liguid Wave</h4>
-                                <p></p>
-                                <div class="d-flex justify-content-between">
-                                    <div class="text-start">
-                                        <p class="mb-2">Creator</p>
-                                        <h5 class="text-muted">John Abrahmam</h5>
-                                    </div>
-                                    <div class="text-end">
-                                        <p class="mb-2">Price</p>
-                                        <h5 class="text-muted">0.55 ETH</h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
                 </div>
             </div>
         </div>
 
 
-        <!-- <div class="bottom section-padding triangle-top-dark triangle-bottom-dark">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-4 col-lg-4 col-md-7 col-sm-8">
-                        <div class="bottom-logo"><img class="pb-3" src="./images/logoh.png" alt="">
-                            <p>Neftify is a unique and beautiful collection of UI elements that are all flexible and
-                                modular. A
-                                complete and customizable solution to building the website of your dreams.</p>
-                        </div>
-                    </div>
-                    <div class="col-xl-2 col-lg-2 col-md-5 col-sm-4 col-6">
-                        <div class="bottom-widget">
-                            <h4 class="widget-title">About us</h4>
-                            <ul>
-                                <li><a href="./explore.html">Explore</a></li>
-                                <li><a href="./item.html">Item</a></li>
-                                <li><a href="./collection.html">Collection</a></li>
-                                <li><a href="./connect.html">Connect</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-xl-2 col-lg-2 col-md-4 col-sm-4 col-6">
-                        <div class="bottom-widget">
-                            <h4 class="widget-title">Settings</h4>
-                            <ul>
-                                <li><a href="./settings.html">Settings</a></li>
-                                <li><a href="./application.html">Application</a></li>
-                                <li><a href="./security.html">Security</a></li>
-                                <li><a href="./activity.html">Activity</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-4 col-md-8 col-sm-8">
-                        <div class="bottom-widget">
-                            <h4 class="widget-title">Profile</h4>
-                            <div class="row">
-                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
-                                    <ul>
-                                        <li><a href="./profile.html">Profile</a></li>
-                                        <li><a href="./created.html">Created</a></li>
-                                        <li><a href="./collected.html">Collected</a></li>
-                                        <li><a href="./activity.html">Activity</a></li>
-                                    </ul>
-                                </div>
-                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
-                                    <ul>
-                                        <li><a href="./onsale.html">On Sale</a></li>
-                                        <li><a href="./liked.html">Liked</a></li>
-                                        <li><a href="./following.html">Following</a></li>
-                                        <li><a href="./followers.html">Followers</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                        <div class="copyright">
-                            <p>© Copyright 2022 <a href="#">Neftify</a>All Rights Reserved</p>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                        <div class="footer-social">
-                            <ul>
-                                <li><a href="#"><i class="bi bi-facebook"></i></a></li>
-                                <li><a href="#"><i class="bi bi-twitter"></i></a></li>
-                                <li><a href="#"><i class="bi bi-linkedin"></i></a></li>
-                                <li><a href="#"><i class="bi bi-youtube"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-
-
-    <script src="./vendor/jquery/jquery.min.js"></script>
-    <script src="./vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <script src="./js/scripts.js"></script> -->
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/scripts.js"></script> 
 
 
 </body>

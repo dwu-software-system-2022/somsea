@@ -179,8 +179,8 @@ public class AuctionService {
 				bidding.setFloorDifference("same");
 			}
 		}
-//		bidding.setExpiration(calExpiration(bidding.getTime(), auction.getDueDate()));
-		bidding.setExpiration(calExpiration(auction.getDueDate(), bidding.getTime()));
+		bidding.setExpiration(calExpiration(bidding.getTime(), auction.getDueDate()));
+//		bidding.setExpiration(calExpiration(auction.getDueDate(), bidding.getTime()));
 		
 		Runnable updateTableRunner = new Runnable() { // anonymous class 정의
 			@Override

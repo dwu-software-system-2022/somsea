@@ -11,11 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.scheduling.TaskScheduler;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,6 +39,7 @@ import com.project.somsea.dto.UserDto;
 import com.project.somsea.service.AuctionService;
 import com.project.somsea.service.NftService;
 import com.project.somsea.service.WalletService;
+import com.project.somsea.users.CustomUserDetails;
 
 import lombok.RequiredArgsConstructor;
 
@@ -46,24 +48,18 @@ import lombok.RequiredArgsConstructor;
 @SessionAttributes("auctionDto")
 public class AuctionController {
 	private final AuctionService auctionService;
-	private final WalletService walletService;
-	private final NftService nftService;
 	
-	@ModelAttribute("auctionDto")
-	public AuctionDto.Request formBacking(@RequestParam("nftId") Long nftId, HttpServletRequest request) {
+	@GetMapping("/auction/{nftId}/add/form") 
+	public String form(Model model, @PathVariable("nftId") Long nftId) {
 		AuctionDto.Request auctionDto = AuctionDto.Request.newInstance();
 		auctionDto.setNftId(nftId);
-		return auctionDto;
-	}
-	
-	@GetMapping("/auction/add/form") 
-	public String form() {
+		model.addAttribute("auctionDto", auctionDto);
 		return "auction/form";
 	}
 	
 	@PostMapping("/auction/add")
 	public String addAuctionForm(@ModelAttribute("auctionDto") AuctionDto.Request auctionDto, Model model,
-			SessionStatus status) {
+			@AuthenticationPrincipal CustomUserDetails userDetails, SessionStatus status) {
 		auctionDto.setStatus(Status.IN_PROGRESS);
 		DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		String str_curTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
@@ -73,7 +69,7 @@ public class AuctionController {
 		auctionDto.setAuctionId(auctionId);
 		status.setComplete();
 
-		return "redirect:/users/mypage";
+		return "redirect:/users/" + userDetails.getUserId();
 	}
 	
 /*	@GetMapping("/auction/view")
