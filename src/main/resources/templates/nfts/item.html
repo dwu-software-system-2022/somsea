@@ -11,8 +11,8 @@
 
 
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" th:href="@{./images/favicon.png}">
-    <link rel="stylesheet" th:href="@{./css/style.css}">
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/static/images/favicon.png}">
+    <link rel="stylesheet" th:href="@{/static/css/style.css}">
     <script>
     	function pop1() {
     		document.domain = "127.0.0.1"; //document.domain 값이 팝업과 부모창 동일해야 합니다
@@ -40,8 +40,8 @@
                             <nav class="navbar navbar-expand-lg navbar-light">
                                 <div class="brand-logo">
                                     <a href="/static">
-                                        <img th:src="@{./images/logo.png}" alt="" class="logo-primary">
-                                        <img src="@{./images/logow.png}" alt="" class="logo-white">
+                                        <img th:src="@{/static/images/logo.png}" alt="" class="logo-primary">
+                                        <img th:src="@{/static/images/logow.png}" alt="" class="logo-white">
                                     </a>
                                 </div>
                                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -109,7 +109,7 @@
                                         <div class="d-flex align-items-center mb-3"><img src="./images/avatar/1.jpg"
                                                 alt="" class="me-3 avatar-img">
                                             <div class="flex-grow-1">
-                                                <h5 class="mb-0">${nft.id}<span class="circle bg-success"></span>
+                                                <h5 class="mb-0">${nft.nftId}<span class="circle bg-success"></span>
                                                 </h5>
                                             </div>
                                         </div>
@@ -124,7 +124,7 @@
                                             </div>
                                         </div>
                                         <!-- <div class="d-flex"><a href="" class="btn btn-primary">Place a Bid</a></div> -->
-                                        <div th:if="${auction.status} == 'COMPLETED' and ${session.userId} == ${topBid.user.id}">
+                                        <div th:if="${auction.status} == 'COMPLETED' and ${userId} == ${topBid.user.id}">
 	                                        <form action="#">
 		                                        <label>
 		                                        	<input type="button" value="buy now" onclick="popup1();">
@@ -132,7 +132,7 @@
                                        		</form>
                                        	</div>
                                        	<div th:unless="${auction.status} == 'COMPLETED' and ${session.userId} == ${topBid.user.id}">
-                                       		 <form action="#" th:action="@{/nfts/{nftId}(nftId=${nft.id})}">
+                                       		 <form action="#" th:action="@{/nfts/{nftId}(nftId=${nft.nftId})}">
 		                                        <label>
 		                                        	<input type="button" value="Place a bid" onclick="popup2();">
 		                                        </label>	
@@ -165,7 +165,7 @@
          								  		<td th:text="${bid.price}">bidPrice</td>
          								  		<td th:text="${bid.floorDifference}">floorDifference</td>
          								  		<td th:text="${bid.expiration}">expiration</td>
-         								  		<td th:text="&{bid.user.name}">
+         								  		<td th:text="${bid.user.name}">
 	         								  		<a href="#" th:href="@{/user/{userId}/mypage(userId=${bid.user.id})}">
 	         								  		userName
 	         								  		</a>
@@ -344,11 +344,9 @@
 
     </div>
 
-
-    <script src="./vendor/jquery/jquery.min.js"></script>
-    <script src="./vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-
+-->
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 
 
@@ -364,7 +362,9 @@
 
 
 
-    <script src="./js/scripts.js"></script> -->
+
+
+    <script src="/static/js/scripts.js"></script> 
 
 
 </body>

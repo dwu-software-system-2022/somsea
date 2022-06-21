@@ -50,7 +50,7 @@ public class AuctionController {
 	private final NftService nftService;
 	
 	@ModelAttribute("auctionDto")
-	public AuctionDto.Request formBacking(@SessionAttribute("nftId") Long nftId, HttpServletRequest request) {
+	public AuctionDto.Request formBacking(@RequestParam("nftId") Long nftId, HttpServletRequest request) {
 		AuctionDto.Request auctionDto = AuctionDto.Request.newInstance();
 		auctionDto.setNftId(nftId);
 		return auctionDto;
@@ -58,7 +58,7 @@ public class AuctionController {
 	
 	@GetMapping("/auction/add/form") 
 	public String form() {
-		return "/auction/form";
+		return "auction/form";
 	}
 	
 	@PostMapping("/auction/add")
@@ -73,7 +73,7 @@ public class AuctionController {
 		auctionDto.setAuctionId(auctionId);
 		status.setComplete();
 
-		return "redirect:/user/mypage";
+		return "redirect:/users/mypage";
 	}
 	
 /*	@GetMapping("/auction/view")
