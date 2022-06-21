@@ -61,7 +61,7 @@ public class NftController {
     public String addNftForm(Model model, @PathVariable Long collectionId) {
         NftDto.Request nftDto = NftDto.Request.newInstance();
         List<PartDto.Response> parts = nftService.getPartsByCollectionId(collectionId);
-   
+
         model.addAttribute("nft", nftDto);
         model.addAttribute("parts", parts);
 
@@ -79,9 +79,12 @@ public class NftController {
 
     @PostMapping("/collections/{collectionId}/nfts/form")
     public String addNft(@ModelAttribute("requestDto") NftDto.Request requestDto
-    		, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    		, @AuthenticationPrincipal CustomUserDetails userDetails) throws IOException {
         Long userId = userDetails.getUserId();
         Long nftId = nftService.add(userId, requestDto);
+
+		String imageUrl = imageUploader.upload(requestDto.getImageFile());
+		requestDto.setImageUrl(imageUrl);
 
         // TODO: NFT 추가 완료 후에 이동할 페이지 변경 필요
         return "redirect:/nfts/" + nftId;
