@@ -22,7 +22,7 @@
 <body>
 	<h3>입찰가 입력</h3>
     <!-- <p>Top Bid</p> -->
-    <form th:action = "@{/nfts/bidding/add}" th:object="${biddingDto} name = "popupForm2" method = "post">
+    <form th:action = "@{/nfts/bidding/add}" th:object="${biddingDto}" name = "popupForm2" method = "post">
       <input type = "text" size = "40" name = "price" />
       <input type = "button" value = "확인"/>
     </form> 
