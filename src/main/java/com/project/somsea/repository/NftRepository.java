@@ -5,19 +5,17 @@ import com.project.somsea.domain.Nft;
 import com.project.somsea.domain.Part;
 import com.project.somsea.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 public interface NftRepository extends JpaRepository<Nft, Long> {
     List<Nft> findAllByCollection(Collection collection);
 
-    @Query(value = "SELECT DISTINCT n FROM Nft n JOIN FETCH n.nftInfos infos WHERE infos.part IN (:parts)")
-    List<Nft> findAllByJoinWithParts(@Param("parts") List<Part> parts);
+    @Query(nativeQuery = true,
+            value = "SELECT nft_id FROM NFT_INFO WHERE part_id IN (:parts) GROUP BY nft_id HAVING COUNT(*) = :partSize")
+    List<Long> findNftIdsByParts(@Param("parts") List<Part> parts, @Param("partSize") Integer partSize);
 
     List<Nft> findAllByUser(User user);
 }
