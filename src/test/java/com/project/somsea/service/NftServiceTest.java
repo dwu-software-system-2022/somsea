@@ -191,13 +191,13 @@ class NftServiceTest {
         nftInfoRepository.saveAllAndFlush(List.of(nftInfo1, nftInfo2, nftInfo3));
 
         //when
+        List<Part> parts = List.of(part1, part2);
         List<NftDto.Response> nftDtos = nftService.readNftByParts(List.of(part1.getId(), part2.getId()));
 
         //then
         List<Long> responseNftIds = nftDtos.stream().map(NftDto.Response::getNftId).collect(Collectors.toList());
-        assertThat(responseNftIds.size()).isEqualTo(2);    // nft1, nft2
+        assertThat(responseNftIds.size()).isEqualTo(1);    // nft1
         assertThat(responseNftIds).contains(nft1.getId());
-        assertThat(responseNftIds).contains(nft2.getId());
     }
 }
 

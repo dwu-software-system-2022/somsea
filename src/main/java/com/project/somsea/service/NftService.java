@@ -96,8 +96,9 @@ public class NftService {
 
     public List<NftDto.Response> readNftByParts(List<Long> partIds) {
         List<Part> parts = partRepository.findAllById(partIds);
+        List<Long> nftIds = nftRepository.findNftIdsByParts(parts, parts.size());
 
-        return nftRepository.findAllByJoinWithParts(parts).stream()
+        return nftRepository.findAllById(nftIds).stream()
                 .map(NftDto.Response::of)
                 .collect(Collectors.toList());
     }
