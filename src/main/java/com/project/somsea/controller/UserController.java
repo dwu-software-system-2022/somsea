@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -47,7 +48,8 @@ public class UserController {
 	public String addUser(@ModelAttribute("userDto") UserDto.Request userDto) {
 		userService.add(userDto);
 // 		HttpSession session = request.getSession();
-//		session.setAttribute("userId", userId); // delete하면 session 종료해야 됨.
+//		session.setAttribute("userId", userId);
+//		delete하면 session 종료해야 됨.
 		return "redirect:/";
 	}
 	
@@ -56,13 +58,12 @@ public class UserController {
 		return "users/loginForm";
 	}
 	
-	@GetMapping("/user/profile")
-	public String profile(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
+	@GetMapping("/user/{userId}")
+	public String profile(Model model, @PathVariable Long userId,
+			@AuthenticationPrincipal CustomUserDetails userDetails) {
 		List<Nft> nfts = nftService.readNftsByUserId(userDetails.getUserId());
 		model.addAttribute("user", userDetails);
 		model.addAttribute("nfts", nfts);
-		System.out.println("사용자 정보 : " + userDetails.getName());
-        System.out.println("사용자 이메일 : " + userDetails.getEmail());
 		return "users/profile";
 	}
 
