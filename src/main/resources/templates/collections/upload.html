@@ -62,6 +62,11 @@
                   <label class="form-label">Part(쉼표로 구분)</label>
                   <input th:field="*{part}" type="text" class="form-control">
                 </div>
+                <label class="form-label">Categories</label>
+                <div th:each="category : ${categories}">
+                  <input type="radio" th:field="*{categoryIds}" th:value="${category.id}" />
+                  <label th:for="${#ids.prev('categoryIds')}" th:text="${category.name}"></label>
+                </div>
               </div>
               <div class="mt-3">
                 <button type="submit" class="btn btn-primary mr-2 w-100">Submit</button>

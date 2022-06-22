@@ -18,20 +18,6 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class CategoryController {
-    private final CategoryService categoryService;
-    private final CollectionService collectionService;
-
-    @PostMapping("/categories")
-    @ResponseBody
-    public Long saveCategory(CategoryDto categoryDto) {
-        return categoryService.saveCategory(categoryDto);
-    }
-
-    @GetMapping("/categories/{id}")
-    @ResponseBody
-    public CategoryDto getCategoryById(@PathVariable Long id) {
-        return (categoryService).getCategoryById(id);
-    }
 
 }
 

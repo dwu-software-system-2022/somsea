@@ -1,6 +1,7 @@
 package com.project.somsea.service;
 
 import com.project.somsea.domain.*;
+import com.project.somsea.dto.CategoryDto;
 import com.project.somsea.dto.CollectionDto;
 import com.project.somsea.repository.*;
 
@@ -22,6 +23,7 @@ public class CollectionService {
     private final UserRepository userRepository;
     private final PartRepository partRepository;
     private final CategoryRepository categoryRepository;
+    private final TagRepository tagRepository;
 
     public List<CollectionDto.Response> findAll(){
         return collectionRepository.findAll().stream()
@@ -39,6 +41,13 @@ public class CollectionService {
     public Long add(Long userId, CollectionDto.Request collectionDto) {
         User user = findUser(userId);
         Collection collection = collectionDto.toEntity(user);
+
+        //Category 선택
+        List<Tag> tags = collectionDto.getCategoryIds().stream()
+                    .map(this::findCategory)
+                    .map(category -> Tag.builder().collection(collection).category(category).build())
+                    .collect(Collectors.toList());
+        tagRepository.saveAll(tags);
 
         // Part 추가
         List<Part> parts = collectionDto.generatePartEntities(collection);

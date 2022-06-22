@@ -25,6 +25,7 @@ public class CollectionDto {
 			private MultipartFile imageFile;
 			private String description;
 			private String part;
+			private List<Long> categoryIds;
 
 		public Collection toEntity(User user) {
 			return Collection.builder()

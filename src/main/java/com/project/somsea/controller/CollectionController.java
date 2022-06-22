@@ -1,10 +1,12 @@
 package com.project.somsea.controller;
 
 import com.project.somsea.domain.Collection;
+import com.project.somsea.dto.CategoryDto;
 import com.project.somsea.dto.CollectionDto;
 import com.project.somsea.dto.NftDto;
 import com.project.somsea.dto.PartDto;
 import com.project.somsea.helper.ImageUploader;
+import com.project.somsea.service.CategoryService;
 import com.project.somsea.service.CollectionService;
 import com.project.somsea.users.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class CollectionController {
 	private final CollectionService collectionService;
+	private final CategoryService categoryService;
 	private final ImageUploader imageUploader;
 
 	@GetMapping("/collections")
@@ -38,7 +41,10 @@ public class CollectionController {
 	@GetMapping("/collections/form")
 	public String addCollectionForm(Model model) {
 		CollectionDto.Request collectionDto = CollectionDto.Request.newInstance();
+		List<CategoryDto.Response> categories = categoryService.findAll();
+
 		model.addAttribute("collection", collectionDto);
+		model.addAttribute("categories", categories);
 		return "collections/upload";
 	}
 
