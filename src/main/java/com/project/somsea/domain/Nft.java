@@ -68,4 +68,8 @@ public class Nft {
         this.tokenStandard = TokenStandard.ERC_721;
         this.token = TokenGenerator.randomCharacterWithPrefix("nft_token_");
     }
+
+    public void changeUser(User user){
+        this.user = user;
+    }
 }

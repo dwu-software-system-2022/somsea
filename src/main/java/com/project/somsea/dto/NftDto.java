@@ -47,12 +47,16 @@ public class NftDto {
         private Long userId;
         private Long nftId;
         private String imageUrl;
+        private Nft.TokenStandard tokenStandard;
+        private Nft.BlockChain blockChain;
         private String nftTitle;
 
         public static Response of(Nft nft) {
             return Response.builder()
                     .userId(nft.getUser().getId())
                     .nftId(nft.getId())
+                    .blockChain(nft.getBlockChain())
+                    .tokenStandard(nft.getTokenStandard())
                     .imageUrl(nft.getImageUrl())
                     .nftTitle(nft.getTitle())
                     .build();
