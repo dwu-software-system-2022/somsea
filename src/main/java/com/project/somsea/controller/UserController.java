@@ -2,9 +2,6 @@ package com.project.somsea.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import com.project.somsea.dto.NftDto;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -13,12 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
-import com.project.somsea.domain.Nft;
 import com.project.somsea.domain.User;
 import com.project.somsea.dto.UserDto;
-import com.project.somsea.repository.UserRepository;
+
 import com.project.somsea.service.NftService;
 import com.project.somsea.service.UserService;
 import com.project.somsea.users.CustomUserDetails;
@@ -48,9 +43,6 @@ public class UserController {
 	@PostMapping("/user/add")
 	public String addUser(@ModelAttribute("userDto") UserDto.Request userDto) {
 		userService.add(userDto);
-// 		HttpSession session = request.getSession();
-//		session.setAttribute("userId", userId);
-//		delete하면 session 종료해야 됨.
 		return "redirect:/";
 	}
 	
@@ -60,10 +52,10 @@ public class UserController {
 	}
 	
 	@GetMapping("/user/{userId}")
-	public String profile(Model model, @PathVariable Long userId,
-			@AuthenticationPrincipal CustomUserDetails userDetails) {
-		List<NftDto.Response> nfts = nftService.readNftsByUserId(userDetails.getUserId());
-		model.addAttribute("user", userDetails);
+	public String profile(Model model, @PathVariable Long userId) {
+		List<NftDto.Response> nfts = nftService.readNftsByUserId(userId);
+		User user = userService.findUserById(userId);
+		model.addAttribute("user", user);
 		model.addAttribute("nfts", nfts);
 		return "users/profile";
 	}

@@ -12,7 +12,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-
+import javax.validation.constraints.NotEmpty;
 public class AuctionDto {
 	@Setter
 	@Getter
@@ -20,9 +20,11 @@ public class AuctionDto {
 	public static class Request {
 		private Long auctionId;
 	    private Long nftId;
+	    @NotEmpty
 	    private Long startPrice;
 //	    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
 //	    private LocalDateTime registerDate;
+	    @NotEmpty
 	    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
 	    private LocalDateTime dueDate;
 	    private Status status;

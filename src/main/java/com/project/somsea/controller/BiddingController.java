@@ -49,7 +49,7 @@ public class BiddingController {
 
 		Auction auction = auctionService.findByNft(nftId);
 		
-		requestDto.setUserId(1L);
+		requestDto.setUserId(userDetails.getUserId());
 		requestDto.setTime(LocalDateTime.now());
 
 		requestDto.setAuctionId(auction.getId());
@@ -61,7 +61,7 @@ public class BiddingController {
 
 	@GetMapping("/nfts/{auctionId}/bidding/win")
 	public String winBiddingForm(@PathVariable Long auctionId, Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
-		User user = auctionService.findUser(628L); // userDetails 작동하면 필요없고 userDetails 쓰면됨.
+		User user = auctionService.findUser(userDetails.getUserId()); // userDetails 작동하면 필요없고 userDetails 쓰면됨.
 		Long biddingid = auctionService.findBiddingIdByTopBid(auctionId);
 		Bidding bidding = auctionService.findBidding(biddingid);
 		model.addAttribute("bidding", bidding);
@@ -75,10 +75,10 @@ public class BiddingController {
 		Long biddingid = auctionService.findBiddingIdByTopBid(auction.getId());
 		Bidding bidding = auctionService.findBidding(biddingid);
 		//update문 써야 됨. user_id 바꿔야 됨. nft의
-		nftService.updateUserIdOfNft(1L, auction.getNft().getId());
+		nftService.updateUserIdOfNft(userDetails.getUserId(), auction.getNft().getId());
 		// wallet balance도 바꿔야 됨. balance가 입찰가보다 낮으면 충전하세요!.
-		walletService.updateBalance(bidding.getPrice(), 1L);
-		return "redirect:/users/" + userDetails.getUserId(); // or /users/mypage
+		walletService.updateBalance(bidding.getPrice(), userDetails.getUserId());
+		return "redirect:/user/" + userDetails.getUserId(); // or /users/mypage
 	}
 
 	@RequestMapping("/nfts/{nftId}/bidding/{biddingId}/delete") // biddingDto 받을 수 있는지 해보기.
