@@ -100,5 +100,36 @@ public class NftController {
         return "users/saved";
     }
 
+    @GetMapping("/collections/{collectionId}/nfts")
+    public String showNftList(Model model, @PathVariable Long collectionId){
+        List<NftDto.Response> nfts = nftService.readNftByCollection(collectionId);
+        List<PartDto.Response> parts = nftService.getPartsByCollectionId(collectionId);
+        PartDto.Request partRequest = PartDto.Request.newInstance();
 
+        model.addAttribute("nfts", nfts);
+        model.addAttribute("parts", parts);
+        model.addAttribute("partRequest", partRequest);
+        return "nfts/nftList";
+    }
+
+    @PostMapping("/collections/{collectionId}/nfts")
+    public String showNftListFilterByParts(Model model,
+                                           @PathVariable Long collectionId,
+                                           @ModelAttribute("partRequest") PartDto.Request partRequest) {
+        List<NftDto.Response> nfts = findNftByParts(partRequest, collectionId);
+        List<PartDto.Response> parts = nftService.getPartsByCollectionId(collectionId);
+
+        model.addAttribute("nfts", nfts);
+        model.addAttribute("parts", parts);
+        model.addAttribute("partRequest", partRequest);
+        return "nfts/nftList";
+    }
+
+    private List<NftDto.Response> findNftByParts(PartDto.Request partRequest, Long collectionId) {
+        if (partRequest.partIdsIsEmpty()) {
+            return nftService.readNftByCollection(collectionId);
+        }
+
+        return nftService.readNftByParts(partRequest.getPartIds());
+    }
 }
