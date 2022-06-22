@@ -41,6 +41,10 @@ public class Collection {
     @OneToMany(mappedBy = "collection", fetch = FetchType.LAZY)
 	private List<Nft> nfts;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Builder
     public Collection(Long id, String name, String url, String logoImgUrl, String description) {
     	this.id = id;
