@@ -1,7 +1,10 @@
 package com.project.somsea.domain;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 
+@Getter
 @Entity
 @Table(name = "tag")
 public class Tag {

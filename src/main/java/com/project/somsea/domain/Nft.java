@@ -72,4 +72,9 @@ public class Nft {
     public void changeUser(User user){
         this.user = user;
     }
+
+    public void updateTitleAndDesc(String title, String desc) {
+        this.title = title;
+        this.desc = desc;
+    }
 }

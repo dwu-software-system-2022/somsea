@@ -89,7 +89,27 @@ public class NftController {
     public String deleteNft(Model model, @PathVariable Long nftId,  @AuthenticationPrincipal CustomUserDetails userDetails) {
 		Long userId = userDetails.getUserId();
         nftService.delete(userId, nftId);
-        // TODO: NFT 추가 완료 후에 이동할 페이지 변경 필요
+        return "redirect:/nfts/me";
+    }
+
+    @GetMapping("/nfts/{nftId}/update")
+    public String showUpdateNft(Model model, @PathVariable Long nftId,
+                            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        NftDto.Request nftDto = nftService.readNftForUpdate(nftId);
+        List<PartDto.Response> parts = nftService.getPartsByNftId(nftId);
+//        Long userId = userDetails.getUserId();
+        model.addAttribute("nft", nftDto);
+        model.addAttribute("parts", parts);
+
+        return "nfts/update";
+    }
+
+    @PostMapping("/nfts/{nftId}/update")
+    public String updateNft(Model model, @PathVariable Long nftId,
+                            @AuthenticationPrincipal CustomUserDetails userDetails,
+                            @ModelAttribute("requestDto") NftDto.Request requestDto) {
+        Long userId = userDetails.getUserId();
+        nftService.update(userId, nftId, requestDto);
         return "redirect:/nfts/me";
     }
 

@@ -36,14 +36,14 @@ public class CollectionController {
 	}
 
 	@GetMapping("/collections/form")
-	public String addNftForm(Model model) {
+	public String addCollectionForm(Model model) {
 		CollectionDto.Request collectionDto = CollectionDto.Request.newInstance();
 		model.addAttribute("collection", collectionDto);
 		return "collections/upload";
 	}
 
 	@PostMapping("/collections/form")
-	public String addNft(@ModelAttribute("requestDto") CollectionDto.Request requestDto,
+	public String addCollection(@ModelAttribute("requestDto") CollectionDto.Request requestDto,
 						 @AuthenticationPrincipal CustomUserDetails userDetails) throws IOException {
 		Long userId = userDetails.getUserId();
 
@@ -53,5 +53,15 @@ public class CollectionController {
 		Long collectionId = collectionService.add(userId, requestDto);
 
 		return "redirect:/collections/" + collectionId + "/nfts";
+	}
+
+	@GetMapping("/categories/{categoryId}/collections")
+	public String showCollectionListFilterByCategory(Model model,
+													 @PathVariable Long categoryId) {
+
+		List<CollectionDto.Response> collections = collectionService.findByCategoryId(categoryId);
+
+		model.addAttribute("collections", collections);
+		return "collections/collectionList";
 	}
 }

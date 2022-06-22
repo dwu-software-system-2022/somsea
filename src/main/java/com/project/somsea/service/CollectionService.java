@@ -21,9 +21,17 @@ public class CollectionService {
 	private final CollectionRepository collectionRepository;
     private final UserRepository userRepository;
     private final PartRepository partRepository;
+    private final CategoryRepository categoryRepository;
 
     public List<CollectionDto.Response> findAll(){
         return collectionRepository.findAll().stream()
+                .map(CollectionDto.Response::of)
+                .collect(Collectors.toList());
+    }
+
+    public List<CollectionDto.Response> findByCategoryId(Long categoryId) {
+        return findCategory(categoryId).getTags().stream()
+                .map(Tag::getCollection)
                 .map(CollectionDto.Response::of)
                 .collect(Collectors.toList());
     }
@@ -43,5 +51,10 @@ public class CollectionService {
     private User findUser(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User Id 값이 없습니다. UserId: " + userId));
+    }
+
+    private Category findCategory(Long categoryId) {
+        return categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new IllegalArgumentException("Category Id 값이 없습니다. CategoryId: " + categoryId));
     }
 }

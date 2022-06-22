@@ -1,8 +1,6 @@
 package com.project.somsea.dto;
 
-import com.project.somsea.domain.Collection;
-import com.project.somsea.domain.Nft;
-import com.project.somsea.domain.User;
+import com.project.somsea.domain.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class NftDto {
 
@@ -25,6 +24,14 @@ public class NftDto {
         private String imageUrl;
         private MultipartFile imageFile;
         private List<Long> partIds;
+
+        public static Request of(Nft nft) {
+            return Request.builder()
+                    .title(nft.getTitle())
+                    .desc(nft.getDesc())
+                    .imageUrl(nft.getImageUrl())
+                    .build();
+        }
 
         public Nft toEntity(User user, Collection collection) {
             return Nft.builder()

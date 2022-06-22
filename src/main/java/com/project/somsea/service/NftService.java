@@ -96,6 +96,11 @@ public class NftService {
         return NftDto.ResponseDetail.of(nft);
     }
 
+    public NftDto.Request readNftForUpdate(Long nftId) {
+        Nft nft = findNft(nftId);
+        return NftDto.Request.of(nft);
+    }
+
     public List<NftDto.Response> readNftByParts(List<Long> partIds) {
         List<Part> parts = partRepository.findAllById(partIds);
         List<Long> nftIds = nftRepository.findNftIdsByParts(parts, parts.size());
@@ -115,6 +120,14 @@ public class NftService {
                 .map(PartDto.Response::of)
                 .collect(Collectors.toList());
     }
+
+    public List<PartDto.Response> getPartsByNftId(Long nftId) {
+        return findNft(nftId)
+                .getNftInfos().stream()
+                .map(NftInfo::getPart)
+                .map(PartDto.Response::of)
+                .collect(Collectors.toList());
+    }
     
     
     /**
@@ -130,5 +143,18 @@ public class NftService {
         return nftRepository.findAllByUser(findUser(userId)).stream()
                 .map(NftDto.Response::of)
                 .collect(Collectors.toList());
+    }
+
+    public void update(Long userId, Long nftId, NftDto.Request nftDto) {
+        Nft nft = findNft(nftId);
+
+        // NFT Validate: UserId 가 맞는지
+        User user = nft.getUser();
+
+        if (user.isNotEquals(userId)) {
+            throw new IllegalArgumentException("userId 값이 다릅니다.");
+        }
+
+        nft.updateTitleAndDesc(nftDto.getTitle(), nftDto.getDesc());
     }
 }
