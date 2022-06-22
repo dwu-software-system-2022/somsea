@@ -192,7 +192,7 @@ public class AuctionService {
 				// 실행 시점의 시각을 전달하여 그 시각 이전의 closing time 값을 갖는 event의 상태를 변경 
 				List<Bidding> bid_list = biddingRepository.findByAuction(auction);
 				for (int i = 0; i < bid_list.size(); i++) {
-					int expiration = calExpiration(curTime, auction.getDueDate());
+					String expiration = calExpiration(curTime, auction.getDueDate());
 //					int expiration = calExpiration(bidding.getTime(), curTime);
 					biddingRepository.updateBiddingByExpiration(expiration, bid_list.get(i).getId());	// Bidding 테이블의 레코드 갱신
 				}
@@ -211,7 +211,7 @@ public class AuctionService {
 			} else if (dif > 100) {
 				list.get(i).setFloorDifference(dif + "% above");
 			} else {
-				list.get(i).setFloorDifference("same");
+				list.get(i).setFloorDifference("similar or same");
 			}
 			biddingRepository.updateBiddingByFloorDif(list.get(i).getFloorDifference(), list.get(i).getId());
 		}
@@ -240,21 +240,25 @@ public class AuctionService {
 		biddingRepository.delete(
 				biddingRepository.findById(biddingId).orElseThrow(() -> new IllegalArgumentException("Bidding id 값이 없습니다. biddingId : " + biddingId)));
 		Long topBidPrice = findTopBid(auctionId);
-		auctionRepository.updateAuction(topBidPrice, auctionId);
-		Long floorBid = findFloorBid(auctionId);
-		biddingRepository.updateBiddingByFloorBid(floorBid, auctionId);
-		
-		List<Bidding> list = biddingRepository.findByAuction(auction);
-		for (int i = 0; i < list.size(); i++) {
-			double dif = floorDifference(list.get(i).getPrice(), list.get(i).getFloorBid());
-			if (dif < 100) {
-				list.get(i).setFloorDifference(dif + "% below");
-			} else if (dif > 100) {
-				list.get(i).setFloorDifference(dif + "% above");
-			} else {
-				list.get(i).setFloorDifference("same");
+		if (topBidPrice == null) {
+			auctionRepository.updateNullAuction(auctionId);
+		} else {
+			auctionRepository.updateAuction(topBidPrice, auctionId);
+			Long floorBid = findFloorBid(auctionId);
+			biddingRepository.updateBiddingByFloorBid(floorBid, auctionId);
+			
+			List<Bidding> list = biddingRepository.findByAuction(auction);
+			for (int i = 0; i < list.size(); i++) {
+				double dif = floorDifference(list.get(i).getPrice(), list.get(i).getFloorBid());
+				if (dif < 100) {
+					list.get(i).setFloorDifference(dif + "% below");
+				} else if (dif > 100) {
+					list.get(i).setFloorDifference(dif + "% above");
+				} else {
+					list.get(i).setFloorDifference("similar or same");
+				}
+				biddingRepository.updateBiddingByFloorDif(list.get(i).getFloorDifference(), list.get(i).getId());
 			}
-			biddingRepository.updateBiddingByFloorDif(list.get(i).getFloorDifference(), list.get(i).getId());
 		}
 	}
 	
@@ -303,19 +307,19 @@ public class AuctionService {
 	
 	public double floorDifference(Long price, Long floorBid) { // 바닥가 대비 입찰가와의 차이
 		double differencePercent = 0;
-		differencePercent = Math.round(((((double)price / floorBid) * 1000) * 1000) / 100);
+		differencePercent = Math.round(((((double)price / floorBid) * 100)));
 		return differencePercent;
  	}
 	
-	public int calExpiration(LocalDateTime time, LocalDateTime due) {
+	public String calExpiration(LocalDateTime time, LocalDateTime due) {
 		long hours = ChronoUnit.HOURS.between(time, due);
 		if (hours <= 24) {
-//			return "about " + hours + " hours"; // return type String
-			return Long.valueOf(hours).intValue();
+			return "about " + hours + " hours"; // return type String
+//			return Long.valueOf(hours).intValue();
 		} else {
 			long days = ChronoUnit.DAYS.between(time, due);
-//			return "about " + days + " days";
-			return Long.valueOf(days).intValue();
+			return "about " + days + " days";
+//			return Long.valueOf(days).intValue();
 		}
 	}
 	

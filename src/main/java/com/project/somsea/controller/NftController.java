@@ -40,11 +40,13 @@ public class NftController {
         List<Bidding> bidding = auctionService.findBiddingList(auction);
 
 		if(auction != null){
-			Long topBidddingId = auctionService.findBiddingIdByTopBid(auction.getId());
-			Bidding topBidding = auctionService.findBidding(topBidddingId);
+			Long topBiddingId = auctionService.findBiddingIdByTopBid(auction.getId());
+			if (topBiddingId != null) {
+				Bidding topBidding = auctionService.findBidding(topBiddingId);
+				model.addAttribute("topBid", topBidding);
+			}
+			else model.addAttribute("topBid", null);
 			List<TradeHistory> tradeHistory = auctionService.findByAuction(auction.getId());
-
-			model.addAttribute("topBid", topBidding);
 			model.addAttribute("tradeHistory", tradeHistory);
 		}
 
@@ -55,6 +57,7 @@ public class NftController {
 
         return "nfts/item";
     }
+
 
     @GetMapping("/collections/{collectionId}/nfts/form")
     public String addNftForm(Model model, @PathVariable Long collectionId) {

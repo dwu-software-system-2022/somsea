@@ -25,4 +25,8 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
 	@Modifying
 	@Query("update Auction set topBid = ?1 where id = ?2")
 	public void updateAuction(Long topBid, Long id);
+	@Transactional
+	@Modifying
+	@Query("update Auction set topBid = NULL where id = ?1")
+	public void updateNullAuction(Long id);
 }
