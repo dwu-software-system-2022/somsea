@@ -42,7 +42,7 @@ public class Bidding implements Comparable<Bidding>{
 //	@Transient
 	private String floorDifference; 
 	@Nullable
-	private int expiration;
+	private String expiration;
 //	@Transient
 	private Long FloorBid;
 	

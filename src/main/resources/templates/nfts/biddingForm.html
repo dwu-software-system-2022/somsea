@@ -1,30 +1,45 @@
 <!DOCTYPE html>
-<html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<title>입찰가를 입력하세요</title>
-<script type = "text/javascript">
+<html lang="en"
+	xmlns:th="http://www.thymeleaf.org">
 
-		var f= document.forms.popupForm2;
-	    document.domain = "127.0.0.2"; //document.domain 값이 팝업과 부모창 동일해야 합니다.
-	    opener.name = "parentPage2"; //유니크한 이름이어야 합니다.
-	    f.target = opener.name;
-	    f.submit();
-	    self.close();
-	
-      /* function ppp() {
-        opener.document.fm.addr1.value = document.getElementById('price').value;
-        window.close();
-      } */
-    </script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Somesea - Nft Marketplace</title>
+    
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/static/images/favicon.png}">
+    <link rel="stylesheet" th:href="@{/static/css/style.css}">
 </head>
-<body>
-	<h3>입찰가 입력</h3>
-    <!-- <p>Top Bid</p> -->
-    <form th:action th:object="${biddingDto}" method="post">
-      <input type = "text" size = "40" id="price" th:field="*{price}"/>
-      <input type = "submit" value = "확인"/>
-    </form> 
+
+<body class="@@dashboard">
+
+<div id="preloader"><i>.</i><i>.</i><i>.</i></div>
+
+<div class="authincation section-padding">
+    <div class="container h-100">
+        <div class="row justify-content-center h-100 align-items-center">
+            <div class="col-xl-4 col-md-5">
+                <div class="mini-logo text-center my-3">
+                    <h4 class="card-title mt-5">Bidding</h4>
+                </div>
+                <div class="auth-form card">
+                    <div class="card-body">
+                        <form class="row g-3" th:action th:object="${biddingDto}" method="post">
+                            <div class="col-12"><label class="form-label">Enter Price</label><input type="text"
+                                    class="form-control" id="price" th:field="*{price}"></div>
+                            <div class="text-center mt-4"><button type="submit"
+                                    class="btn btn-primary btn-block">Submit</button></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:replace="footer :: footerFragment"></th:block>
+
 </body>
+
 </html>
