@@ -70,4 +70,40 @@ public class CollectionController {
 		model.addAttribute("collections", collections);
 		return "collections/collectionList";
 	}
+
+	@GetMapping("/collections/me")
+	public String showMyCollections(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
+		Long userId = userDetails.getUserId();
+		List<CollectionDto.Response> collections = collectionService.readCollectionsByUserId(userId);
+
+		model.addAttribute("collections", collections);
+
+		return "users/myCollections";
+	}
+
+	@PostMapping("/collections/{collectionId}/delete")
+	public String deleteCollections(Model model, @PathVariable Long collectionId,  @AuthenticationPrincipal CustomUserDetails userDetails) {
+		Long userId = userDetails.getUserId();
+		collectionService.delete(userId, collectionId);
+		return "redirect:/collections/me";
+	}
+
+	@GetMapping("/collections/{collectionId}/update")
+	public String showUpdateCollection(Model model, @PathVariable Long collectionId,
+								@AuthenticationPrincipal CustomUserDetails userDetails) {
+		CollectionDto.Request collectionDto = collectionService.readCollectionForUpdate(collectionId);
+//        Long userId = userDetails.getUserId();
+		model.addAttribute("collection", collectionDto);
+
+		return "collections/update";
+	}
+
+	@PostMapping("/collections/{collectionId}/update")
+	public String updateCollection(Model model, @PathVariable Long collectionId,
+							@AuthenticationPrincipal CustomUserDetails userDetails,
+							@ModelAttribute("requestDto") CollectionDto.Request requestDto) {
+		Long userId = userDetails.getUserId();
+		collectionService.update(userId, collectionId, requestDto);
+		return "redirect:/collections/me";
+	}
 }

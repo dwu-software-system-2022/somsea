@@ -3,6 +3,8 @@ package com.project.somsea.service;
 import com.project.somsea.domain.*;
 import com.project.somsea.dto.CategoryDto;
 import com.project.somsea.dto.CollectionDto;
+import com.project.somsea.dto.NftDto;
+import com.project.somsea.dto.PartDto;
 import com.project.somsea.repository.*;
 
 import java.util.Arrays;
@@ -24,6 +26,8 @@ public class CollectionService {
     private final PartRepository partRepository;
     private final CategoryRepository categoryRepository;
     private final TagRepository tagRepository;
+    private final NftRepository nftRepository;
+
 
     public List<CollectionDto.Response> findAll(){
         return collectionRepository.findAll().stream()
@@ -65,5 +69,52 @@ public class CollectionService {
     private Category findCategory(Long categoryId) {
         return categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new IllegalArgumentException("Category Id 값이 없습니다. CategoryId: " + categoryId));
+    }
+
+    private Collection findCollection(Long collectionId) {
+        return collectionRepository.findById(collectionId)
+                .orElseThrow(() -> new IllegalArgumentException("Collection Id 값이 없습니다. collectionId: " + collectionId));
+    }
+    public List<CollectionDto.Response> readCollectionsByUserId(Long userId) {
+        return collectionRepository.findAllByUser(findUser(userId)).stream()
+                .map(CollectionDto.Response::of)
+                .collect(Collectors.toList());
+    }
+
+    public CollectionDto.Request readCollectionForUpdate(Long collectionId) {
+        Collection collection = findCollection(collectionId);
+        return CollectionDto.Request.of(collection);
+    }
+
+    public List<PartDto.Response> getPartsByCollectionId(Long collectionId) {
+        return findCollection(collectionId)
+                .getParts().stream()
+                .map(PartDto.Response::of)
+                .collect(Collectors.toList());
+    }
+
+    public void update(Long userId, Long collectionId, CollectionDto.Request collectionDto) {
+        Collection collection = findCollection(collectionId);
+
+        // NFT Validate: UserId 가 맞는지
+        User user = collection.getUser();
+
+        if (user.isNotEquals(userId)) {
+            throw new IllegalArgumentException("userId 값이 다릅니다.");
+        }
+        collection.updateNameAndDesc(collectionDto.getName(), collectionDto.getDescription());
+    }
+
+    public void delete(Long userId, Long collectionId) {
+        // DB 에 존재하는 NFT 조회
+        Collection collection = findCollection(collectionId);
+
+        // NFT Validate: UserId 가 맞는지
+        User user = collection.getUser();
+
+        if (user.isNotEquals(userId)) {
+            throw new IllegalArgumentException("userId 값이 다릅니다.");
+        }
+        collectionRepository.delete(collection);
     }
 }

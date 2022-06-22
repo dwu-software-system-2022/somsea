@@ -53,5 +53,9 @@ public class Collection {
     	this.description = description;
         this.user = user;
     }
+    public void updateNameAndDesc(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 }
 

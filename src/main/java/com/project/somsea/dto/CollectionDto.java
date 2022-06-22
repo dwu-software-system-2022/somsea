@@ -36,7 +36,14 @@ public class CollectionDto {
 					.description(description)
 					.build();
 		}
-
+		public static CollectionDto.Request of(Collection collection) {
+			return CollectionDto.Request.builder()
+					.name(collection.getName())
+					.url(collection.getUrl())
+					.logoImgUrl(collection.getLogoImgUrl())
+					.description(collection.getDescription())
+					.build();
+		}
 		public List<Part> generatePartEntities(Collection collection) {
 			return Arrays.stream(part.split(","))
 					.map(StringUtils::trim)
