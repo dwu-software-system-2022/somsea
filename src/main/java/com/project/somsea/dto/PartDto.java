@@ -4,7 +4,22 @@ import com.project.somsea.domain.Part;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.List;
+
 public class PartDto {
+
+    @Getter
+    @Builder
+    public static class Request {
+        private List<Long> partIds;
+
+        public boolean partIdsIsEmpty() {
+            return partIds.isEmpty();
+        }
+        public static Request newInstance() {
+            return Request.builder().build();
+        }
+    }
 
     @Getter
     @Builder
