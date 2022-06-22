@@ -27,10 +27,10 @@
                                     <ul class="navbar-nav me-auto">
                                         <li class="nav-item dropdown"><a class="nav-link" href="/index">Home</a>
                                         </li>
-                                        <li class="nav-item"><a class="nav-link" href="/collection.html">Collection</a>
+                                        <li class="nav-item"><a class="nav-link" th:href="@{/collections}">Collection</a>
                                         </li>
-                                        <li class="nav-item"><a class="nav-link" href="/profile.html">Profile</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="/upload.html">Upload</a></li>
+                                        <li class="nav-item"><a class="nav-link" th:href="@{/user/me}">Profile</a></li>
+                                        <li class="nav-item"><a class="nav-link" th:href="@{/collections/form}">Upload</a></li>
                                         <li class="nav-item"><a class="nav-link" href="/dashboard.html"></a>
                                         </li>
                                     </ul>
@@ -41,7 +41,7 @@
                                         <span class="light"><i class="ri-sun-line"></i></span>
                                     </div>
 
-                                    <a class="btn btn-primary" th:href="@{/user/add}">Connect</a>
+                                    <a class="btn btn-primary" th:href="@{/user/login}">Connect</a>
                                 </div>
                             </nav>
                         </div>
