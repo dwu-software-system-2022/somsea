@@ -84,43 +84,45 @@
 	                                           
 	                                            </div>
 	                                        </div>
-	                                        <div th:if="${userId} != ${nft.userId}">
-		                                        <div th:if="${topBid != null}">
-			                                        <div th:if="${auction.status.toString().equals('COMPLETED')} and ${userId} == ${topBid.user.id}">
-			                                        	<form th:action="@{/nfts/{auctionId}/bidding/win(auctionId=${auction.id})}">
-					                                        <label>
-					                                        	<input type="submit" value="buy now">
-			 		                                        </label>	
-			                                       		</form>
-			                                       	</div>
-			                                       	<div th:unless="${auction.status.toString().equals('COMPLETED')} and ${userId} == ${topBid.user.id}">
-			 		                                        <label th:if="${auction.status.toString().equals('COMPLETED')} and ${userId} != ${topBid.user.id}">
-			 		                                        	<input type="button" value="Place a bid" disabled='disabled'>
-			 		                                        </label>
-			 		                                        <label th:unless="${auction.status.toString().equals('COMPLETED')} and ${userId} != ${topBid.user.id}">
-			 		                                        	<input type="button" value="Place a bid" onClick="popup()">
-			 		                                        </label>	
-			                                        		
+	                                        
+		                                        <div th:if="${userId} != ${nft.userId}">
+			                                        <div th:if="${topBid != null}">
+				                                        <div th:if="${auction.status.toString().equals('COMPLETED')} and ${userId} == ${topBid.user.id}">
+				                                        	<form th:action="@{/nfts/{auctionId}/bidding/win(auctionId=${auction.id})}">
+						                                        <label>
+						                                        	<input type="submit" value="buy now">
+				 		                                        </label>	
+				                                       		</form>
+				                                       	</div>
+				                                       	<div th:unless="${auction.status.toString().equals('COMPLETED')} and ${userId} == ${topBid.user.id}">
+				 		                                        <label th:if="${auction.status.toString().equals('COMPLETED')} and ${userId} != ${topBid.user.id}">
+				 		                                        	<input type="button" value="Place a bid" disabled='disabled'>
+				 		                                        </label>
+				 		                                        <label th:unless="${auction.status.toString().equals('COMPLETED')} and ${userId} != ${topBid.user.id}">
+				 		                                        	<input type="button" value="Place a bid" onClick="popup()">
+				 		                                        </label>	
+				                                        		
+				                                        </div>
 			                                        </div>
-		                                        </div>
-		                                       	<div th:unless="${topBid != null}">
-		                                    		<div th:if="${auction.status.toString().equals('COMPLETED')}">
-					                                   <label>
-					                                      <input type="button" value="Place a bid" disabled='disabled'>
-			 		                                   </label>	
-			                                       	</div>
-			                                       	<div th:unless="${auction.status.toString().equals('COMPLETED')}">
-			 		                                    <label>
-			 		                                       <input type="button" value="Place a bid" onClick="popup()">
-			 		                                    </label>		
-			                                        </div>
-			                                     </div>
-			                                  </div>
-			                                  <div th:unless="${userId} != ${nft.userId}">
-			                                  	<label>
-					                            	<input type="button" value="Bid Completed" disabled='disabled'>
-			 		                            </label>	
-			                                  </div>
+			                                       	<div th:unless="${topBid != null}"> 
+			                                    		<div th:if="${auction.status.toString().equals('COMPLETED')}"> <!-- 지금 있는 걸로 테스트 해보고 싶으면 if unless change -->
+						                                   <label>
+						                                      <input type="button" value="Place a bid" disabled='disabled'>
+				 		                                   </label>	
+				                                       	</div>
+				                                       	<div th:unless="${auction.status.toString().equals('COMPLETED')}">
+				 		                                    <label>
+				 		                                       <input type="button" value="Place a bid" onClick="popup()">
+				 		                                    </label>		
+				                                        </div>
+				                                     </div>
+				                                  </div>
+				                                  <div th:unless="${userId} != ${nft.userId}">
+				                                  	<label th:if="${auction.status.toString().equals('COMPLETED')}">
+						                            	<input type="button" value="Bid Completed" disabled='disabled'>
+				 		                            </label>
+				                                  </div>
+				                           
 	                                          <h4 class="card-title mb-3">Offers</h4>
 	                                          <div id ="offers">
 										      <table id="offersTable" style="width: 850px">
@@ -138,12 +140,12 @@
 	         								  		<td th:text="${bid.floorDifference}">floorDifference</td>
 	         								  		<td th:text="${bid.expiration}">expiration</td>
 	         								  		<td>
-		         								  		<a href="#" th:href="@{/users/{userId}(userId=${bid.user.id})}" th:text="${bid.user.name}">
+		         								  		<a href="#" th:href="@{/user/{userId}(userId=${bid.user.id})}" th:text="${bid.user.name}">
 		         								  			userName
 		         								  		</a>
 		         								  	</td>
-		         								  	<td th:if="${userId} == ${bid.user.id}"><a href="#" th:href="@{/nfts/{nftId}/bidding/{biddingId}/delete(nftId=${nft.nftId}, biddingId=${bid.id})}" style="color: red">X</a></td>
-		         								  
+		         								  	<td th:if="${userId} == ${bid.user.id} and ${nft.userId} != ${userId}"><a href="#" th:href="@{/nfts/{nftId}/bidding/{biddingId}/delete(nftId=${nft.nftId}, biddingId=${bid.id})}" style="color: red">X</a></td>
+
 	         								  	</tr>
 	         								  	<tr th:unless="${bidding != null and !bidding.isEmpty()}">
 	            									<td colspan="6">입찰 정보가 없습니다.</td>
@@ -166,7 +168,8 @@
 	         								  	<td th:text="${index.index} + 1">index</td>
 	         								  	<td th:text="${trade.amount}">tradePrice</td>
 	         								  	<td>  
-		         								  	<a href="#" th:href="@{/users/{userId}/(userId=${trade.user.id})}" th:text="${trade.user.name}">
+		         								  	<a href="#" th:href="@{/user/{userId}/(userId=${trade.user.id})}" th:text="${trade.user.name}">
+
 		         								  	userName
 		         								  	</a>
 		         								</td>
@@ -187,12 +190,6 @@
         	</div>
       	</div>
         <script type="text/Javascript">
-
-            /* function popup1() {
-                ocument.domain = "127.0.0.1";  //document.domain 값이 팝업과 부모창 동일해야 합니다
-                window.open("/", "popup1", "width = 500px height = 200px left = 0px top = 0px");
-            } */
-
             function popup() {
             	const nftId = [[${nft.nftId}]]
 	            /* document.domain = "127.0.0.2";  *///document.domain 값이 팝업과 부모창 동일해야 합니다

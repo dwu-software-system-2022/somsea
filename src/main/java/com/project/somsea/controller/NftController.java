@@ -33,7 +33,8 @@ public class NftController {
     private final AuctionService auctionService;
 
     @GetMapping("/nfts/{nftId}")
-    public String showNftDetail(Model model, @PathVariable Long nftId) {
+    public String showNftDetail(Model model, @PathVariable Long nftId,
+    		@AuthenticationPrincipal CustomUserDetails userDetails ) {
 
         NftDto.ResponseDetail nftDto = nftService.readDetailNft(nftId);
         Auction auction = auctionService.findByNft(nftId);
@@ -51,7 +52,7 @@ public class NftController {
 		}
 
         model.addAttribute("nft", nftDto);
-        model.addAttribute("userId", 1L);
+        model.addAttribute("userId", userDetails.getUserId());
         model.addAttribute("auction", auction);
         model.addAttribute("bidding", bidding);
 
@@ -69,8 +70,6 @@ public class NftController {
 
         return "nfts/upload";
     }
-
-
 
     @PostMapping("/collections/{collectionId}/nfts/form")
     public String addNft(@ModelAttribute("requestDto") NftDto.Request requestDto
