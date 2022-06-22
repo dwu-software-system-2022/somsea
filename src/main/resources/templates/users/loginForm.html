@@ -1,39 +1,48 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
 <th:block th:replace="head :: headFragment"></th:block>
+
 <body class="@@dashboard">
-    <th:block th:replace="header :: headerFragment"></th:block>
-	<div class="page-title">
-		<div class="container">
-			<div class="row align-items-center justify-content-between">
-				<div class="col-6">
-					<div class="page-title-content">
-						<h3>회원가입</h3>
-						<p class="mb-2">회원가입 페이지</p>
-					</div>
-				</div>
-				<div class="col-auto">
-					<div class="breadcrumbs"><a href="#">Home </a><span><i
-								class="ri-arrow-right-s-line"></i></span><a href="#">Payments</a></div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div>
-		<form th:action="@{/user/login}" method="POST"> 
-		<div>
-			<input id="email" type="email" name="username" class="validate"/>
-			<label for="email">Email</label>
-		</div>
-		<div>
-			<input id="password" type="password" name="password" class="validate"/>
-			<label for="password">Password</label>
-		</div>
-		<input type="submit" value="로그인" />
-		</form>
-	</div>
-	<th:block th:replace="footer :: footerFragment"></th:block>
+
+<div id="preloader"><i>.</i><i>.</i><i>.</i></div>
+
+<div class="authincation section-padding">
+    <div class="container h-100">
+        <div class="row justify-content-center h-100 align-items-center">
+            <div class="col-xl-5 col-md-6">
+                <div class="mini-logo text-center my-4"><a th:href="@{/}"><img src="/static/images/logo.png" alt=""></a>
+                    <h4 class="card-title mt-5">로그인</h4>
+                </div>
+                <div class="auth-form card">
+                    <div class="card-body">
+                        <form th:action="@{/user/login}" method="POST">
+                            <div class="row">
+								<div class="col-12 mb-3"><label class="form-label">Email</label>
+									<input id="email" type="email" name="username" class="form-control"></div>
+	                            <div class="col-12 mb-3"><label class="form-label">Password</label>
+									<input id="password" name="password" type="password" class="form-control" value=""></div>
+                            </div>
+                            <div class="mt-3 d-grid gap-2"><button type="submit" class="btn btn-primary mr-2">Sign
+                                    In</button></div>
+                        </form>
+                        <p class="mt-3 mb-0">Don't have an account?<a class="text-primary" th:href="@{/user/add}">Sign
+                                up</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/static/vendor/jquery/jquery.min.js"></script>
+<script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script src="/static/js/scripts.js"></script>
+
 
 </body>
+
 </html>
