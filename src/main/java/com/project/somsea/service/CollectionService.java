@@ -1,9 +1,12 @@
 package com.project.somsea.service;
 
 import com.project.somsea.domain.*;
+import com.project.somsea.dto.CollectionDto;
 import com.project.somsea.repository.*;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
@@ -40,5 +43,11 @@ public class CollectionService {
         	collection.get().setName(updatedCollection.getName());
         	collectionRepository.save(collection.get());
         }
+    }
+
+    public List<CollectionDto.Response> findAll(){
+        return collectionRepository.findAll().stream()
+                .map(CollectionDto.Response::of)
+                .collect(Collectors.toList());
     }
 }
