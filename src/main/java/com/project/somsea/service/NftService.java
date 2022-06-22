@@ -31,11 +31,13 @@ public class NftService {
         nftRepository.save(nft);
 
         // NFT_INFO 저장
-        List<NftInfo> nftInfos = nftDto.getPartIds().stream()
-                .map(this::findPart)
-                .map(part -> NftInfo.builder().nft(nft).part(part).build())
-                .collect(Collectors.toList());
-        nftInfoRepository.saveAll(nftInfos);
+        if (nftDto.getPartIds() != null) {
+            List<NftInfo> nftInfos = nftDto.getPartIds().stream()
+                    .map(this::findPart)
+                    .map(part -> NftInfo.builder().nft(nft).part(part).build())
+                    .collect(Collectors.toList());
+            nftInfoRepository.saveAll(nftInfos);
+        }
 
         return nft.getId();
     }
