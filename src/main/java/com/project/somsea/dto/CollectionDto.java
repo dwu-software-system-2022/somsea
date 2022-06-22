@@ -2,30 +2,53 @@ package com.project.somsea.dto;
 
 import com.project.somsea.domain.Collection;
 import com.project.somsea.domain.Nft;
+import com.project.somsea.domain.Part;
+import com.project.somsea.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CollectionDto {
 		@Setter
 		@Getter
 		@Builder
 		public static class Request {
-			private Long id;
 			private String name;
 			private String url;
 			private String logoImgUrl;
+			private MultipartFile imageFile;
 			private String description;
-			private Nft nft;
+			private String part;
+			private List<Long> categoryIds;
 
-		public Collection toEntity() {
+		public Collection toEntity(User user) {
 			return Collection.builder()
-					.id(id)
-					.name(name)	
+					.user(user)
+					.name(name)
 					.url(url)
 					.logoImgUrl(logoImgUrl)
 					.description(description)
 					.build();
+		}
+		public static CollectionDto.Request of(Collection collection) {
+			return CollectionDto.Request.builder()
+					.name(collection.getName())
+					.url(collection.getUrl())
+					.logoImgUrl(collection.getLogoImgUrl())
+					.description(collection.getDescription())
+					.build();
+		}
+		public List<Part> generatePartEntities(Collection collection) {
+			return Arrays.stream(part.split(","))
+					.map(StringUtils::trim)
+					.map(partName -> Part.builder().name(partName).collection(collection).build())
+					.collect(Collectors.toList());
 		}
 		
 		public static Request newInstance() {

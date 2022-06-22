@@ -14,7 +14,7 @@ public class PartDto {
         private List<Long> partIds;
 
         public boolean partIdsIsEmpty() {
-            return partIds.isEmpty();
+            return partIds == null || partIds.isEmpty();
         }
         public static Request newInstance() {
             return Request.builder().build();

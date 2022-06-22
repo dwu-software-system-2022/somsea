@@ -5,14 +5,14 @@
 
 <body class="@@dashboard">
 
-<th:block th:replace="header :: headerFragment"></th:block>
+    <th:block th:replace="header :: headerFragment"></th:block>
 
         <div class="page-title">
             <div class="container">
                 <div class="row align-items-center justify-content-between">
                     <div class="col-6">
                         <div class="page-title-content">
-                            <h3>Collection 상세페이지</h3>
+                            <h3>Explore</h3>
                             <p class="mb-2">Neftify Explore page</p>
                         </div>
                     </div>
@@ -23,54 +23,49 @@
                 </div>
             </div>
         </div>
-        <div class="explore section-padding">
+
+
+        <div class="upload-item section-padding">
             <div class="container">
-                <div class="row">
-                    <div class="col-xxl-2 col-xl-3 col-lg-3 col-md-3">
-                        <div class="filter-sidebar">
-                            <div class="filter-sidebar-content">
-                                <h5>Parts</h5>
-                                <form th:action th:object="${partRequest}" method="post">
-                                    <div class="form-check" th:each="part : ${parts}">
-                                        <input class="form-check-input" type="checkbox" th:field="*{partIds}" th:value="${part.partId}">
-                                        <label class="form-check-label" th:for="${#ids.prev('partIds')}" th:text="${part.name}">파츠</label>
+                <div class="row justify-content-center">
+                    <div class="col-xxl-6 col-xl-6 col-lg-6">
+                        <h4 class="card-title mb-3">Upload Item</h4>
+                        <div class="card">
+                            <div class="card-body">
+                                <form th:action th:object="${nft}" method="post" enctype="multipart/form-data">
+                                    <div class="row">
+                                        <div class="col-xxl-12">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <img class="me-3 rounded-circle me-0 me-sm-3" th:src="|${nft.imageUrl}|" width="55" height="55" alt="">
+                                                <div class="media-body">
+                                                    <h5 class="mb-0">Max file size is 20mb</h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mb-3">
+                                            <label class="form-label">Item Name</label>
+                                            <input th:field="*{title}" type="text" class="form-control">
+                                        </div>
+                                        <div class="col-12 mb-3">
+                                            <label class="form-label">Description</label>
+                                            <input th:field="*{desc}" type="text" class="form-control">
+                                        </div>
+                                        <div>
+                                            <label class="form-label">Parts</label>
+                                            <div th:each="part : ${parts}">
+                                                <span th:text="${part.name}"></span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <input type="submit" value="Search" />
+                                    <div class="mt-3">
+                                        <button type="submit" class="btn btn-primary mr-2 w-100">Submit</button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
                     </div>
-                    <div class="col-xxl-10 col-xl-9 col-lg-9 col-md-9">
-                        <div class="row">
-                            <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6" th:each="nft : ${nfts}">
-                                <div th:onclick="|location.href='@{/nfts/{id}(id=${nft.nftId})}'|" style="cursor: pointer;">
-                                    <div class="card items">
-                                        <div class="card-body">
-                                            <div class="items-img position-relative">
-                                                <img th:src="|${nft.imageUrl}|" class="img-fluid rounded mb-3" alt="">
-                                            </div>
-                                            <a href="/item.html">
-                                                <h4 class="card-title" th:text="${nft.nftTitle}"></h4>
-                                            </a>
-                                            <p></p>
-                                            <div class="d-flex justify-content-between">
-                                                <div class="text-start">
-                                                    <p class="mb-2">token standard</p>
-                                                    <h5 class="text-muted" th:text="${nft.tokenStandard}"></h5>
-                                                </div>
-                                                <div class="text-end">
-                                                    <p class="mb-2">blockChain</p>
-                                                    <h5 class="text-muted" th:text="${nft.blockChain}"></h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                    </div>
                 </div>
             </div>
-        </div>
         </div>
 
 
@@ -78,7 +73,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xl-4 col-lg-4 col-md-7 col-sm-8">
-                        <div class="bottom-logo"><img class="pb-3" src="./images/logoh.png" alt="">
+                        <div class="bottom-logo"><img class="pb-3" th:src="@{./static/images/logoh.png}" alt="">
                             <p>Neftify is a unique and beautiful collection of UI elements that are all flexible and
                                 modular. A
                                 complete and customizable solution to building the website of your dreams.</p>
@@ -88,10 +83,10 @@
                         <div class="bottom-widget">
                             <h4 class="widget-title">About us</h4>
                             <ul>
-                                <li><a href="./explore.html">Explore</a></li>
-                                <li><a href="./item.html">Item</a></li>
-                                <li><a href="./collection.html">Collection</a></li>
-                                <li><a href="./connect.html">Connect</a></li>
+                                <li><a href="../../../../../../package/neftify/explore.html">Explore</a></li>
+                                <li><a href="../../../../../../package/neftify/item.html">Item</a></li>
+                                <li><a href="../../../../../../package/neftify/collection.html">Collection</a></li>
+                                <li><a href="../../../../../../package/neftify/connect.html">Connect</a></li>
                             </ul>
                         </div>
                     </div>
@@ -102,7 +97,7 @@
                                 <li><a href="./settings.html">Settings</a></li>
                                 <li><a href="./application.html">Application</a></li>
                                 <li><a href="./security.html">Security</a></li>
-                                <li><a href="./activity.html">Activity</a></li>
+                                <li><a href="../../../../../../package/neftify/activity.html">Activity</a></li>
                             </ul>
                         </div>
                     </div>
@@ -112,18 +107,18 @@
                             <div class="row">
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                                     <ul>
-                                        <li><a href="./profile.html">Profile</a></li>
-                                        <li><a href="./created.html">Created</a></li>
-                                        <li><a href="./collected.html">Collected</a></li>
-                                        <li><a href="./activity.html">Activity</a></li>
+                                        <li><a href="../../../../../../package/neftify/profile.html">Profile</a></li>
+                                        <li><a href="../../../../../../package/neftify/created.html">Created</a></li>
+                                        <li><a href="../../../../../../package/neftify/collected.html">Collected</a></li>
+                                        <li><a href="../../../../../../package/neftify/activity.html">Activity</a></li>
                                     </ul>
                                 </div>
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                                     <ul>
-                                        <li><a href="./onsale.html">On Sale</a></li>
-                                        <li><a href="./liked.html">Liked</a></li>
-                                        <li><a href="./following.html">Following</a></li>
-                                        <li><a href="./followers.html">Followers</a></li>
+                                        <li><a href="../../../../../../package/neftify/onsale.html">On Sale</a></li>
+                                        <li><a href="../../../../../../package/neftify/liked.html">Liked</a></li>
+                                        <li><a href="../../../../../../package/neftify/following.html">Following</a></li>
+                                        <li><a href="../../../../../../package/neftify/followers.html">Followers</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -153,12 +148,7 @@
                 </div>
             </div>
         </div>
-        <script>
-            function move(nftId) {
-                location.href = "/nfts/" + nftId;
-            }
-        </script>
-        <th:block th:replace="footer :: footerFragment"></th:block>
+    <th:block th:replace="footer :: footerFragment"></th:block>
 </body>
 
 </html>
