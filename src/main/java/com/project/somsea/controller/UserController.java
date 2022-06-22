@@ -62,7 +62,7 @@ public class UserController {
 	@GetMapping("/user/{userId}")
 	public String profile(Model model, @PathVariable Long userId,
 			@AuthenticationPrincipal CustomUserDetails userDetails) {
-		List<Nft> nfts = nftService.readNftsByUserId(userDetails.getUserId());
+		List<NftDto.Response> nfts = nftService.readNftsByUserId(userDetails.getUserId());
 		model.addAttribute("user", userDetails);
 		model.addAttribute("nfts", nfts);
 		return "users/profile";

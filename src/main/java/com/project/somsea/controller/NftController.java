@@ -82,12 +82,12 @@ public class NftController {
         return "redirect:/nfts/" + nftId;
     }
     
-    @PostMapping("/nfts/{nftId}")
+    @PostMapping("/nfts/{nftId}/delete")
     public String deleteNft(Model model, @PathVariable Long nftId,  @AuthenticationPrincipal CustomUserDetails userDetails) {
 		Long userId = userDetails.getUserId();
         nftService.delete(userId, nftId);
         // TODO: NFT 추가 완료 후에 이동할 페이지 변경 필요
-        return "redirect:/";
+        return "redirect:/nfts/me";
     }
 
     @GetMapping("/nfts/me")

@@ -58,7 +58,7 @@ public class NftService {
         // NFT Validate: UserId 가 맞는지
         User user = nft.getUser();
 
-        if (user.getId() != userId) {
+        if (user.isNotEquals(userId)) {
             throw new IllegalArgumentException("userId 값이 다릅니다.");
         }
 
