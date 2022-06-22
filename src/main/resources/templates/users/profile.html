@@ -34,9 +34,6 @@
                             <li class=""><a th:href="@{/nfts/me}">Collected</a></li>
                             <li class=""><a href="/activity.html">Activity</a></li>
                             <li class=""><a href="/onsale.html">On Sale</a></li>
-                            <li class=""><a href="/liked.html">Liked</a></li>
-                            <li class=""><a href="/following.html">Following</a></li>
-                            <li class=""><a href="/followers.html">Followers</a></li>
                         </ul>
                     </div>
                 </div>
@@ -90,7 +87,7 @@
                     </div>
                     
                     <div class="col-xxl-12">
-                        <div class="card-header px-0">
+                        <div th:if="${auth}" class="card-header px-0">
                             <h4 class="card-title">Information </h4><a href="./settings-profile.html"
                                 class="btn btn-primary">Edit</a>
                         </div>

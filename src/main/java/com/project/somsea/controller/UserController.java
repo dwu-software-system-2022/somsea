@@ -51,13 +51,25 @@ public class UserController {
 		return "users/loginForm";
 	}
 	
+	@GetMapping("/user/me")
+	public String myProfile(@AuthenticationPrincipal CustomUserDetails userDetails) {
+		return "redirect:/user/" + userDetails.getUserId();
+	}
+	
 	@GetMapping("/user/{userId}")
-	public String profile(Model model, @PathVariable Long userId) {
+	public String profile(Model model, @PathVariable Long userId,
+			@AuthenticationPrincipal CustomUserDetails userDetails) {
 		List<NftDto.Response> nfts = nftService.readNftsByUserId(userId);
 		User user = userService.findUserById(userId);
+		boolean auth = false;
+		
+		if (userId.equals(userDetails.getUserId())) {
+			auth = true;
+		}
+		System.out.println(userId + " " + userDetails.getUserId() + " " + auth);
 		model.addAttribute("user", user);
 		model.addAttribute("nfts", nfts);
+		model.addAttribute("auth", auth);		
 		return "users/profile";
 	}
-
 }
