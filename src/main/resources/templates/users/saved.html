@@ -194,7 +194,7 @@
                     <div class="filter-tab">
                         <div class="row">
                             <div class="col-xxl-3 col-xl-6 col-lg-6 col-md-6 col-sm-6"  th:each="nft : ${nfts}">
-                                <div class="card items">
+                                <div class="card items" th:onclick="|location.href='@{/nfts/{id}(id=${nft.nftId})}'|" style="cursor: pointer;">
                                     <div class="card-body">
                                         <div class="items-img position-relative">
                                             <img th:src="|${nft.imageUrl}|" class="img-fluid rounded mb-3" alt="">

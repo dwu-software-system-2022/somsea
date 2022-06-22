@@ -145,7 +145,7 @@
 		         								  		</a>
 		         								  	</td>
 		         								  	<td th:if="${userId} == ${bid.user.id} and ${nft.userId} != ${userId}"><a href="#" th:href="@{/nfts/{nftId}/bidding/{biddingId}/delete(nftId=${nft.nftId}, biddingId=${bid.id})}" style="color: red">X</a></td>
-		         								  
+
 	         								  	</tr>
 	         								  	<tr th:unless="${bidding != null and !bidding.isEmpty()}">
 	            									<td colspan="6">입찰 정보가 없습니다.</td>
@@ -169,6 +169,7 @@
 	         								  	<td th:text="${trade.amount}">tradePrice</td>
 	         								  	<td>  
 		         								  	<a href="#" th:href="@{/user/{userId}/(userId=${trade.user.id})}" th:text="${trade.user.name}">
+
 		         								  	userName
 		         								  	</a>
 		         								</td>
