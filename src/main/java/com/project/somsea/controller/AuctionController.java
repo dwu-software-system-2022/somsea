@@ -1,43 +1,22 @@
 package com.project.somsea.controller;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
+//import java.time.LocalDateTime;
+//import java.time.format.DateTimeFormatter;
 
-import javax.persistence.Transient;
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.support.PagedListHolder;
-import org.springframework.scheduling.TaskScheduler;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.project.somsea.domain.Auction;
-import com.project.somsea.domain.Bidding;
-import com.project.somsea.domain.Collection;
-import com.project.somsea.domain.Nft;
-import com.project.somsea.domain.TradeHistory;
-import com.project.somsea.domain.User;
 import com.project.somsea.domain.Auction.Status;
 import com.project.somsea.dto.AuctionDto;
-import com.project.somsea.dto.BiddingDto;
-import com.project.somsea.dto.NftDto;
-import com.project.somsea.dto.TradeHistoryDto;
-import com.project.somsea.dto.UserDto;
 import com.project.somsea.service.AuctionService;
-import com.project.somsea.service.NftService;
-import com.project.somsea.service.WalletService;
+import com.project.somsea.users.CustomUserDetails;
 
 import lombok.RequiredArgsConstructor;
 
@@ -46,34 +25,27 @@ import lombok.RequiredArgsConstructor;
 @SessionAttributes("auctionDto")
 public class AuctionController {
 	private final AuctionService auctionService;
-	private final WalletService walletService;
-	private final NftService nftService;
 	
-	@ModelAttribute("auctionDto")
-	public AuctionDto.Request formBacking(@RequestParam("nftId") Long nftId, HttpServletRequest request) {
-		AuctionDto.Request auctionDto = AuctionDto.Request.newInstance();
-		auctionDto.setNftId(nftId);
-		return auctionDto;
-	}
-	
-	@GetMapping("/auction/add/form") 
-	public String form() {
-		return "auction/form";
-	}
+	@GetMapping("/auction/{nftId}/add/form") 
+ 	public String form(Model model, @PathVariable("nftId") Long nftId) {
+ 		AuctionDto.Request auctionDto = AuctionDto.Request.newInstance();
+ 		auctionDto.setNftId(nftId);
+ 		model.addAttribute("auctionDto", auctionDto);
+ 		return "auction/form";
+ 	}
 	
 	@PostMapping("/auction/add")
 	public String addAuctionForm(@ModelAttribute("auctionDto") AuctionDto.Request auctionDto, Model model,
-			SessionStatus status) {
+			@AuthenticationPrincipal CustomUserDetails userDetails, SessionStatus status) {
 		auctionDto.setStatus(Status.IN_PROGRESS);
-		DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		String str_curTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-		LocalDateTime curTime = LocalDateTime.parse(str_curTime, df);
+//		DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+//		String str_curTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+//		LocalDateTime curTime = LocalDateTime.parse(str_curTime, df);
 //		auctionDto.setRegisterDate(curTime);
 		Long auctionId = auctionService.addAuction(auctionDto); // scheduler 같이 작동
 		auctionDto.setAuctionId(auctionId);
 		status.setComplete();
-
-		return "redirect:/users/mypage";
+		return "redirect:/users/" + userDetails.getUserId();
 	}
 	
 /*	@GetMapping("/auction/view")
