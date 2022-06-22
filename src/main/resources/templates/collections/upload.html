@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<th:block th:replace="head :: headFragment"></th:block>
+
+<body class="@@dashboard">
+
+<th:block th:replace="header :: headerFragment"></th:block>
+
+<div class="page-title">
+  <div class="container">
+    <div class="row align-items-center justify-content-between">
+      <div class="col-6">
+        <div class="page-title-content">
+          <h3>Explore</h3>
+          <p class="mb-2">Neftify Explore page</p>
+        </div>
+      </div>
+      <div class="col-auto">
+        <div class="breadcrumbs"><a href="#">Home </a><span><i
+                class="ri-arrow-right-s-line"></i></span><a href="#">Payments</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="upload-item section-padding">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-xxl-6 col-xl-6 col-lg-6">
+        <h4 class="card-title mb-3">Upload Collection</h4>
+        <div class="card">
+          <div class="card-body">
+            <form th:action th:object="${collection}" method="post" enctype="multipart/form-data">
+              <div class="row">
+                <div class="col-xxl-12">
+                  <div class="d-flex align-items-center mb-3"><img
+                          class="me-3 rounded-circle me-0 me-sm-3" th:src="@{/static/images/avatar/1.jpg}"
+                          width="55" height="55" alt="">
+                    <div class="media-body">
+                      <h5 class="mb-0">Max file size is 20mb</h5>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 mb-3">
+                  <input type="file"  id="imageFile" th:field="*{imageFile}">
+                </div>
+                <div class="col-12 mb-3">
+                  <label class="form-label">Collection Name</label>
+                  <input th:field="*{name}" type="text" class="form-control">
+                </div>
+                <div class="col-12 mb-3">
+                  <label class="form-label">Description</label>
+                  <input th:field="*{description}" type="text" class="form-control">
+                </div>
+                <div class="col-12 mb-3">
+                  <label class="form-label">Url</label>
+                  <input th:field="*{url}" type="text" class="form-control">
+                </div>
+                <div class="col-12 mb-3">
+                  <label class="form-label">Part(쉼표로 구분)</label>
+                  <input th:field="*{part}" type="text" class="form-control">
+                </div>
+                <label class="form-label">Categories</label>
+                <div th:each="category : ${categories}">
+                  <input type="radio" th:field="*{categoryIds}" th:value="${category.id}" />
+                  <label th:for="${#ids.prev('categoryIds')}" th:text="${category.name}"></label>
+                </div>
+              </div>
+              <div class="mt-3">
+                <button type="submit" class="btn btn-primary mr-2 w-100">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="bottom section-padding triangle-top-dark triangle-bottom-dark">
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-4 col-lg-4 col-md-7 col-sm-8">
+        <div class="bottom-logo"><img class="pb-3" th:src="@{./static/images/logoh.png}" alt="">
+          <p>Neftify is a unique and beautiful collection of UI elements that are all flexible and
+            modular. A
+            complete and customizable solution to building the website of your dreams.</p>
+        </div>
+      </div>
+      <div class="col-xl-2 col-lg-2 col-md-5 col-sm-4 col-6">
+        <div class="bottom-widget">
+          <h4 class="widget-title">About us</h4>
+          <ul>
+            <li><a href="../../../../../../package/neftify/explore.html">Explore</a></li>
+            <li><a href="../../../../../../package/neftify/item.html">Item</a></li>
+            <li><a href="../../../../../../package/neftify/collection.html">Collection</a></li>
+            <li><a href="../../../../../../package/neftify/connect.html">Connect</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-xl-2 col-lg-2 col-md-4 col-sm-4 col-6">
+        <div class="bottom-widget">
+          <h4 class="widget-title">Settings</h4>
+          <ul>
+            <li><a href="./settings.html">Settings</a></li>
+            <li><a href="./application.html">Application</a></li>
+            <li><a href="./security.html">Security</a></li>
+            <li><a href="../../../../../../package/neftify/activity.html">Activity</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-xl-4 col-lg-4 col-md-8 col-sm-8">
+        <div class="bottom-widget">
+          <h4 class="widget-title">Profile</h4>
+          <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+              <ul>
+                <li><a href="../../../../../../package/neftify/profile.html">Profile</a></li>
+                <li><a href="../../../../../../package/neftify/created.html">Created</a></li>
+                <li><a href="../../../../../../package/neftify/collected.html">Collected</a></li>
+                <li><a href="../../../../../../package/neftify/activity.html">Activity</a></li>
+              </ul>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+              <ul>
+                <li><a href="../../../../../../package/neftify/onsale.html">On Sale</a></li>
+                <li><a href="../../../../../../package/neftify/liked.html">Liked</a></li>
+                <li><a href="../../../../../../package/neftify/following.html">Following</a></li>
+                <li><a href="../../../../../../package/neftify/followers.html">Followers</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+        <div class="copyright">
+          <p>© Copyright 2022 <a href="#">Neftify</a> <!-- -->All Rights Reserved</p>
+        </div>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+        <div class="footer-social">
+          <ul>
+            <li><a href="#"><i class="bi bi-facebook"></i></a></li>
+            <li><a href="#"><i class="bi bi-twitter"></i></a></li>
+            <li><a href="#"><i class="bi bi-linkedin"></i></a></li>
+            <li><a href="#"><i class="bi bi-youtube"></i></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<th:block th:replace="footer :: footerFragment"></th:block>
+</body>
+
+</html>

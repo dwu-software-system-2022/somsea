@@ -213,6 +213,11 @@
                                                 <h5 class="text-muted" th:text="${nft.blockChain}"></h5>
                                             </div>
                                         </div>
+                                        <form th:action="@{/nfts/{id}/update(id=${nft.nftId})}" method="get" >
+                                            <div class="d-flex justify-content-center mt-3">
+                                                <input type="submit" value="UPDATE" class="btn btn-primary" />
+                                            </div>
+                                        </form>
                                         <form th:action="@{/nfts/{id}/delete(id=${nft.nftId})}" method="post" >
                                             <div class="d-flex justify-content-center mt-3">
                                                 <input type="submit" value="DELETE" class="btn btn-primary" />

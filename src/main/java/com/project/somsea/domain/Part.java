@@ -1,12 +1,15 @@
 package com.project.somsea.domain;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@NoArgsConstructor
 @Entity
 public class Part {
 
@@ -23,4 +26,11 @@ public class Part {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "collection_id")
     private Collection collection;
+
+    @Builder
+    public Part(String name, Collection collection) {
+        this.name = name;
+        this.collection = collection;
+        collection.getParts().add(this);
+    }
 }

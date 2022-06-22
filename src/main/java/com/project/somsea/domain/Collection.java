@@ -46,12 +46,16 @@ public class Collection {
     private User user;
 
     @Builder
-    public Collection(Long id, String name, String url, String logoImgUrl, String description) {
-    	this.id = id;
+    public Collection(String name, String url, String logoImgUrl, String description, User user) {
     	this.name = name;
     	this.url = url;
     	this.logoImgUrl = logoImgUrl;
     	this.description = description;
+        this.user = user;
+    }
+    public void updateNameAndDesc(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 }
 
