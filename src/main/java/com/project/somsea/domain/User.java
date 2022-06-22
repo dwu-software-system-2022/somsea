@@ -43,4 +43,8 @@ public class User {
     	this.password = password;
     	this.wallet = wallet;
     }
+
+    public boolean isNotEquals(Long otherUserId) {
+        return !this.id.equals(otherUserId);
+    }
 }
