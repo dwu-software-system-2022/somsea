@@ -45,7 +45,6 @@ public class AuctionController {
 		Long auctionId = auctionService.addAuction(auctionDto); // scheduler 같이 작동
 		auctionDto.setAuctionId(auctionId);
 		status.setComplete();
-
 		return "redirect:/users/" + userDetails.getUserId();
 	}
 	
