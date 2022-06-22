@@ -17,11 +17,11 @@ public class CategoryController {
 	private final CategoryService categoryService;
 	
 	@PostMapping ("/categories")
-	@ResponseBody //데이터 전달
-	//Category 저장 메소드
+	@ResponseBody 
 	public Long saveCategory (CategoryDto categoryDto) {
         return categoryService.saveCategory(categoryDto);
     }
+	
 	@GetMapping ("/categories/{id}")
     @ResponseBody
     public CategoryDto getCategoryById (@PathVariable Long id) {
