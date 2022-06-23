@@ -30,9 +30,8 @@
                     <div class="col-12">
                         <ul class="settings-menu">
                             <li><a href="/profile.html">Profile</a></li>
-                            <li class=""><a href="/created.html">Created</a></li>
+                            <li class=""><a th:href="@{/collections/me}">Created</a></li>
                             <li class=""><a th:href="@{/nfts/me}">Collected</a></li>
-                            <li class=""><a href="/activity.html">Activity</a></li>
                             <li class=""><a href="/onsale.html">On Sale</a></li>
                         </ul>
                     </div>
@@ -45,36 +44,6 @@
                             <div class="widget-content">
                                 <h3 th:text="${#lists.size('nfts')}"></h3>
                                 <p>Artworks</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-sm-6">
-                        <div class="stat-widget d-flex align-items-center">
-                            <div class="widget-icon me-3 bg-success"><span><i class="ri-file-list-3-line"></i></span>
-                            </div>
-                            <div class="widget-content">
-                                <h3>82K</h3>
-                                <p>Auction</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-sm-6">
-                        <div class="stat-widget d-flex align-items-center">
-                            <div class="widget-icon me-3 bg-warning"><span><i class="ri-file-paper-line"></i></span>
-                            </div>
-                            <div class="widget-content">
-                                <h3>200</h3>
-                                <p>Creators</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-sm-6">
-                        <div class="stat-widget d-flex align-items-center">
-                            <div class="widget-icon me-3 bg-danger"><span><i class="ri-file-paper-2-line"></i></span>
-                            </div>
-                            <div class="widget-content">
-                                <h3>89</h3>
-                                <p>Canceled</p>
                             </div>
                         </div>
                     </div>

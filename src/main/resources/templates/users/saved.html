@@ -98,6 +98,11 @@
                                             <h5 class="text-muted" th:text="${nft.blockChain}"></h5>
                                         </div>
                                     </div>
+                                    <form th:action="@{/auction/{id}/add/form(id=${nft.nftId})}" method="get">
+                                        <div class="d-flex justify-content-center mt-3">
+                                            <input type="submit" value="AUCTION" class="btn btn-primary"/>
+                                        </div>
+                                    </form>
                                     <form th:action="@{/nfts/{id}/update(id=${nft.nftId})}" method="get">
                                         <div class="d-flex justify-content-center mt-3">
                                             <input type="submit" value="UPDATE" class="btn btn-primary"/>
