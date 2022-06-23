@@ -38,7 +38,7 @@ public class Collection {
     @OneToMany(mappedBy = "collection", fetch = FetchType.LAZY)
     private List<Part> parts = new ArrayList<>();
     
-    @OneToMany(mappedBy = "collection", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "collection", fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<Nft> nfts;
 
     @ManyToOne(fetch = FetchType.LAZY)
