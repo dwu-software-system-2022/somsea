@@ -46,7 +46,7 @@ public class Nft {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "nft", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "nft", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<NftInfo> nftInfos = new ArrayList<>();
 
     public enum BlockChain {
