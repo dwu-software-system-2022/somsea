@@ -166,21 +166,33 @@ public class AuctionService {
 			bidding.setFloorDifference(null);
 		} else {
 			if (floorBid > bidding.getPrice()) {
-				bidding.setFloorBid(floorBid);
+				bidding.setFloorBid(bidding.getPrice());
+				floorBid = bidding.getPrice();
 			} else {
-				bidding.setFloorBid(bidding.getPrice());			
+				bidding.setFloorBid(floorBid);			
 			}
 			double floorDif = floorDifference(bidding.getPrice(), bidding.getFloorBid());
-			if (floorDif < 100) {
-				bidding.setFloorDifference(floorDif + "% below");
-			} else if (floorDif > 100) {
-				bidding.setFloorDifference(floorDif + "% above");
+			if (bidding.getPrice() - bidding.getFloorBid() > 0) {
+//				if (floorDif < 100) {
+//					bidding.setFloorDifference(floorDif + "% below");
+//				} else if (floorDif > 100) {
+					bidding.setFloorDifference(Math.abs(floorDif) + "% above");
+//				} else {
+//					bidding.setFloorDifference("same");
+//				}
+			} else if (bidding.getPrice() - bidding.getFloorBid() < 0){
+//				if (floorDif < 100) {
+//					bidding.setFloorDifference(floorDif + "% above");
+//				} else if (floorDif > 100) {
+					bidding.setFloorDifference(Math.abs(floorDif)+ "% below");
+//				} else {
+//					bidding.setFloorDifference("same");
+//				}
 			} else {
-				bidding.setFloorDifference("same");
+				bidding.setFloorDifference("similar or same");
 			}
 		}
 		bidding.setExpiration(calExpiration(bidding.getTime(), auction.getDueDate()));
-//		bidding.setExpiration(calExpiration(auction.getDueDate(), bidding.getTime()));
 		
 		Runnable updateTableRunner = new Runnable() { // anonymous class 정의
 			@Override
@@ -206,13 +218,20 @@ public class AuctionService {
 		List<Bidding> list = biddingRepository.findByAuction(auction);
 		for (int i = 0; i < list.size(); i++) {
 			double dif = floorDifference(list.get(i).getPrice(), list.get(i).getFloorBid());
-			if (dif < 100) {
-				list.get(i).setFloorDifference(dif + "% below");
-			} else if (dif > 100) {
-				list.get(i).setFloorDifference(dif + "% above");
+			if (list.get(i).getPrice() - list.get(i).getFloorBid() > 0) {	
+			list.get(i).setFloorDifference(Math.abs(dif) + "% above");	
+			} else if (list.get(i).getPrice() - list.get(i).getFloorBid() < 0){
+				list.get(i).setFloorDifference(Math.abs(dif)+ "% below");
 			} else {
 				list.get(i).setFloorDifference("similar or same");
 			}
+//			if (dif < 100) {
+//				list.get(i).setFloorDifference(dif + "% below");
+//			} else if (dif > 100) {
+//				list.get(i).setFloorDifference(dif + "% above");
+//			} else {
+//				list.get(i).setFloorDifference("similar or same");
+//			}
 			biddingRepository.updateBiddingByFloorDif(list.get(i).getFloorDifference(), list.get(i).getId());
 		}
 		
@@ -250,13 +269,21 @@ public class AuctionService {
 			List<Bidding> list = biddingRepository.findByAuction(auction);
 			for (int i = 0; i < list.size(); i++) {
 				double dif = floorDifference(list.get(i).getPrice(), list.get(i).getFloorBid());
-				if (dif < 100) {
-					list.get(i).setFloorDifference(dif + "% below");
-				} else if (dif > 100) {
-					list.get(i).setFloorDifference(dif + "% above");
+				if (list.get(i).getPrice() - list.get(i).getFloorBid() > 0) {	
+					list.get(i).setFloorDifference(Math.abs(dif) + "% above");	
+				} else if (list.get(i).getPrice() - list.get(i).getFloorBid() < 0){
+					list.get(i).setFloorDifference(Math.abs(dif)+ "% below");
 				} else {
 					list.get(i).setFloorDifference("similar or same");
 				}
+
+//				if (dif < 100) {
+//					list.get(i).setFloorDifference(dif + "% below");
+//				} else if (dif > 100) {
+//					list.get(i).setFloorDifference(dif + "% above");
+//				} else {
+//					list.get(i).setFloorDifference("similar or same");
+//				}
 				biddingRepository.updateBiddingByFloorDif(list.get(i).getFloorDifference(), list.get(i).getId());
 			}
 		}
@@ -307,7 +334,7 @@ public class AuctionService {
 	
 	public double floorDifference(Long price, Long floorBid) { // 바닥가 대비 입찰가와의 차이
 		double differencePercent = 0;
-		differencePercent = Math.round(((((double)price / floorBid) * 100)));
+		differencePercent = Math.round(((((double)price / floorBid - 1) * 100)));
 		return differencePercent;
  	}
 	
