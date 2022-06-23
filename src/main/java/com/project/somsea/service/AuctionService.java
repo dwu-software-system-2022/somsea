@@ -51,8 +51,13 @@ public class AuctionService {
 	
 	public Long addAuction(AuctionDto.Request auctionDto) {
 		Nft nft = findNft(auctionDto.getNftId());
+		Auction auctions = auctionRepository.findByNft(nft);
+
+		if(auctions != null){
+			deleteAuction(auctions.getId());
+		}
+
 		Auction auction = auctionDto.toEntity(nft);
-		
 		Runnable updateTableRunner = new Runnable() { // anonymous class 정의
 			@Override
 			public void run() {   // 스케쥴러에 의해 미래의 특정 시점에 실행될 작업을 정의
@@ -83,20 +88,8 @@ public class AuctionService {
 	}
 	
 	public void deleteAuction(Long auctionId) {
-//		findNft(nftId); // nft 존재 여부 확인.
-		Auction auction = auctionRepository.getById(auctionId);
-//		List<Bidding> bidding = findBiddingList(auction);
-//		for (int i = 0; i < bidding.size(); i++) {
-////			deleteBidding()
-//		}
-//		List<TradeHistory> trade = findByAuction(auctionId);
-//		for (int i = 0; i < trade.size(); i++) {
-//			biddingRepository.deleteById(trade.get(i).getId());
-//		}
-//		tradeHistoryRepository.deleteAllByAuctionId(auctionId);
-//		biddingRepository.deleteAllByAuctionId(auctionId);
-		auctionRepository.delete( // auction 여부 확인하면서 삭제
-				auctionRepository.findById(auctionId).orElseThrow(() -> new IllegalArgumentException("Auction id 값이 없습니다. auctionId : " + auctionId)));
+		Auction auction = findAuction(auctionId);
+		auctionRepository.delete(auction);
 	}
 	
 	public User findUser(Long userId) {

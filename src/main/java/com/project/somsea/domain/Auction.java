@@ -11,6 +11,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -40,8 +42,14 @@ public class Auction {
 	private Status status;	// 진행 전 , 진행 중, 진행 후 
 
 	@JoinColumn(name = "nft_id")
-	@OneToOne(fetch=FetchType.LAZY, cascade = CascadeType.REMOVE) 
+	@OneToOne(fetch=FetchType.LAZY)
 	private Nft nft;
+
+	@OneToMany(mappedBy = "auction", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+	private List<Bidding> biddings = new ArrayList<>();
+
+	@OneToMany(mappedBy = "auction", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+	private List<TradeHistory> tradeHistories = new ArrayList<>();
 	
 	private Long topBid;
 
