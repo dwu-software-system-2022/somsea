@@ -27,8 +27,10 @@
                 <div class="auth-form card">
                     <div class="card-body">
                         <form class="row g-3" th:action th:object="${biddingDto}" method="post">
-                            <div class="col-12"><label class="form-label">Enter Price</label><input type="text"
-                                    class="form-control" id="price" th:field="*{price}"></div>
+                            <div class="col-12"><label class="form-label">Enter Price</label>
+	                            <input type="text" class="form-control" id="price" th:field="*{price}">
+	                            <p th:if="${#fields.hasErrors('price')}" th:errors="*{price}" style="color: red"></p>
+                            </div>
                             <div class="text-center mt-4"><button type="submit"
                                     class="btn btn-primary btn-block">Submit</button></div>
                         </form>
