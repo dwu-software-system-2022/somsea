@@ -22,7 +22,7 @@ public class Wallet {
 	private Long balance;
 	
 	@JoinColumn(name = "user_id")
- 	@OneToOne(fetch = FetchType.LAZY)
+ 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
  	private User user;
 	
 	@Builder
