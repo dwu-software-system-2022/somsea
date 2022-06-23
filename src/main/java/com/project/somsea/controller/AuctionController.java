@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -35,20 +36,19 @@ public class AuctionController {
  	}
 	
 	@PostMapping("/auction/add")
-	public String addAuctionForm(@Valid @ModelAttribute("auctionDto") AuctionDto.Request auctionDto, Model model,
-			@AuthenticationPrincipal CustomUserDetails userDetails, SessionStatus status,
-			BindingResult result) {
+	public String addAuctionForm(@Valid @ModelAttribute("auctionDto") AuctionDto.Request auctionDto, 
+			BindingResult result,
+			@AuthenticationPrincipal CustomUserDetails userDetails, SessionStatus status) {
+		System.out.println("result : " + auctionDto.getStartPrice());
 		if (result.hasErrors()) {
+			System.out.println(result + " : " + result.getErrorCount());
 			return "auction/form";
 		}
-		try {
-			auctionDto.setStatus(Status.IN_PROGRESS);
-			Long auctionId = auctionService.addAuction(auctionDto); // scheduler 같이 작동
-			auctionDto.setAuctionId(auctionId);
-			status.setComplete();
-			return "redirect:/user/" + userDetails.getUserId();
-		} catch (Exception e) {
-			return "auction/form";
-		}
+		auctionDto.setStatus(Status.IN_PROGRESS);
+		Long auctionId = auctionService.addAuction(auctionDto); // scheduler 같이 작동
+		auctionDto.setAuctionId(auctionId);
+//			status.setComplete();
+		return "redirect:/user/" + userDetails.getUserId();
+		
 	}
 }

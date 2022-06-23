@@ -26,20 +26,22 @@
                         <h4 class="card-title mb-3">Upload Auction</h4>
                         <div class="card">
                             <div class="card-body">
-                                <form th:action="@{/auction/add}" method="post">
+                                <form th:action="@{/auction/add}" th:object="${auctionDto}" method="post">
                                     <div class="row">
                                         
                                         <div class="col-12 mb-3">
                                             <h5>NftId</h5>
-                                             <span class="form-label" th:text="${auctionDto.nftId}">AuctionDto nftId</span>
+                                             <span class="form-label" th:text="*{nftId}">AuctionDto nftId</span>
                                         </div>
                                         <div class="col-12 mb-3">
-                                            <label class="form-label">StartPrice</label><input name="startPrice"
-                                                type="text" class="form-control">
+                                            <label class="form-label">StartPrice</label>
+                                            	<input name="startPrice" th:field="*{startPrice}" type="text" class="form-control">
+                                            	<p th:if="${#fields.hasErrors('startPrice')}" th:errors="*{startPrice}" style="color: red"></p>
                                         </div>
                                         <div class="col-12 mb-3">
                                             <label class="form-label">DueDate</label><input name="dueDate"
-                                                type="text" placeholder="yyyy-MM-dd HH:mm 형식으로 작성하세요!" class="form-control">
+                                                type="text" th:field="*{dueDate}" placeholder="yyyy-MM-dd HH:mm 형식으로 작성하세요!" class="form-control">
+                                                <p th:if="${#fields.hasErrors('dueDate')}" th:errors="*{dueDate}" style="color: red"></p>
                                         </div>
                                     </div>
                                     <div class="mt-3">

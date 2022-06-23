@@ -2,6 +2,8 @@ package com.project.somsea.dto;
 
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.NotNull;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.project.somsea.domain.Auction;
@@ -12,7 +14,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotEmpty;
+
 public class AuctionDto {
 	@Setter
 	@Getter
@@ -20,11 +22,12 @@ public class AuctionDto {
 	public static class Request {
 		private Long auctionId;
 	    private Long nftId;
-	    @NotEmpty
+	    
+	    @NotNull(message="price를 입력해야합니다.")
 	    private Long startPrice;
 //	    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
 //	    private LocalDateTime registerDate;
-	    @NotEmpty
+	    @NotNull(message="날짜를 입력해야합니다.")
 	    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
 	    private LocalDateTime dueDate;
 	    private Status status;
@@ -46,32 +49,4 @@ public class AuctionDto {
 	    	return Request.builder().build();
 	    }
 	}
-//	private Long auctionId;
-//    private Long nftId;
-//    private Long startPrice;
-//    private LocalDateTime registerDate;
-//    private LocalDateTime dueDate;
-//    private Status status;
-//    
-//    
-//    public static AuctionDto of(Auction auction, Nft nft) {
-//    	return AuctionDto.builder()
-//    			.auctionId(auction.getId())
-//    			.nftId(nft.getId())
-//    			.startPrice(auction.getStartPrice())
-//    			.registerDate(auction.getRegisterDate())
-//    			.dueDate(auction.getDueDate())
-//    			.status(auction.getStatus())
-//    			.build();
-//    }
-//    public AuctionDto toEntity(Auction auction) {
-//    	return AuctionDto.builder()
-//    			.auctionId(auctionId)
-//    			.nftId(nftId)
-//    			.startPrice(startPrice)
-//    			.registerDate(registerDate)
-//    			.dueDate(dueDate)
-//    			.status(status)
-//    			.build();
-//    }
 }
