@@ -52,13 +52,6 @@ public class AuctionService {
 	private TaskScheduler scheduler2;
 	
 	public Long addAuction(AuctionDto.Request auctionDto) {
-//		if (isExistingUser(userId)) { // nft 쪽에서 user 존재하는지 확인하는 코드 있으면 없어도 됨.(nft가 존재하는지만 확인필요)
-//			Nft nft = findNft(auctionDto.getNftId());
-//			Auction auction = auctionDto.toEntity(nft);
-//			auctionRepository.save(auction);
-//		} else {
-//			throw new IllegalArgumentException("User가 존재하지 않습니다.");
-//		}
 		Nft nft = findNft(auctionDto.getNftId());
 		Auction auction = auctionDto.toEntity(nft);
 		
@@ -86,11 +79,6 @@ public class AuctionService {
 		return auction.getId();
 	}
 
-	
-//	public boolean isExistingUser(Long userId) {
-//		return userRepository.existsById(userId);
-//	}
-	
 	public Nft findNft(Long nftId) {
 		return nftRepository.findById(nftId)
 				.orElseThrow(() -> new IllegalArgumentException("Nft id 값이 없습니다. nftId : " + nftId));		
@@ -98,11 +86,17 @@ public class AuctionService {
 	
 	public void deleteAuction(Long auctionId) {
 //		findNft(nftId); // nft 존재 여부 확인.
-//		Auction auction = auctionRepository.getById(auctionId);
+		Auction auction = auctionRepository.getById(auctionId);
 //		List<Bidding> bidding = findBiddingList(auction);
 //		for (int i = 0; i < bidding.size(); i++) {
-//			biddingRepository.deleteById(bidding.get(i).getId());
+////			deleteBidding()
 //		}
+//		List<TradeHistory> trade = findByAuction(auctionId);
+//		for (int i = 0; i < trade.size(); i++) {
+//			biddingRepository.deleteById(trade.get(i).getId());
+//		}
+		tradeHistoryRepository.deleteAllByAuctionId(auctionId);
+		biddingRepository.deleteAllByAuctionId(auctionId);
 		auctionRepository.delete( // auction 여부 확인하면서 삭제
 				auctionRepository.findById(auctionId).orElseThrow(() -> new IllegalArgumentException("Auction id 값이 없습니다. auctionId : " + auctionId)));
 	}
@@ -225,13 +219,7 @@ public class AuctionService {
 			} else {
 				list.get(i).setFloorDifference("similar or same");
 			}
-//			if (dif < 100) {
-//				list.get(i).setFloorDifference(dif + "% below");
-//			} else if (dif > 100) {
-//				list.get(i).setFloorDifference(dif + "% above");
-//			} else {
-//				list.get(i).setFloorDifference("similar or same");
-//			}
+			
 			biddingRepository.updateBiddingByFloorDif(list.get(i).getFloorDifference(), list.get(i).getId());
 		}
 		
@@ -265,13 +253,14 @@ public class AuctionService {
 			auctionRepository.updateAuction(topBidPrice, auctionId);
 			Long floorBid = findFloorBid(auctionId);
 			biddingRepository.updateBiddingByFloorBid(floorBid, auctionId);
-			
+			biddingRepository.updateBiddingByFloorBid(floorBid, auctionId);
+			System.out.println("floorBid" + floorBid);
 			List<Bidding> list = biddingRepository.findByAuction(auction);
 			for (int i = 0; i < list.size(); i++) {
-				double dif = floorDifference(list.get(i).getPrice(), list.get(i).getFloorBid());
-				if (list.get(i).getPrice() - list.get(i).getFloorBid() > 0) {	
+				double dif = floorDifference(list.get(i).getPrice(), floorBid);
+				if (list.get(i).getPrice() - floorBid > 0) {	
 					list.get(i).setFloorDifference(Math.abs(dif) + "% above");	
-				} else if (list.get(i).getPrice() - list.get(i).getFloorBid() < 0){
+				} else if (list.get(i).getPrice() - floorBid < 0){
 					list.get(i).setFloorDifference(Math.abs(dif)+ "% below");
 				} else {
 					list.get(i).setFloorDifference("similar or same");
@@ -293,18 +282,6 @@ public class AuctionService {
 	
 	public Long findTopBid(Long auctionId) {
 		Auction auction = findAuction(auctionId);
-//		List<Bidding> biddingList = findBiddingList(auction);
-////		if (biddingList.size() > 0) {
-//			Collections.sort(biddingList, Collections.reverseOrder());
-//			return biddingList.get(0).getPrice();
-////		}
-//		else {
-////			System.out.println("biddingList : null");
-//			return null;
-//		}
-//		Collections.sort(biddingList, Collections.reverseOrder());
-//		if (biddingList.size() > 0) return biddingList.get(0).getPrice();
-//		else return null;
 		Bidding bidding = biddingRepository.findFirstByAuctionOrderByPriceDesc(auction);
 		if (bidding != null) return bidding.getPrice();
 		else return null;
@@ -312,9 +289,6 @@ public class AuctionService {
 	
 	public Long findBiddingIdByTopBid(Long auctionId) {
 		Auction auction = findAuction(auctionId);
-//		List<Bidding> biddingList = findBiddingList(auction);
-//		Collections.sort(biddingList, Collections.reverseOrder());
-//		return biddingList.get(0).getId();
 		Bidding bidding = biddingRepository.findFirstByAuctionOrderByPriceDesc(auction);
 		if (bidding != null) return bidding.getId();
 		else return null;
@@ -322,11 +296,7 @@ public class AuctionService {
 	
 	public Long findFloorBid(Long auctionId) {
 		Auction auction = findAuction(auctionId);
-//		List<Bidding> biddingList = findBiddingList(auction);
-//		Collections.sort(biddingList);
-//		if (biddingList.size() > 0) 
-//			return biddingList.get(0).getPrice();
-//		else return null;
+
 		Bidding bidding = biddingRepository.findFirstByAuctionOrderByPriceAsc(auction);
 		if (bidding != null) return bidding.getPrice();
 		return null;
@@ -342,11 +312,9 @@ public class AuctionService {
 		long hours = ChronoUnit.HOURS.between(time, due);
 		if (hours <= 24) {
 			return "about " + hours + " hours"; // return type String
-//			return Long.valueOf(hours).intValue();
 		} else {
 			long days = ChronoUnit.DAYS.between(time, due);
 			return "about " + days + " days";
-//			return Long.valueOf(days).intValue();
 		}
 	}
 	
