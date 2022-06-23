@@ -32,13 +32,13 @@ public class Collection {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "collection", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "collection", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Tag> tags = new ArrayList<>();
 
-    @OneToMany(mappedBy = "collection", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "collection", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Part> parts = new ArrayList<>();
     
-    @OneToMany(mappedBy = "collection", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "collection", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	private List<Nft> nfts;
 
     @ManyToOne(fetch = FetchType.LAZY)

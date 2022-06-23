@@ -128,6 +128,7 @@ public class NftController {
         List<PartDto.Response> parts = nftService.getPartsByCollectionId(collectionId);
         PartDto.Request partRequest = PartDto.Request.newInstance();
 
+        model.addAttribute("collectionId", collectionId);
         model.addAttribute("nfts", nfts);
         model.addAttribute("parts", parts);
         model.addAttribute("partRequest", partRequest);
