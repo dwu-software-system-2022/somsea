@@ -20,9 +20,10 @@
                         class="ri-arrow-right-s-line"></i></span><a href="#">Payments</a></div>
             </div>
         </div>
+        <hr class="my-3">
         <div class="row">
             <div class="col-12">
-                <h4 class="card-title mb-3">My Liked</h4>
+                <h4 class="card-title mb-3">Collections</h4>
                 <div class="row">
                     <div class="col-xxl-3 col-xl-6 col-lg-6 col-md-6 col-sm-6" th:each="collection : ${collections}">
                         <div class="card items"
@@ -59,8 +60,8 @@
     <div class="container">
         <div class="row">
             <div class="col-xl-4 col-lg-4 col-md-7 col-sm-8">
-                <div class="bottom-logo"><img class="pb-3" src="./images/logoh.png" alt="">
-                    <p>Neftify is a unique and beautiful collection of UI elements that are all flexible and
+                <div class="bottom-logo">
+                    <p>SomSea is a unique and beautiful collection of UI elements that are all flexible and
                         modular. A
                         complete and customizable solution to building the website of your dreams.</p>
                 </div>
@@ -69,10 +70,10 @@
                 <div class="bottom-widget">
                     <h4 class="widget-title">About us</h4>
                     <ul>
-                        <li><a href="./explore.html">Explore</a></li>
-                        <li><a href="./item.html">Item</a></li>
-                        <li><a href="./collection.html">Collection</a></li>
-                        <li><a href="./connect.html">Connect</a></li>
+                        <li><a th:href="@{/index}">Explore</a></li>
+                        <li><a th:href="@{/nfts}">Item</a></li>
+                        <li><a th:href="@{/collections}">Collection</a></li>
+                        <li><a th:href="@{/user/add}">Connect</a></li>
                     </ul>
                 </div>
             </div>
@@ -102,7 +103,7 @@
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                             <ul>
                                 <li><a href="./onsale.html">On Sale</a></li>
-                                <li><a href="./myCollections.html">Liked</a></li>
+                                <li><a href="./liked.html">Liked</a></li>
                                 <li><a href="./following.html">Following</a></li>
                                 <li><a href="./followers.html">Followers</a></li>
                             </ul>
@@ -118,7 +119,7 @@
         <div class="row">
             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                 <div class="copyright">
-                    <p>© Copyright 2022 <a href="#">Neftify</a> <!-- -->All Rights Reserved</p>
+                    <p>© Copyright 2022 <a href="#">SomSea</a> <!-- -->All Rights Reserved</p>
                 </div>
             </div>
             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
@@ -134,6 +135,8 @@
         </div>
     </div>
 </div>
+</div>
+
 <th:block th:replace="footer :: footerFragment"></th:block>
 </body>
 
