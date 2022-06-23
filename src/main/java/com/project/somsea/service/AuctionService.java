@@ -1,10 +1,8 @@
 package com.project.somsea.service;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -95,8 +93,8 @@ public class AuctionService {
 //		for (int i = 0; i < trade.size(); i++) {
 //			biddingRepository.deleteById(trade.get(i).getId());
 //		}
-		tradeHistoryRepository.deleteAllByAuctionId(auctionId);
-		biddingRepository.deleteAllByAuctionId(auctionId);
+//		tradeHistoryRepository.deleteAllByAuctionId(auctionId);
+//		biddingRepository.deleteAllByAuctionId(auctionId);
 		auctionRepository.delete( // auction 여부 확인하면서 삭제
 				auctionRepository.findById(auctionId).orElseThrow(() -> new IllegalArgumentException("Auction id 값이 없습니다. auctionId : " + auctionId)));
 	}
