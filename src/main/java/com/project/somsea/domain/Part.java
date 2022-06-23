@@ -20,7 +20,7 @@ public class Part {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "part", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "part", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<NftInfo> nftInfos = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
