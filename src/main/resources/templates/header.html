@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <th:block th:fragment="headerFragment">
 
     <div id="preloader"><i>.</i><i>.</i><i>.</i></div>
@@ -25,13 +26,12 @@
                                 </button>
                                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                     <ul class="navbar-nav me-auto">
-                                        <li class="nav-item dropdown"><a class="nav-link" href="/index">Home</a>
+                                        <li class="nav-item dropdown"><a class="nav-link" th:href="@{/}">Home</a>
                                         </li>
                                         <li class="nav-item"><a class="nav-link" th:href="@{/collections}">Collection</a>
                                         </li>
                                         <li class="nav-item"><a class="nav-link" th:href="@{/user/me}">Profile</a></li>
                                         <li class="nav-item"><a class="nav-link" th:href="@{/collections/form}">Upload</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="/dashboard.html"></a>
                                         </li>
                                     </ul>
                                 </div>
@@ -40,8 +40,12 @@
                                         <span class="dark"><i class="ri-moon-line"></i></span>
                                         <span class="light"><i class="ri-sun-line"></i></span>
                                     </div>
-
-                                    <a class="btn btn-primary" th:href="@{/user/login}">Connect</a>
+                                    <div sec:authorize="isAnonymous()">
+                                    	<a class="btn btn-primary" th:href="@{/user/login}">Login</a>
+                                    </div>
+                                    <div sec:authorize="hasRole('USER')">
+                                    	<a class="btn btn-primary" th:href="@{/logout}">Logout</a>
+                                    </div>                                     
                                 </div>
                             </nav>
                         </div>
