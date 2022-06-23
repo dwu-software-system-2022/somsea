@@ -7,7 +7,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.Nullable;
 
@@ -36,14 +37,13 @@ public class Bidding implements Comparable<Bidding>{
 	private User user;
 
 	@JoinColumn(name = "auction_id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Auction auction;
 	
-//	@Transient
 	private String floorDifference; 
 	@Nullable
 	private String expiration;
-//	@Transient
 	private Long FloorBid;
 	
 	@Builder

@@ -1,10 +1,10 @@
 package com.project.somsea.domain;
 
-import java.time.LocalDateTime;
 
 import javax.persistence.*;
 
-import com.project.somsea.domain.Auction.Status;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -25,6 +25,7 @@ public class TradeHistory {
     private Auction auction;
 
     @JoinColumn(name = "user_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
