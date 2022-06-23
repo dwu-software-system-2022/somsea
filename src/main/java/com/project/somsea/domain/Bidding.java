@@ -37,7 +37,6 @@ public class Bidding implements Comparable<Bidding>{
 	private User user;
 
 	@JoinColumn(name = "auction_id")
-	@OnDelete(action = OnDeleteAction.CASCADE)
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Auction auction;
 	
