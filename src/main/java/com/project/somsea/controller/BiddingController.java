@@ -52,10 +52,10 @@ public class BiddingController {
 							 ,@AuthenticationPrincipal CustomUserDetails userDetails) {
 		Auction auction = auctionService.findByNft(nftId);
 		
-		if (result.hasErrors()) {
-			if (requestDto.getPrice() != null && requestDto.getPrice() <= auction.getTopBid()) {
-				result.rejectValue("price", "smallPrice", "최소 입찰가를 입력하세요.");
-			}
+		if (result.hasErrors()) return "nfts/biddingForm";
+		
+		if (requestDto.getPrice() <= auction.getTopBid()) {
+			result.rejectValue("price", "smallPrice", "최소 입찰가를 입력하세요.");
 			return "nfts/biddingForm";
 		}
 		
