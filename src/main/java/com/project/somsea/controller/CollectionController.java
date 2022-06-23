@@ -1,10 +1,8 @@
 package com.project.somsea.controller;
 
-import com.project.somsea.domain.Collection;
 import com.project.somsea.dto.CategoryDto;
 import com.project.somsea.dto.CollectionDto;
-import com.project.somsea.dto.NftDto;
-import com.project.somsea.dto.PartDto;
+
 import com.project.somsea.helper.ImageUploader;
 import com.project.somsea.service.CategoryService;
 import com.project.somsea.service.CollectionService;
@@ -13,12 +11,8 @@ import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class CollectionController {
 	private final CollectionService collectionService;
 	private final CategoryService categoryService;
@@ -105,5 +100,12 @@ public class CollectionController {
 		Long userId = userDetails.getUserId();
 		collectionService.update(userId, collectionId, requestDto);
 		return "redirect:/collections/me";
+	}
+
+	@GetMapping("/collections/search")
+	public String search(@RequestParam(value="keyword") String keyword, Model model) {
+		List<CollectionDto.Response> collections = collectionService.searchPosts(keyword);
+		model.addAttribute("collections", collections);
+		return "collections/collectionList";
 	}
 }

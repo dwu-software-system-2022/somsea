@@ -1,19 +1,14 @@
 package com.project.somsea.service;
 
 import com.project.somsea.domain.*;
-import com.project.somsea.dto.CategoryDto;
 import com.project.somsea.dto.CollectionDto;
-import com.project.somsea.dto.NftDto;
 import com.project.somsea.dto.PartDto;
 import com.project.somsea.repository.*;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
@@ -116,5 +111,12 @@ public class CollectionService {
             throw new IllegalArgumentException("userId 값이 다릅니다.");
         }
         collectionRepository.delete(collection);
+    }
+
+    public List<CollectionDto.Response> searchPosts(String keyword) {
+        return collectionRepository.findByNameContaining(keyword)
+                .stream()
+                .map(CollectionDto.Response::of)
+                .collect(Collectors.toList());
     }
 }

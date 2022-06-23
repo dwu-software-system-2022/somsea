@@ -6,10 +6,14 @@
 <body class="@@dashboard">
 
 <th:block th:replace="header :: headerFragment"></th:block>
-        <div class="collections section-padding">
             <div class="container">
                 <div class="row">
                     <div class="col-12">
+                        <div class="search">
+                            <form th:action="@{/collections/search}" method="get" ><span><i class="ri-search-line"></i></span>
+                                    <input type="text" placeholder="Search Here" name="keyword" >
+                            </form>
+                        </div>
                         <div class="filter-tab">
                             <div class="filter-nav mb-4"><a th:href="@{/collections}">All</a> <a th:href="@{/categories/1/collections}"> Games </a><a th:href="@{/categories/2/collections}">Artwork</a><a th:href="@{/categories/3/collections}">Collectibles</a><a th:href="@{/categories/4/collections}">Photography</a></div>
                             <div class="row">
@@ -45,7 +49,6 @@
                     </div>
                 </div>
             </div>
-        </div>
         <div class="bottom section-padding triangle-top-dark triangle-bottom-dark">
             <div class="container">
                 <div class="row">
