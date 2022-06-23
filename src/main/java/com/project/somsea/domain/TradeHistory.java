@@ -25,7 +25,6 @@ public class TradeHistory {
     private Auction auction;
 
     @JoinColumn(name = "user_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 

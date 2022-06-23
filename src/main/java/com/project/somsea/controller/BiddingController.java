@@ -92,7 +92,7 @@ public class BiddingController {
 		nftService.updateUserIdOfNft(userDetails.getUserId(), auction.getNft().getId());
 		// wallet balance도 바꿔야 됨. balance가 입찰가보다 낮으면 충전하세요!.
 		walletService.updateBalance(bidding.getPrice(), userDetails.getUserId());
-//		auctionService.deleteAuction(auctionId);
+		auctionService.deleteAuction(auctionId);
 		return "redirect:/user/" + userDetails.getUserId(); // or /users/mypage
 	}
 
