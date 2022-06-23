@@ -99,10 +99,10 @@ public class AuctionService {
 	public void deleteAuction(Long auctionId, Long nftId) {
 		findNft(nftId); // nft 존재 여부 확인.
 		Auction auction = auctionRepository.getById(auctionId);
-		List<Bidding> bidding = findBiddingList(auction);
-		for (int i = 0; i < bidding.size(); i++) {
-			biddingRepository.deleteById(bidding.get(i).getId());
-		}
+//		List<Bidding> bidding = findBiddingList(auction);
+//		for (int i = 0; i < bidding.size(); i++) {
+//			biddingRepository.deleteById(bidding.get(i).getId());
+//		}
 		auctionRepository.delete( // auction 여부 확인하면서 삭제
 				auctionRepository.findById(auctionId).orElseThrow(() -> new IllegalArgumentException("Auction id 값이 없습니다. auctionId : " + auctionId)));
 	}

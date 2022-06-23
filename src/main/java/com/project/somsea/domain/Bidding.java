@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.Nullable;
 
@@ -39,11 +38,9 @@ public class Bidding implements Comparable<Bidding>{
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Auction auction;
 	
-//	@Transient
 	private String floorDifference; 
 	@Nullable
 	private String expiration;
-//	@Transient
 	private Long FloorBid;
 	
 	@Builder

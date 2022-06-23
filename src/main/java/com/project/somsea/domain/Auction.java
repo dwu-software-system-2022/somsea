@@ -40,7 +40,7 @@ public class Auction {
 	private Status status;	// 진행 전 , 진행 중, 진행 후 
 
 	@JoinColumn(name = "nft_id")
-	@OneToOne(fetch = FetchType.LAZY) 
+	@OneToOne(fetch=FetchType.LAZY, cascade = CascadeType.REMOVE) 
 	private Nft nft;
 	
 	private Long topBid;
