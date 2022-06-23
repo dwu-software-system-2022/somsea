@@ -45,8 +45,23 @@ public class UserService {
 		return userRepository.findById(userId)
 				.orElseThrow(() -> new IllegalArgumentException("User Id 값이 없습니다. UserId : " + userId));
 	}
+	
+	public UserDto.Request readUserForUpdate(Long userId) {
+		User user = findUserById(userId);
+		return UserDto.Request.of(user);
+	}
+	
+	public void updateName(Long userId, UserDto.Request userDto) {		
+		userRepository.updateName(userDto.getName(), userId);
+	}
+	
+	public void updateEmailAndPassword(Long userId, UserDto.Request userDto) {
+		String encodePwd = bCryptPasswordEncoder.encode(userDto.getPassword());
+		userDto.setPassword(encodePwd);
+		userRepository.updateEmailPassword(userDto.getEmail(), userDto.getPassword(), userId);
+	}
 		
 	public void delete(Long userId) {
-		userRepository.delete(findUserById(userId));
+		userRepository.deleteById(userId);
 	}
 }

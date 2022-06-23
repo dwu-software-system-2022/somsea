@@ -25,7 +25,7 @@ public class TradeHistory {
     private Auction auction;
 
     @JoinColumn(name = "user_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private User user;
 
     @Column(name = "amount")

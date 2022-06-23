@@ -54,4 +54,16 @@ public class WalletService {
 			walletRepository.updateBalanceByuserId(dif, userId);
 		}
 	}
+	
+	public void addBalance(Long price, Long userId) {
+		User user = findUser(userId);
+		Wallet wallet = walletRepository.findByUser(user);
+		Long balance = wallet.getBalance();
+		
+		walletRepository.updateBalanceByuserId(balance + price, userId);
+	}
+
+	public Wallet findWalletByUser(Long userId) {
+		return walletRepository.findByUser(findUser(userId));
+	}
 }

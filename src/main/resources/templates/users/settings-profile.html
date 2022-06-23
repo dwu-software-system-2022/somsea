@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<th:block th:replace="head :: headFragment"></th:block>
+<body class="@@dashboard">
+
+<div id="preloader"><i>.</i><i>.</i><i>.</i></div>
+
+
+<div id="main-wrapper" class="admin">
+
+    <div class="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-xxl-12">
+                <div class="header-content">
+                    <div class="header-left">
+                        <div class="brand-logo"><a class="mini-logo" th:href="@{/}"><img src="/static/images/logoi.png" alt=""
+                                    width="40"></a></div>
+                        <div class="search">
+                            <form action="#"><span><i class="ri-search-line"></i></span><input type="text"
+                                    placeholder="Search Here"></form>
+                        </div>
+                    </div>
+                    <div class="header-right">
+                        <!-- <div class="theme-switch"><i class="ri-sun-line"></i></div> -->
+
+                        <div class="dark-light-toggle theme-switch" onclick="themeToggle()">
+                            <span class="dark"><i class="ri-moon-line"></i></span>
+                            <span class="light"><i class="ri-sun-line"></i></span>
+                        </div>
+
+
+                        <div class="nav-item dropdown notification dropdown">
+                            <div data-bs-toggle="dropdown">
+                                <div class="notify-bell icon-menu"><span><i class="ri-notification-2-line"></i></span>
+                                </div>
+                            </div>
+                            <div tabindex="-1"
+                                class="dropdown-menu notification-list dropdown-menu dropdown-menu-end">
+                                <h4>Recent Notification</h4>
+                                <div class="lists">
+                                    <a class="" href="./#">
+                                        <div class="d-flex align-items-center"><span class="me-3 icon success"><i
+                                                    class="ri-check-line"></i></span>
+                                            <div>
+                                                <p>Account created successfully</p><span>2020-11-04 12:00:23</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a class="" href="./#">
+                                        <div class="d-flex align-items-center"><span class="me-3 icon fail"><i
+                                                    class="ri-close-line"></i></span>
+                                            <div>
+                                                <p>2FA verification failed</p><span>2020-11-04 12:00:23</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a class="" href="./#">
+                                        <div class="d-flex align-items-center"><span class="me-3 icon success"><i
+                                                    class="ri-check-line"></i></span>
+                                            <div>
+                                                <p>Device confirmation completed</p><span>2020-11-04 12:00:23</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a class="" href="./#">
+                                        <div class="d-flex align-items-center"><span class="me-3 icon pending"><i
+                                                    class="ri-question-mark"></i></span>
+                                            <div>
+                                                <p>xs verification pending</p><span>2020-11-04 12:00:23</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a href="#">More<i class="ri-arrow-right-s-line"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dropdown profile_log dropdown">
+                            <div data-bs-toggle="dropdown">
+                                <div class="user icon-menu active"><span><img src="/static/images/avatar/9.jpg" alt=""></span>
+                                </div>
+                            </div>
+                            <div tabindex="-1" class="dropdown-menu dropdown-menu-end">
+                                <div class="user-email">
+                                    <div class="user">
+                                        <span class="thumb">
+                                            <img src="/static/images/profile/3.png" alt="">
+                                        </span>
+                                        <div class="user-info">
+                                            <h5>Jannatul Maowa</h5>
+                                            <span>imsaifun@gmail.com</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a class="dropdown-item" href="./profile.html">
+                                    <span><i class="ri-user-line"></i></span>Profile
+                                </a>
+                                <a class="dropdown-item" href="./wallet.html">
+                                    <span><i class="ri-wallet-line"></i></span>Wallet
+                                </a>
+                                <a class="dropdown-item" href="./settings-profile.html">
+                                    <span><i class="ri-settings-3-line"></i></span>Settings
+                                </a>
+                                <a class="dropdown-item" href="./settings-activity.html">
+                                    <span><i class="ri-time-line"></i></span>Activity
+                                </a>
+                                <a class="dropdown-item" href="./lock.html">
+                                    <span><i class="ri-lock-line"></i></span>Lock
+                                </a>
+                                <a class="dropdown-item logout" href="./signin.html">
+                                    <i class="ri-logout-circle-line"></i>Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="sidebar">
+    <div class="brand-logo"><a class="full-logo" href="./dashboard.html"><img src="/static/images/logo.png" alt="" ></a></div>
+    <div class="menu">
+        <ul>
+            <li>
+                <a href="./dashboard.html">
+                    <span><i class="ri-layout-grid-fill"></i></span>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="./bids.html">
+                    <span><i class="ri-briefcase-line"></i></span>
+                    <span class="nav-text">Bids</span></a>
+            </li>
+            <li class="">
+                <a href="./saved.html">
+                    <span><i class="ri-heart-line"></i></span>
+                    <span class="nav-text">Saved</span></a>
+            </li>
+            <!-- <li class="">
+                <a href="./collection.html">
+                    <span><i class="ri-star-line"></i></span>
+                    <span class="nav-text">Collection</span></a>
+            </li> -->
+            <li class="">
+                <a href="./wallet.html">
+                    <span><i class="ri-wallet-line"></i></span>
+                    <span class="nav-text">Wallet</span></a>
+            </li>
+            <!-- <li class="">
+                <a href="./profile.html">
+                    <span><i class="ri-account-box-line"></i></span>
+                    <span class="nav-text">Profile</span></a>
+            </li> -->
+            <li class="">
+                <a href="./settings-profile.html">
+                    <span><i class="ri-settings-3-line"></i></span>
+                    <span class="nav-text">Settings</span></a>
+            </li>
+            <li class=" logout"><a href="./signin.html">
+                    <span><i class="ri-logout-circle-line"></i></span>
+                    <span class="nav-text">Signout</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+    <div class="content-body">
+        <div class="container">
+            <div class="page-title">
+                <div class="row align-items-center justify-content-between">
+                    <div class="col-6">
+                        <div class="page-title-content">
+                            <h3>Profile</h3>
+                            <p class="mb-2">Welcome Neftify Settings Profile page</p>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="breadcrumbs"><a href="#">Settings </a><span><i
+                                    class="ri-arrow-right-s-line"></i></span><a href="#">Profile</a></div>
+                    </div>
+                </div>
+            </div>
+            <ul class="settings-menu">
+                <li><a href="./settings-profile.html">Profile</a></li>
+                <li class=""><a href="./settings-application.html">Application</a></li>
+                <li class=""><a href="./settings-security.html">Security</a></li>
+                <li class=""><a href="./settings-activity.html">Activity</a></li>
+                <li class=""><a href="./settings-payment-method.html">Payment Method</a></li>
+                <li class=""><a href="./settings-api.html">API</a></li>
+            </ul>
+            <div class="row">
+                <div class="col-xxl-6 col-xl-6 col-lg-6">
+                    <h4 class="card-title mb-3">User Profile</h4>
+                    <div class="card">
+                        <div class="card-body">
+                            <form th:object="${user}" th:action="@{/user/update/1}" method="post">
+                                <div class="row">
+                                	<div class="col-12 mb-3"><label class="form-label">Full Name</label><input
+                                            th:field="*{name}" type="text" class="form-control"></div>
+                                    <div class="col-xxl-12">
+                                        <div class="d-flex align-items-center mb-3"><img
+                                                class="me-3 rounded-circle me-0 me-sm-3" src="images/profile/3.png"
+                                                width="55" height="55" alt="">
+                                            <div class="media-body">
+                                                <h4 class="mb-0">Jannatul Maowa</h4>
+                                                <p class="mb-0">Max file size is 20mb</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12"><input name="photo" type="file" class="" ></div>
+                                </div>
+                                <div class="mt-3"><button type="submit" class="btn btn-primary mr-2">Save</button></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-6 col-xl-6 col-lg-6">
+                    <h4 class="card-title mb-3">Update Profile</h4>
+                    <div class="card">
+                        <div class="card-body">
+                            <form th:object="${user}" th:action="@{/user/update/2}" method="post">
+                                <div class="row">
+                                    <div class="col-12 mb-3"><label class="form-label">Email</label><input name="email"
+                                            type="email" class="form-control" th:field="*{email}"></div>
+                                    <div class="col-12 mb-3"><label class="form-label">Password</label><input
+                                            name="password" type="password" class="form-control" th:field="*{password}"></div>
+                                </div>
+                                <div class="mt-3"><button type="submit" class="btn btn-primary mr-2">Save</button></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                
+            </div>
+            <a th:href="@{/user/delete}"
+                                class="btn btn-danger">탈퇴</a>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+<script src="/static/vendor/jquery/jquery.min.js"></script>
+<script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/static/js/scripts.js"></script>
+
+
+</body>
+
+</html>

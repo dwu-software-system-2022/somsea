@@ -2,10 +2,20 @@ package com.project.somsea.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import com.project.somsea.dto.NftDto;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +27,7 @@ import com.project.somsea.dto.UserDto;
 import com.project.somsea.service.NftService;
 import com.project.somsea.service.UserService;
 import com.project.somsea.users.CustomUserDetails;
+import com.project.somsea.util.CommonResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -37,18 +48,18 @@ public class UserController {
 		if (userDetails != null)
 			return "redirect:/";
 		model.addAttribute("user", UserDto.Request.newInstance());
-		return "users/form";
+		return "users/signUp";
 	}
 	
 	@PostMapping("/user/add")
-	public String addUser(@ModelAttribute("userDto") UserDto.Request userDto) {
+	public String addUser(@Valid @ModelAttribute("userDto") UserDto.Request userDto) {
 		userService.add(userDto);
 		return "redirect:/";
 	}
 	
 	@GetMapping("/user/login")
 	public String login() {
-		return "users/loginForm";
+		return "users/signIn";
 	}
 	
 	@GetMapping("/user/me")
@@ -66,10 +77,48 @@ public class UserController {
 		if (userId.equals(userDetails.getUserId())) {
 			auth = true;
 		}
-		System.out.println(userId + " " + userDetails.getUserId() + " " + auth);
 		model.addAttribute("user", user);
 		model.addAttribute("nfts", nfts);
 		model.addAttribute("auth", auth);		
 		return "users/profile";
 	}
+	
+	@GetMapping("/user/update")
+	public String updateUserForm(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
+		UserDto.Request userDto = userService.readUserForUpdate(userDetails.getUserId());
+		model.addAttribute("user", userDto);
+		return "users/settings-profile";
+	}
+	
+	@PostMapping("/user/update/{infoId}")
+	public String updateUser(Model model, @AuthenticationPrincipal CustomUserDetails userDetails, 
+			@ModelAttribute("requestDto") UserDto.Request requestDto, @PathVariable Long infoId) {
+//		userService.
+		if (infoId == 1)
+			userService.updateName(userDetails.getUserId(), requestDto);
+		else if (infoId == 2)
+			userService.updateEmailAndPassword(userDetails.getUserId(), requestDto);
+		return "redirect:/user/update";
+	}
+	
+	@GetMapping("/user/delete")
+	public String deleteUser(@AuthenticationPrincipal CustomUserDetails userDetails) {
+		userService.delete(userDetails.getUserId());
+		SecurityContextHolder.clearContext();
+		return "redirect:/";
+	}
+//	@ExceptionHandler({BindException.class})
+//	public ResponseEntity<?> errorValid2(BindException exception) {
+//	  BindingResult bindingResult = exception.getBindingResult();
+//	 
+//	  StringBuilder stringBuilder = new StringBuilder();
+//	 
+//	  for (FieldError fieldError : bindingResult.getFieldErrors()) {
+//	    stringBuilder.append(fieldError.getField()).append(":");
+//	    stringBuilder.append(fieldError.getDefaultMessage());
+//	    stringBuilder.append(", ");
+//	  }
+//	 
+//	  return CommonResponse.send(HttpStatus.BAD_REQUEST, stringBuilder.toString(), null);
+//	}
 }

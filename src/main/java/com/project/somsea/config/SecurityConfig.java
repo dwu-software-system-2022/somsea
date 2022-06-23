@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// TODO Auto-generated method stub
 		http.csrf().disable()
 			.authorizeRequests()
-			.antMatchers("/user/me", "/nfts/me").hasRole("USER")
+			.antMatchers("/user/me", "/nfts/me", "/wallet/*").hasRole("USER")
 			.antMatchers("/", "/user/login", "/main", "/user/add", "/collections").permitAll()
 			.antMatchers("/nfts/*").permitAll()
 			.antMatchers("/collections/*/nfts").permitAll()

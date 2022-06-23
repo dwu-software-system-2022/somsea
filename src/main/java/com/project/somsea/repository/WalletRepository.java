@@ -15,4 +15,5 @@ public interface WalletRepository extends JpaRepository<Wallet, Long> {
 	@Modifying
 	@Query("update Wallet set balance = ?1 where user_id = ?2")
 	public void updateBalanceByuserId(Long balance, Long userId);
+
 }
