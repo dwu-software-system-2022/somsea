@@ -52,7 +52,7 @@ public class NftController {
 		}
 
         model.addAttribute("nft", nftDto);
-        model.addAttribute("userId", userDetails.getUserId());
+        model.addAttribute("userId", userDetails != null ? userDetails.getUserId() : 0);
         model.addAttribute("auction", auction);
         model.addAttribute("bidding", bidding);
 
