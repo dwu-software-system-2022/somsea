@@ -107,18 +107,4 @@ public class UserController {
 		SecurityContextHolder.clearContext();
 		return "redirect:/";
 	}
-//	@ExceptionHandler({BindException.class})
-//	public ResponseEntity<?> errorValid2(BindException exception) {
-//	  BindingResult bindingResult = exception.getBindingResult();
-//	 
-//	  StringBuilder stringBuilder = new StringBuilder();
-//	 
-//	  for (FieldError fieldError : bindingResult.getFieldErrors()) {
-//	    stringBuilder.append(fieldError.getField()).append(":");
-//	    stringBuilder.append(fieldError.getDefaultMessage());
-//	    stringBuilder.append(", ");
-//	  }
-//	 
-//	  return CommonResponse.send(HttpStatus.BAD_REQUEST, stringBuilder.toString(), null);
-//	}
 }
