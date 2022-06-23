@@ -54,10 +54,15 @@ public class BiddingController {
 		
 		if (result.hasErrors()) return "nfts/biddingForm";
 		
-		if (requestDto.getPrice() <= auction.getTopBid()) {
+		if (auction.getTopBid() != null && requestDto.getPrice() <= auction.getTopBid()) {
 			result.rejectValue("price", "smallPrice", "최소 입찰가를 입력하세요.");
 			return "nfts/biddingForm";
 		}
+		if (auction.getTopBid() == null && requestDto.getPrice() <= auction.getStartPrice()) {
+			result.rejectValue("price", "smallPrice", "최소 입찰가를 입력하세요.");
+			return "nfts/biddingForm";
+		}
+		
 		
 		requestDto.setUserId(userDetails.getUserId());
 		requestDto.setTime(LocalDateTime.now());
@@ -65,7 +70,6 @@ public class BiddingController {
 		requestDto.setAuctionId(auction.getId());
 
 		auctionService.addBidding(requestDto);
-//		Auction auction = auctionService.findAuction(auctionId);
 		return "redirect:/nfts/" + nftId;
 	}
 
@@ -88,6 +92,7 @@ public class BiddingController {
 		nftService.updateUserIdOfNft(userDetails.getUserId(), auction.getNft().getId());
 		// wallet balance도 바꿔야 됨. balance가 입찰가보다 낮으면 충전하세요!.
 		walletService.updateBalance(bidding.getPrice(), userDetails.getUserId());
+//		auctionService.deleteAuction(auctionId);
 		return "redirect:/user/" + userDetails.getUserId(); // or /users/mypage
 	}
 

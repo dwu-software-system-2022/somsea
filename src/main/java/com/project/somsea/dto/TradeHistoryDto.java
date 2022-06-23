@@ -1,7 +1,5 @@
 package com.project.somsea.dto;
 
-import java.time.LocalDateTime;
-
 import com.project.somsea.domain.Auction;
 import com.project.somsea.domain.TradeHistory;
 import com.project.somsea.domain.User;
