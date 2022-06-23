@@ -96,9 +96,9 @@ public class AuctionService {
 				.orElseThrow(() -> new IllegalArgumentException("Nft id 값이 없습니다. nftId : " + nftId));		
 	}
 	
-	public void deleteAuction(Long auctionId, Long nftId) {
-		findNft(nftId); // nft 존재 여부 확인.
-		Auction auction = auctionRepository.getById(auctionId);
+	public void deleteAuction(Long auctionId) {
+//		findNft(nftId); // nft 존재 여부 확인.
+//		Auction auction = auctionRepository.getById(auctionId);
 //		List<Bidding> bidding = findBiddingList(auction);
 //		for (int i = 0; i < bidding.size(); i++) {
 //			biddingRepository.deleteById(bidding.get(i).getId());
